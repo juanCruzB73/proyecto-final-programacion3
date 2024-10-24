@@ -1,0 +1,115 @@
+*{ }
+.main-container{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-color: #21232A;
+    color: white;
+}
+.agregar button{
+    background-color: white;
+    border: none;
+    padding: 0.3rem;
+    border-radius: 7px;
+}
+.empresa-container{
+    width: 30%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;   
+    justify-content: flex-start;
+    align-items: center;   
+    border-right: solid 1px white;
+    overflow-y: scroll;
+}
+.card-container-empresa{ 
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;   
+
+}
+.empresa-card{
+    width: 80%;
+    display: flex;
+    margin-top: 1rem;
+    justify-content: center;
+    align-items: center;
+    padding: 0.4rem;
+    color: black;
+    background-color: white;
+    border-radius: 6px;
+    border: none;
+    padding: 0.5rem;
+}
+.sucursal-container{
+    width: 70%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center; 
+    flex-direction: column;
+}
+.sucursales-container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+}
+.sucursal-card{
+    width: 40%;
+    height: 60%;
+    display: flex;
+    margin-top: 1rem;
+    justify-content: center;
+    align-items: center;
+    padding: 0.4rem;
+    color: black;
+    background-color: white;
+    border-radius: 6px;
+    border: none;
+    padding: 0.5rem;
+}
+@media (min-width: 768px){
+
+}
+@media (min-width: 1200px){
+.sucursal-container{
+    width: 70%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center; 
+    flex-direction: column;
+}
+.empresa-container{
+    width: 30%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;   
+    justify-content: flex-start;
+    align-items: center;   
+    border-right: solid 1px white;
+    overflow-y: scroll;
+}
+.empresa-card{
+    width: 90%;
+}
+.sucursal-card{
+    width: 30%;
+    height: 70%;
+    display: flex;
+    margin-top: 1rem;
+    justify-content: center;
+    align-items: center;
+    padding: 0.4rem;
+    color: black;
+    background-color: white;
+    border-radius: 6px;
+    border: none;
+    padding: 0.5rem;
+
+}
