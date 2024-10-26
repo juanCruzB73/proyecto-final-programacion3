@@ -1,0 +1,41 @@
+.empresa-detail{
+    position: absolute;
+    top: 20%;
+    left: 40%;
+    display: flex;
+    justify-content: center;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+    color: black;
+    height: 50%;
+    padding: 3%;
+    width: 30%;
+}
+.details-container{
+    width: 100%;
+    height: 100%;
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+}
+.img-empresa{
+    display: none;
+}
+@media (min-width: 768px){
+    .empresa-detail{
+        width: 26%;
+        height: 60%;
+    }
+    .img-empresa{
+        display: block;
+    }
+}
+@media (min-width: 1200px){
+    .empresa-detail{
+        width: 20%;
+    }
+}

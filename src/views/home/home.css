@@ -5,6 +5,7 @@
     height: 100%;
     background-color: #21232A;
     color: white;
+    position: relative;
 }
 .agregar button{
     background-color: white;
@@ -61,7 +62,7 @@
 }
 .sucursal-card{
     width: 40%;
-    height: 60%;
+    max-height: 60%;
     display: flex;
     margin-top: 1rem;
     justify-content: center;
@@ -74,9 +75,20 @@
     padding: 0.5rem;
 }
 @media (min-width: 768px){
-
+.sucursal-card{
+    width: 25%;
+    max-height: 60%;
+    display: flex;
+    margin-top: 1rem;
+    justify-content: center;
+    align-items: center;
+    padding: 0.4rem;
+    color: black;
+    background-color: white;
+    border-radius: 6px;
+    border: none;
+    padding: 0.5rem;
 }
-@media (min-width: 1200px){
 .sucursal-container{
     width: 70%;
     height: 100%;
@@ -96,20 +108,11 @@
     overflow-y: scroll;
 }
 .empresa-card{
-    width: 90%;
+    width: 80%;
 }
-.sucursal-card{
-    width: 30%;
-    height: 70%;
-    display: flex;
-    margin-top: 1rem;
-    justify-content: center;
-    align-items: center;
-    padding: 0.4rem;
-    color: black;
-    background-color: white;
-    border-radius: 6px;
-    border: none;
-    padding: 0.5rem;
+
+
+}
+@media (min-width: 1200px){
 
 }

@@ -1,0 +1,52 @@
+.addEditEmpresaContainer{
+    position: absolute;
+    top: 5%;
+    left: 30%;
+    display: flex;
+    justify-content: center;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+    color: black;
+    padding: 5%;
+    height: 70%;
+    width: 45%;
+}
+.form-container{
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+}
+.col{
+    width: 80%;
+
+}
+.form-container input{
+    width: 100%;
+    padding: 0.6rem;
+    border: 0.1rem black solid;
+    border-radius: 0.2rem;
+}
+.buttonEmpresa{
+
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+@media (min-width: 768px){
+    .addEditEmpresaContainer{
+        left: 30%;
+        width: 40%;
+    }
+@media (min-width: 1200px){
+     .addEditEmpresaContainer{
+        width: 35%;
+        left: 27%;
+     }
+}
+}
