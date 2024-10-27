@@ -36,13 +36,18 @@ export const companySlice = createSlice({
     onSeeDetails:(state)=>{
       state.addCompany=false;
       state.edit=false;
-      state.seeMore=!state.seeMore;
-      
+      state.seeMore=!state.seeMore; 
+    },
+    onEditCompany:(state)=>{
+      state.addCompany=false;
+      state.edit=!state.edit;
+      state.seeMore=false; 
+
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const {onAddCompany,onSeeDetails} = companySlice.actions
+export const {onAddCompany,onSeeDetails,onEditCompany} = companySlice.actions
 
 export default companySlice.reducer

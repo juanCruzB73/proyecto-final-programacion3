@@ -5,12 +5,12 @@ import Row from 'react-bootstrap/Row';
 import { AppDispatch } from '../../redux/store/store'; 
 import { useDispatch } from "react-redux"
 import { onAddCompany } from '../../redux/slices/companySlice';
-import './addEditEmpresa.css'
+import './addEmpresa.css'
 import { FormEvent } from 'react';
 
 
 
-export const AddEditEmpresa=()=> {
+export const AddEmpresa=()=> {
   
   const dispatch=useDispatch<AppDispatch>()
 
