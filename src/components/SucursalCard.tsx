@@ -8,9 +8,9 @@ interface Props{
 }
 
 export const SucursalCard:FC<Props> = ({name}) => {
-  return (
+    return (
     <div className='sucursal-card'>
-         <Card style={{width: '90%', maxHeight:"100%"}}>
+            <Card style={{width: '90%', maxHeight:"100%"}}>
             <Card.Img variant="top" src="holder.js/100px180" style={{width:"100%",maxHeight:"30vh"}}/>
             <Card.Body style={{display:"flex",flexDirection: "column",justifyContent:"center",alignItems:"center",maxHeight:"35%"}} >
                 <Card.Title style={{color:"black"}}>{name}</Card.Title>
@@ -20,5 +20,5 @@ export const SucursalCard:FC<Props> = ({name}) => {
             </Card.Body>
         </Card>
     </div>
-     );
+    );
 }

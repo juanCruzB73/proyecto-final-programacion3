@@ -19,6 +19,8 @@ export const Home = () => {
       {addCompany&&<AddEmpresa/>}
       {seeMore&&<EmpresaDetails/>}
       {edit&&<EditEmpresa/>}
+      
+
       <div className="empresa-container">
           <HomeSideVar/> 
       </div>

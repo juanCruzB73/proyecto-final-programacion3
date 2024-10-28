@@ -1,0 +1,60 @@
+.sucursal-details{
+    position: absolute;
+    top: 20%;
+    left: 40%;
+    display: flex;
+    justify-content: center;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+    color: black;
+    height: 50%;
+    padding: 3%;
+    width: 30%;
+}
+.details-container{
+    width: 100%;
+    height: 100%;
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+}
+.titleSucursal{
+    padding-bottom: 3vh;
+    font-size: 5vh;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+}
+.textSucursal{
+    font-size: 1.5rem;
+}
+.buttonSucursal{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+}
+.img-sucursal{
+    display: none;
+    font-size: 1.5rem;
+}
+@media (min-width: 768px){
+    .sucursal-details{
+        width: 26%;
+        height: 60%;
+    }
+    .img-sucursal{
+        display: block;
+    }
+}
+@media (min-width: 1200px){
+    .sucursal-details{
+        width: 20%;
+    }
+
+}
