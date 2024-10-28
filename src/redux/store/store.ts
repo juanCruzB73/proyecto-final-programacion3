@@ -1,9 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { companySlice } from '../slices/companySlice'
+import tablaEmpresaReducer from '../slices/tablaEmpresaSlice'
+import tablaCategoryReducer from '../slices/tablaCategorySlice'
 
 export const store = configureStore({
   reducer: {
-    company:companySlice.reducer
+    company:companySlice.reducer,
+    tablaEmpresa:tablaEmpresaReducer,
+    tablaCategoria:tablaCategoryReducer
   },
 })
 

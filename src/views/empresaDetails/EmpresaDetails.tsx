@@ -1,43 +1,40 @@
 //view para detalles de empresa
 import Card from 'react-bootstrap/Card';
-import { AppDispatch } from '../../redux/store/store';
+import { AppDispatch, RootState } from '../../redux/store/store';
 import { onSeeDetails } from '../../redux/slices/companySlice';
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 import './empresaDetail.css'
 import { Button } from 'react-bootstrap';
 
 
 export const EmpresaDetails = () => {
-  const dispatch=useDispatch<AppDispatch>()
   
+  const dispatch=useDispatch<AppDispatch>()
+  const {elementActive}=useSelector((state:RootState)=>state.tablaEmpresa)
+
   return (
     <div className="empresa-detail">
     
        <Card className="details-container" >
           
           <Card.Body >
-            <Card.Title>Empresa</Card.Title>
+            <Card.Title>DATOS</Card.Title>
           
           <Card.Text>
-            Nombre de sucursal:
+            Nombre de sucursal: {elementActive?.nombre}
           </Card.Text>
 
           <Card.Text>
-            Domicilio:
+            cuit: {elementActive?.cuit}
           </Card.Text>
 
           <Card.Text>
-            Hora apertura:
+            Razon social: {elementActive?.razonSocial}
           </Card.Text>
 
-          <Card.Text>
-            Nombre de sucursal:
-          </Card.Text>
-
-          <Card.Text className="img-empresa">
-            Logo:
-            <Card.Img variant="top" src="holder.js/100px180?text=Image cap" style={{width:"80%",height:"30%"}} /> 
+          <Card.Text className="img-empresa" style={{width:"80%",height:"40%"}}>
+            {elementActive.logo!==null && <Card.Img variant="top" src={elementActive?.logo} style={{width:"100%",height:"100%"}} />} 
           </Card.Text>
           <Button variant="primary" style={{background:"#21232A",color:"white",padding:"0.3rem",border:"node",borderRadius:"0.4rem"}} onClick={()=>dispatch(onSeeDetails())} >Cerrar</Button>
         </Card.Body>

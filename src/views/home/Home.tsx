@@ -8,16 +8,15 @@ import { EditEmpresa } from '../editEmpresa/EditEmpresa'
 import  './home.css'
 
 //view home con sucursales y empresas
-
 export const Home = () => {
 
-  const {addCompany,seeMore,edit}=useSelector((state:RootState)=>state.company)
+  const {addCompany,edit}=useSelector((state:RootState)=>state.company)
 
 
   return (
     <div className="main-container">
       {addCompany&&<AddEmpresa/>}
-      {seeMore&&<EmpresaDetails/>}
+      
       {edit&&<EditEmpresa/>}
       <div className="empresa-container">
           <HomeSideVar/> 
