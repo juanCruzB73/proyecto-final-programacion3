@@ -28,7 +28,10 @@ export const EmpresaCard:FC<Props> = ({element}) => {
             dispatch(onSeeDetails())
             dispatch(setElementActive({element:element}))
           }} variant="primary" style={{ border:"none",borderRadius:"0.2rem",width:"90%" ,backgroundColor:" #21232A",color:"white",padding:"0.3rem",margin:"8px 0px"}}>Ver Más</Button>
-          <Button onClick={()=>dispatch(onEditCompany())} variant="primary" style={{ border:"none",borderRadius:"0.2rem",width:"90%" ,backgroundColor:" #21232A",color:"white",padding:"0.3rem"}}>Editar</Button>
+          <Button onClick={()=>{
+            dispatch(onEditCompany())
+            dispatch(setElementActive({element:element}))
+            }} variant="primary" style={{ border:"none",borderRadius:"0.2rem",width:"90%" ,backgroundColor:" #21232A",color:"white",padding:"0.3rem"}}>Editar</Button>
         </Card.Body>
       </Card>
     </div>

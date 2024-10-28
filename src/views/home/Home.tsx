@@ -18,6 +18,8 @@ export const Home = () => {
       {addCompany&&<AddEmpresa/>}
       
       {edit&&<EditEmpresa/>}
+      
+
       <div className="empresa-container">
           <HomeSideVar/> 
       </div>

@@ -1,0 +1,70 @@
+.addEditSucursalContainer{
+    position: absolute;
+    top: 5%;
+    left: 30%;
+    display: flex;
+    justify-content: center;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+    color: black;
+    gap: 10vh;
+    padding: 5%;
+    height: 35%;
+    width: 80%;
+}
+
+.form-container{
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+    gap: 6vh;
+}
+.information{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap: 0.4rem;
+}
+.bloqueInfomation{
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+.col{
+    width: 80%;
+}
+.form-element-img{
+    height: 6vh;
+    
+}
+
+.form-container input{
+    width: 100%;
+    padding: 0.6rem;
+    border: 0.1rem black solid;
+    border-radius: 0.2rem;
+}
+.button{
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    cursor: pointer;
+}
+@media (min-width: 768px){
+    .addEditSucursalContainer{
+        height: 55% ;
+        left: 30%;
+        width: 40%;
+    }
+@media (min-width: 1200px){
+        .addEditSucursalContainer{
+        width: 35%;
+        left: 27%;
+        } 
+}
+}

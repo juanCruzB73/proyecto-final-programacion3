@@ -34,7 +34,7 @@ export const EmpresaDetails = () => {
           </Card.Text>
 
           <Card.Text className="img-empresa" style={{width:"80%",height:"40%"}}>
-            {elementActive.logo!==null && <Card.Img variant="top" src={elementActive?.logo} style={{width:"100%",height:"100%"}} />} 
+            {elementActive?.logo!==null && <Card.Img variant="top" src={elementActive?.logo} style={{width:"100%",height:"100%"}} />} 
           </Card.Text>
           <Button variant="primary" style={{background:"#21232A",color:"white",padding:"0.3rem",border:"node",borderRadius:"0.4rem"}} onClick={()=>dispatch(onSeeDetails())} >Cerrar</Button>
         </Card.Body>

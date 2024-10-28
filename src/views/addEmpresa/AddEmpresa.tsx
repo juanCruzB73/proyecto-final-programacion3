@@ -1,15 +1,15 @@
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import { AppDispatch } from '../../redux/store/store'; 
-import { useDispatch } from "react-redux"
+import { AppDispatch, RootState } from '../../redux/store/store'; 
+import { useDispatch, useSelector } from "react-redux"
 import { onAddCompany } from '../../redux/slices/companySlice';
-import './addEmpresa.css'
-import { FormEvent } from 'react';
 import { useForm } from '../../hooks/useForm';
 import { EmpresaService } from '../../services/EmpresaService';
-import { IEmpresa } from '../../types/dtos/empresa/IEmpresa';
+import { useServices } from '../../hooks/useServices';
+import './addEmpresa.css'
+
+
 
 interface IForm {
   nombre:string;
@@ -25,22 +25,36 @@ const initialValue:IForm={
 }
 
 const api_url = "http://190.221.207.224:8090"
-const empresaService=new EmpresaService(api_url+"/empresas");
+const full_api=api_url+"/empresas"
+const empresaService=new EmpresaService(full_api);
+
 
 export const AddEmpresa=()=> {
+
+  const {loading,setLoading,getEmpresas}=useServices(full_api)
   
   const dispatch=useDispatch<AppDispatch>()
   const {nombre,razonSocial,cuit,onInputChange,onResetForm}=useForm<IForm>(initialValue)
-  
+
+  const {dataTable}=useSelector((state:RootState)=>state.tablaEmpresa)
+
   const handleSubmit=async(e:React.FormEvent)=>{
     e.preventDefault();
+
+    const maxId = dataTable.reduce((max, item) => (item.id > max ? item.id : max), 0);
+
+    const newId = maxId + 1;
+    const data={nombre:nombre,razonSocial:razonSocial,cuit:cuit,logo:null}
+
+    const newData = { ...data, id: newId };
+    
+    
     try{
-      values={
-        nombre:nombre,
-        razonSocial:razonSocial,
-        cuit:Number(cuit),
-      }
-      await empresaService.post(values)
+        await empresaService.post(newData)
+        setLoading(true)
+        getEmpresas()
+        dispatch(onAddCompany())
+
     }catch (error) {
       console.error("Error adding empresa:", error);
   }
@@ -49,7 +63,7 @@ export const AddEmpresa=()=> {
   return (
       <div className="addEditEmpresaContainer">
       <h1>Crear una empresa</h1>  
-      <Form className="form-container"> 
+      <Form className="form-container" onSubmit={handleSubmit}> 
 
               <Form.Group as={Col} >
                   <Form.Control name='nombre' value={nombre} onChange={onInputChange} type="text" placeholder="Ingrese empresa" />
@@ -69,7 +83,7 @@ export const AddEmpresa=()=> {
               </Form.Group>
 
               <div className="buttonEmpresa">
-                <Button variant="primary" style={{padding:"0.4rem",border:"none",borderRadius:"0.4rem",background:"#32cd32"  }}>{/* type="submit" */}
+                <Button variant="primary" type='submit'  style={{padding:"0.4rem",border:"none",borderRadius:"0.4rem",background:"#32cd32"  }}>
                   Confirmar
                 </Button>
                 <Button onClick={()=>dispatch(onAddCompany())}  variant="primary"  style={{padding:"0.4rem",border:"none",borderRadius:"0.4rem",background:"#ba3939"  }}>
