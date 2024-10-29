@@ -8,5 +8,5 @@ export interface IEmpresa {
   cuit: number;
   logo: string | null;
   sucursales?: ISucursal[];
-  pais?: IPais;
+  pais: IPais;
 }

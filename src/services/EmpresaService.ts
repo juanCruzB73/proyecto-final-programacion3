@@ -1,4 +1,4 @@
-import { IEmpresa } from "../types/dtos/empresa/IEmpresa";
+import { ICreateEmpresaDto } from "../types/dtos/empresa/ICreateEmpresaDto";
 import { BackendClient } from "./BackenClient";
 
-export class EmpresaService extends BackendClient<IEmpresa>{};
+export class EmpresaService extends BackendClient<ICreateEmpresaDto>{};

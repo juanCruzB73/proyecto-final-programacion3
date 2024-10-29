@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
-interface IAddCompany {
-  addCompany: boolean; 
+interface IAddCategory{
+  addSucursal: boolean; 
 }
 interface ISeeMore{
   seeMore:boolean;
@@ -10,30 +10,30 @@ interface ISeeMore{
 interface IEdit{
   edit:boolean;
 }
-interface IStates extends IAddCompany, ISeeMore, IEdit { }
+interface IStates extends IAddCategory, ISeeMore, IEdit { }
 
 const initialState: IStates = {
-  addCompany:false,
+  addSucursal:false,
   seeMore:false,
   edit:false
 }
 
-export const companySlice = createSlice({
-  name: 'company',
+export const sucursalSlice = createSlice({
+  name: 'sucarsal',
   initialState,
   reducers: {
-    onAddCompany: (state) => {
-      state.addCompany=!state.addCompany;
+    onAddSucursal: (state) => {
+      state.addSucursal=!state.addSucursal;
       state.edit=false;
       state.seeMore=false;
     },
-    onSeeDetails:(state)=>{
-      state.addCompany=false;
+    onSeeDetailsSucursal:(state)=>{
+      state.addSucursal=false;
       state.edit=false;
       state.seeMore=!state.seeMore; 
     },
-    onEditCompany:(state)=>{
-      state.addCompany=false;
+    onEditSucursal:(state)=>{
+      state.addSucursal=false;
       state.edit=!state.edit;
       state.seeMore=false; 
 
@@ -42,6 +42,6 @@ export const companySlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const {onAddCompany,onSeeDetails,onEditCompany} = companySlice.actions
+export const {onAddSucursal,onSeeDetailsSucursal,onEditSucursal} = sucursalSlice.actions
 
-export default companySlice.reducer
+export default sucursalSlice.reducer

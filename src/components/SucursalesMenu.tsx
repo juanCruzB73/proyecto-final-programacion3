@@ -4,7 +4,8 @@ import { SucursalCard } from "./SucursalCard"
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store/store";
 import { EmpresaService } from "../services/EmpresaService";
-import { setDataCategoryTable } from "../redux/slices/tablaCategorySlice";
+import { setDataSucursalTable } from "../redux/slices/tablaSucursalSlice";
+import { SucursalService } from "../services/SucursalService";
 
 
 const api_url = "http://190.221.207.224:8090"
@@ -16,20 +17,20 @@ export const SucursalesMenu = () => {
     
     const dispatch=useDispatch<AppDispatch>();
 
-    const empresaService=new EmpresaService(full_api);
+    const sucursalService=new SucursalService(full_api);
 
-    const {dataTable}=useSelector((state:RootState)=>state.tablaCategoria);
+    const {sucursalTable}=useSelector((state:RootState)=>state.tablaSucursal);
 
-    const getEmpresas=async()=>{
-        await empresaService.getAll().then(response=>{
-          dispatch(setDataCategoryTable(response));
+    const getSucursales=async()=>{
+        await sucursalService.getAll().then(response=>{
+          dispatch(setDataSucursalTable(response));
           setLoading(false)
         })
       }
     
       useEffect(()=>{
         setLoading(true)
-        getEmpresas()
+        getSucursales()
       },[])
     
     return (
@@ -37,7 +38,7 @@ export const SucursalesMenu = () => {
         <AddComponent name="Sucursales"/>
         <div className="sucursales-container">
             {
-                dataTable.map(sucursal=>(
+                sucursalTable.map(sucursal=>(
                     <SucursalCard element={sucursal} key={sucursal.id}/>
                 ))
             }

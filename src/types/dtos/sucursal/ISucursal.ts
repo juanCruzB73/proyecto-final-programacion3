@@ -11,7 +11,7 @@ export interface ISucursal {
   calle: string;
   latitud: number;
   longitud: number;
-  categorias: ICategorias[];
+  categorias?: ICategorias[];
   esCasaMatriz: boolean;
   horarioApertura: string;
   eliminado: boolean;

@@ -19,7 +19,11 @@ export const EmpresaDetails = () => {
        <Card className="details-container" >
           
           <Card.Body >
-            <Card.Title>DATOS</Card.Title>
+            <Card.Title style={{paddingBottom: "3vh",
+    fontSize: "5vh",
+    display: "flex",
+    justifyContent: "center",
+    fontWeight: "bold"}}>Empresa Datos</Card.Title>
           
           <Card.Text>
             Nombre de sucursal: {elementActive?.nombre}
@@ -33,7 +37,7 @@ export const EmpresaDetails = () => {
             Razon social: {elementActive?.razonSocial}
           </Card.Text>
 
-          <Card.Text className="img-empresa" style={{width:"80%",height:"40%"}}>
+          <Card.Text className="img-empresa" style={{width:"80%",height:"35%"}}>
             {elementActive?.logo!==null && <Card.Img variant="top" src={elementActive?.logo} style={{width:"100%",height:"100%"}} />} 
           </Card.Text>
           <Button variant="primary" style={{background:"#21232A",color:"white",padding:"0.3rem",border:"node",borderRadius:"0.4rem"}} onClick={()=>dispatch(onSeeDetails())} >Cerrar</Button>

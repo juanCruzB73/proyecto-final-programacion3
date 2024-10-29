@@ -11,7 +11,7 @@
     background-color: white;
     color: black;
     height: 50%;
-    padding: 3%;
+    padding: 3rem;
     width: 30%;
 }
 .details-container{
@@ -28,9 +28,6 @@
     display: flex;
     justify-content: center;
     font-weight: bold;
-}
-.textSucursal{
-    font-size: 1.5rem;
 }
 .buttonSucursal{
     display: flex;

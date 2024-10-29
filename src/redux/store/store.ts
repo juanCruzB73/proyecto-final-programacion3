@@ -1,13 +1,24 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { companySlice } from '../slices/companySlice'
 import tablaEmpresaReducer from '../slices/tablaEmpresaSlice'
-import tablaCategoryReducer from '../slices/tablaCategorySlice'
-
+import tablaSucursalReducer from '../slices/tablaSucursalSlice'
+import { sucursalSlice } from '../slices/sucursalesSlices'
+import tablaPaises from '../slices/tablaPaisSlice'
+import tablaProvincia from '../slices/provinciaSlice'
+import tablaLocalidad from "../slices/tablaLocalidadSlice"
 export const store = configureStore({
   reducer: {
     company:companySlice.reducer,
     tablaEmpresa:tablaEmpresaReducer,
-    tablaCategoria:tablaCategoryReducer
+    //categories
+    sucursal:sucursalSlice.reducer,
+    tablaSucursal:tablaSucursalReducer,
+    //pais
+    tablaPaises:tablaPaises,
+    //provincia
+    tablaProvincia:tablaProvincia,
+    //localidad
+    tablaLocalidad:tablaLocalidad,
   },
 })
 

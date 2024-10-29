@@ -20,8 +20,7 @@ export abstract class BackendClient<T>extends AbstractBackendClient<T>{
     }
 
     async post(data: T): Promise<T | null> {
-        
-        
+        console.log(data)
         const response=await fetch(`${this.baseURL}`,{
             method:"POST",
             headers:{
@@ -29,6 +28,10 @@ export abstract class BackendClient<T>extends AbstractBackendClient<T>{
             },
             body:JSON.stringify(data)
         });
+        if (!response.ok) {
+            console.error("Failed to post data:", response.statusText);
+            return null;
+        }
         const newData=await response.json();
         return newData as T;
     }

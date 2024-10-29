@@ -46,11 +46,11 @@ export const AddEmpresa=()=> {
     const newId = maxId + 1;
     const data={nombre:nombre,razonSocial:razonSocial,cuit:cuit,logo:null}
 
-    const newData = { ...data, id: newId };
+    //const newData = { ...data, id: newId };
     
     
     try{
-        await empresaService.post(newData)
+        await empresaService.post(data)
         setLoading(true)
         getEmpresas()
         dispatch(onAddCompany())
