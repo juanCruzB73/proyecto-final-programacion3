@@ -11,6 +11,7 @@ import { useServices } from '../../hooks/useServices';
 import { useEffect } from 'react';
 import { ICreateSucursal } from '../../types/dtos/sucursal/ICreateSucursal';
 import { useSelect } from '../../hooks/useSelect';
+import { IUpdateSucursal } from '../../types/dtos/sucursal/IUpdateSucursal';
 
 
 interface IForm {
@@ -39,10 +40,10 @@ interface IForm {
 
 export const EditSucursal = () => {
     const dispatch=useDispatch<AppDispatch>()
-    const sucursalService=new SucursalService("http://190.221.207.224:8090/sucursales")
+    const sucursalService=new SucursalService("http://190.221.207.224:8090/sucursales/update")
     const {sucursalTable,elementActive}=useSelector((state:RootState)=>state.tablaSucursal)
     let casaMatrizValue:string;
-    
+    let categoriasValue:any;
     if(!elementActive)return
 
     if(elementActive.logo?.length===0){
@@ -53,6 +54,13 @@ export const EditSucursal = () => {
     }else{
       casaMatrizValue="no"
     }
+
+    if(elementActive.categorias){
+      categoriasValue=elementActive.categorias
+    }else{
+      categoriasValue=[]
+    }
+
     const initialValue:IForm={
         nombre:elementActive.nombre ,
         horarioApertura:elementActive.horarioApertura,
@@ -111,14 +119,17 @@ export const EditSucursal = () => {
       /*
     domicilio: IDomicilio;
       */
-      const data:ICreateSucursal={
+      const data:IUpdateSucursal={
+        id:elementActive.id,
         nombre:nombre,
         horarioApertura:horarioApertura,
         horarioCierre:horarioCierre,
         esCasaMatriz:casaMatrizSelect==="si"?true:false,
         latitud:latitud,
         longitud:longitud,
+        eliminado:false,
         domicilio:{
+          id:elementActive.domicilio.id,
           calle:calle,
           numero:nroCalle,
           cp:cp,
@@ -127,6 +138,7 @@ export const EditSucursal = () => {
           idLocalidad:localidad.id,
         },
         idEmpresa:empresa.id,
+        categorias:categoriasValue,
         logo:logo,
       }
       console.log(data)

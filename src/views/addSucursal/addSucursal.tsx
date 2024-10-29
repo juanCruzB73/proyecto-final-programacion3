@@ -68,7 +68,7 @@ const selectInitialValue:ISelect={
 export const AddSucursal = () => {
 
   const dispatch=useDispatch<AppDispatch>()
-  const sucursalService=new SucursalService("http://190.221.207.224:8090/sucursales")
+  const sucursalService=new SucursalService("http://190.221.207.224:8090/sucursales/create")
   const {nombre,horarioApertura,horarioCierre,latitud,longitud,calle,nroCalle,cp,piso,nroDpto,logo,onInputChange,onResetForm}=useForm<IForm>(initialValue)
 
   const {dataTable}=useSelector((state:RootState)=>state.tablaEmpresa)
