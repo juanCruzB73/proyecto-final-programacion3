@@ -55,7 +55,7 @@ export const EditEmpresa=()=> {
 
   }catch (error) {
     console.error("Error adding empresa:", error);
-}
+  }
   }
 
   return (

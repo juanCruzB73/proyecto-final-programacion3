@@ -20,8 +20,8 @@ interface IForm {
     latitud:number,
     longitud:number,
     esCasaMatriz:boolean,
-    idEmpresa:string,
-    logo:string|undefined,
+    idEmpresa:number,
+    logo?:any,
     calle:string,
     nroCalle:number,
     cp:number,
@@ -41,16 +41,26 @@ export const EditSucursal = () => {
     const dispatch=useDispatch<AppDispatch>()
     const sucursalService=new SucursalService("http://190.221.207.224:8090/sucursales")
     const {sucursalTable,elementActive}=useSelector((state:RootState)=>state.tablaSucursal)
-
+    let casaMatrizValue:string;
+    
     if(!elementActive)return
+
+    if(elementActive.logo?.length===0){
+      elementActive.logo=""
+    }
+    if(elementActive.esCasaMatriz){
+      casaMatrizValue="si"
+    }else{
+      casaMatrizValue="no"
+    }
     const initialValue:IForm={
-        nombre: elementActive.nombre ,
-        horarioApertura: elementActive.horarioApertura,
-        horarioCierre: elementActive.horarioCierre,
+        nombre:elementActive.nombre ,
+        horarioApertura:elementActive.horarioApertura,
+        horarioCierre:elementActive.horarioCierre,
         latitud:elementActive.latitud,
         longitud:elementActive.longitud,
-        esCasaMatriz: false,
-        idEmpresa:'',
+        esCasaMatriz:elementActive.esCasaMatriz,
+        idEmpresa:elementActive.empresa.id ,
         logo:elementActive.logo,
         calle:elementActive.domicilio.calle,
         nroCalle:elementActive.domicilio.numero,
@@ -63,7 +73,7 @@ export const EditSucursal = () => {
         provinciaSelect:elementActive.domicilio.localidad.provincia.nombre,
         localidadSelect:elementActive.domicilio.localidad.nombre,
         empresaSelect:elementActive.empresa.nombre,
-        casaMatrizSelect:'',
+        casaMatrizSelect:casaMatrizValue,
     }
 
 
@@ -106,14 +116,14 @@ export const EditSucursal = () => {
         horarioApertura:horarioApertura,
         horarioCierre:horarioCierre,
         esCasaMatriz:casaMatrizSelect==="si"?true:false,
-        latitud:parseInt(latitud),
-        longitud:parseInt(longitud),
+        latitud:latitud,
+        longitud:longitud,
         domicilio:{
           calle:calle,
-          numero:parseInt(nroCalle),
-          cp:parseInt(cp),
-          piso:parseInt(piso),
-          nroDpto:parseInt(nroDpto),
+          numero:nroCalle,
+          cp:cp,
+          piso:piso,
+          nroDpto:nroDpto,
           idLocalidad:localidad.id,
         },
         idEmpresa:empresa.id,
@@ -121,7 +131,7 @@ export const EditSucursal = () => {
       }
       console.log(data)
       try{
-        await sucursalService.post(data)
+        await sucursalService.put(elementActive.id,data)
         //setLoading(true)
         getSucursales()
         dispatch(onEditSucursal())
@@ -186,7 +196,7 @@ export const EditSucursal = () => {
     
                       <Form.Group as={Col} >
                         <Form.Label>Ingresar imagen de la sucursal</Form.Label>
-                        <Form.Control type="text" name='logo' value={logo} onChange={onInputChange} placeholder="Ingresar el link de la imagen" />
+                        <Form.Control type="text" name='logo' value={!logo?'':logo} onChange={onInputChange} placeholder="Ingresar el link de la imagen" />
                       </Form.Group>
     
                     </div>
