@@ -1,14 +1,12 @@
 import { FC } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { AppDispatch, RootState } from "../redux/store/store";
+import { AppDispatch } from "../redux/store/store";
 import { onSeeDetails,onEditCompany } from "../redux/slices/companySlice";
 import { setElementActive } from '../redux/slices/tablaEmpresaSlice'; 
-import { EmpresaDetails } from '../views/empresaDetails/EmpresaDetails';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch,  } from "react-redux";
 import { IEmpresa } from '../types/dtos/empresa/IEmpresa';
-import { AddEmpresa } from '../views/addEmpresa/AddEmpresa';
-import { EditEmpresa } from '../views/editEmpresa/EditEmpresa';
+
   
 interface Props{
     element:IEmpresa
@@ -16,16 +14,11 @@ interface Props{
 
 export const EmpresaCard:FC<Props> = ({element}) => {
 
-  const {addCompany,seeMore,edit}=useSelector((state:RootState)=>state.company)
-
   const dispatch=useDispatch<AppDispatch>()
   
   return (
 
     <div  className='empresa-card'>
-      {seeMore&&<EmpresaDetails/>}
-      {addCompany&&<AddEmpresa/>}
-      {edit&&<EditEmpresa/>}
 
     <Card style={{ width: '18rem' }}>
         <Card.Body style={{display: "flex",flexDirection: "column",justifyContent:"center",alignItems:"center"}}>

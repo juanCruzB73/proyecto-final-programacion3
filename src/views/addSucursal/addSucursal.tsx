@@ -7,12 +7,11 @@ import { onAddSucursal } from '../../redux/slices/sucursalesSlices';
 import './addSucursal.css'
 import { useForm } from '../../hooks/useForm';
 import { useServices } from '../../hooks/useServices';
-import { useEffect} from 'react';
+import { useEffect, useState} from 'react';
 import { useSelect } from '../../hooks/useSelect';
 import { SucursalService } from '../../services/SucursalService';
-import { IDomicilio } from '../../types/IDomicilio';
-import { ISucursal } from '../../types/dtos/sucursal/ISucursal';
 import { ICreateSucursal } from '../../types/dtos/sucursal/ICreateSucursal';
+import { useValidations } from '../../hooks/useValidations';
 
 
 interface IForm {
@@ -31,12 +30,11 @@ interface IForm {
   nroDpto:string,
 }
 
-
-
+//initial value input fields
 const initialValue:IForm={
   nombre: '',
-  horarioApertura: "00:00",
-  horarioCierre: "00:00",
+  horarioApertura: "00:00:00",
+  horarioCierre: "00:00:00",
   latitud:'',
   longitud:'',
   esCasaMatriz: false,
@@ -49,6 +47,7 @@ const initialValue:IForm={
   nroDpto:'',
 }
 
+
 interface ISelect{
   paisSelect:string;
   provinciaSelect:string;
@@ -57,32 +56,72 @@ interface ISelect{
   casaMatrizSelect:string
 }
 
-const selectInitialValue:ISelect={
-  paisSelect:"",
-  provinciaSelect:"",
-  localidadSelect:"",
-  empresaSelect:"",
-  casaMatrizSelect:"",
-}
+
 
 export const AddSucursal = () => {
 
   const dispatch=useDispatch<AppDispatch>()
   const sucursalService=new SucursalService("http://190.221.207.224:8090/sucursales/create")
-  const {nombre,horarioApertura,horarioCierre,latitud,longitud,calle,nroCalle,cp,piso,nroDpto,logo,onInputChange,onResetForm}=useForm<IForm>(initialValue)
 
-  const {dataTable}=useSelector((state:RootState)=>state.tablaEmpresa)
-  const {sucursalTable}=useSelector((state:RootState)=>state.tablaSucursal)
-  const {paisTable}=useSelector((state:RootState)=>state.tablaPaises)
-  const {provinciaTable}=useSelector((state:RootState)=>state.tablaProvincia)
-  const {localidadTable}=useSelector((state:RootState)=>state.tablaLocalidad)
-
+  //peticiones http con hook
   const {loading,setLoading,getPaises}=useServices("http://190.221.207.224:8090/paises")
   const {getProvincia}=useServices("http://190.221.207.224:8090/provincias")
   const {getLocalidad}=useServices("http://190.221.207.224:8090/localidades")
   const {getSucursales}=useServices("http://190.221.207.224:8090/sucursales")
 
+  //datos redux
+  const {paisTable}=useSelector((state:RootState)=>state.tablaPaises)
+  const {provinciaTable}=useSelector((state:RootState)=>state.tablaProvincia)
+  const {localidadTable}=useSelector((state:RootState)=>state.tablaLocalidad)
+  const {dataTable}=useSelector((state:RootState)=>state.tablaEmpresa)
+
+  //initial value select
+  const selectInitialValue:ISelect={
+    paisSelect:"",
+    provinciaSelect:"",
+    localidadSelect:"",
+    empresaSelect:"",
+    casaMatrizSelect:"si",
+  }
+
+  //selct fields
   const {paisSelect,provinciaSelect,localidadSelect,empresaSelect,casaMatrizSelect,handleSelectChange}=useSelect<ISelect>(selectInitialValue);
+
+
+  //input fields
+  const {nombre,horarioApertura,horarioCierre,latitud,longitud,calle,nroCalle,cp,piso,nroDpto,logo,onInputChange,onResetForm}=useForm<IForm>(initialValue)
+
+  //validations
+  const [wrongName,setWrongName]=useState(false);
+  const [wronghorarioApertura,setWronghorarioApertura]=useState(false);
+  const [wronghorarioCierre,setWronghorarioCierre]=useState(false);
+  const [wronglatitud,setWronglatitud]=useState(false);
+  const [wronglongitud,setWronglongitud]=useState(false);
+  const [wrongcalle,setWrongcalle]=useState(false);  
+  const [wrongnroCalle,setWrongnroCalle]=useState(false);
+  const [wrongcp,setWrongcp]=useState(false);  
+  const [wrongpiso,setWrongpiso]=useState(false);
+  const [wrongnroDepto,setWrongnroDepto]=useState(false);;
+  
+  const [isEmptyCondition,setIsEmptyCondition]=useState(false);
+  const [containsLetterCondition,setcontainsLetterCondition]=useState(false);
+  const [isTimeCondition,setisTimeCondition]=useState(false);
+  const [conditionMessage,setconditionMessage]=useState('');
+
+  const {containLetters,isEmpty,isTime}=useValidations();
+  
+  //const {sucursalTable}=useSelector((state:RootState)=>state.tablaSucursal)
+  useEffect(()=>{
+    if(isEmptyCondition || containsLetterCondition || isTimeCondition){
+      setWrongName(false);setWronghorarioApertura(false);setWronghorarioCierre(false);setWronglatitud(false);
+      setWronglongitud(false);setWrongcalle(false);setWrongnroCalle(false);setWrongcp(false);setWrongpiso(false)
+      setWrongnroDepto(false);setIsEmptyCondition(false);setisTimeCondition(false);setcontainsLetterCondition(false);
+    }
+  },
+  [
+    nombre,horarioApertura,horarioCierre,latitud,longitud,calle,nroCalle,cp,piso,
+    nroDpto,paisSelect,provinciaSelect,localidadSelect,empresaSelect,casaMatrizSelect
+  ])
 
   useEffect(()=>{
     getPaises();
@@ -97,12 +136,8 @@ export const AddSucursal = () => {
    const localidad=findIdLocalidadLocation(localidadSelect);
    const empresa=findIdEmpresa(empresaSelect)
    
-    console.log(localidad,empresa)
     if(!localidad || !empresa)return
-    console.log("resturn pasad aca")
-    /*
-  domicilio: IDomicilio;
-    */
+    
     const data:ICreateSucursal={
       nombre:nombre,
       horarioApertura:horarioApertura,
@@ -121,16 +156,53 @@ export const AddSucursal = () => {
       idEmpresa:empresa.id,
       logo:logo,
     }
-    console.log(data)
-    try{
-      await sucursalService.post(data)
-      //setLoading(true)
-      getSucursales()
-      dispatch(onAddSucursal())
-  }catch (error) {
-    console.error("Error adding empresa:", error);
-}
-
+    //validaciones para inputs vacios
+    if(
+      isEmpty(nombre) || isEmpty(horarioApertura) || isEmpty(horarioCierre)
+      || isEmpty(latitud) || isEmpty(longitud) || isEmpty(calle) || isEmpty(nroCalle)
+      || isEmpty(localidadSelect) || isEmpty(empresaSelect) || isEmpty(nroDpto) || isEmpty(cp)
+      || isEmpty(piso)
+    ){
+      setIsEmptyCondition(true);
+      setconditionMessage("algun campo esta vacio");
+      isEmpty(nombre) && setWrongName(true);
+      isEmpty(horarioApertura) && setWronghorarioApertura(true);
+      isEmpty(horarioCierre) && setWronghorarioCierre(true);
+      isEmpty(latitud) && setWronglatitud(true);
+      isEmpty(longitud) && setWronglongitud(true);
+      isEmpty(calle) && setWrongcalle(true);
+      isEmpty(nroCalle) && setWrongnroCalle(true);
+      isEmpty(nroDpto)&&setWrongnroDepto(true);
+      isEmpty(cp)&&setWrongcp(true);
+      isEmpty(piso)&&setWrongpiso(true);
+    //validaciones para inputs con letras donde solo van numeros
+    }else if(
+      containLetters(latitud) || containLetters(longitud) || containLetters(nroCalle)
+      || containLetters(cp) || containLetters(piso) || containLetters(nroDpto)
+      || containLetters(piso)
+    ){
+      setcontainsLetterCondition(true);
+      setconditionMessage("algunos campos solo deben contener numeros");
+      containLetters(latitud)&&setWronglatitud(true);
+      containLetters(longitud)&&setWronglongitud(true);
+      containLetters(nroCalle)&&setWrongnroCalle(true);
+      containLetters(cp)&&setWrongcp(true);
+      containLetters(piso)&&setWrongpiso(true);
+      containLetters(nroDpto)&&setWrongnroDepto(true);
+    }else if(!isTime(horarioApertura) || !isTime(horarioCierre)){
+      setisTimeCondition(true);
+      setconditionMessage("use un horario correcto HH:MM")
+      isTime(horarioApertura) && setWronghorarioApertura(true);
+      isTime(horarioCierre) && setWronghorarioCierre(true);
+    }else{
+      try{
+        await sucursalService.post(data)
+        getSucursales()
+        dispatch(onAddSucursal())
+    }catch (error) {
+      console.error("Error adding empresa:", error);
+  }
+    }
   }
   const findIdEmpresa=(nombre:string)=>{
     let result=dataTable.filter(e=>e.nombre==nombre)
@@ -141,10 +213,9 @@ export const AddSucursal = () => {
     }
   }
   
-  const findIdLocalidadLocation=(nombre:string)=>{
+    const findIdLocalidadLocation=(nombre:string)=>{
     let result=localidadTable.filter(e=>e.nombre==nombre)
     if(result){
-      console.log(nombre,result)
       return result[0];
     }else{
       console.log("no hay resultado");
@@ -154,25 +225,29 @@ export const AddSucursal = () => {
   return (
     <div className="addEditSucursalContainer"> 
       <h1>Crear una sucursal</h1> 
-      <Form className="form-container" onSubmit={handleSubmit}> 
+      <Form className="form-container" onSubmit={handleSubmit}>
+              <div className={isEmptyCondition||containsLetterCondition||isTimeCondition ? 'errorMessagge' : "noErrors"}>
+                <span>{conditionMessage}</span>
+              </div>
+
               <div className='information'>
 
                 <div className='bloqueInfomation'>
 
                   <Form.Group className='form-element' as={Col} >
-                    <Form.Control type="text" name='nombre' value={nombre} onChange={onInputChange} placeholder="Ingrese sucursal" />
+                    <Form.Control id={wrongName?"isWrong":"isNotWrong"} type="text" name='nombre' value={nombre} onChange={onInputChange} placeholder="Ingrese sucursal" />
                   </Form.Group>
 
                   <Form.Group className='form-element'as={Col}>
-                    <Form.Control type="text" name='horarioApertura' value={horarioApertura} onChange={onInputChange} placeholder="Ingresar hora de apertura" />
+                    <Form.Control id={wronghorarioApertura?"isWrong":"isNotWrong"} type="text" name='horarioApertura' value={horarioApertura} onChange={onInputChange} placeholder="Ingresar hora de apertura" />
                   </Form.Group>
 
                   <Form.Group className='form-element' as={Col}>
-                    <Form.Control type="text" name='horarioCierre' value={horarioCierre} onChange={onInputChange} placeholder="Ingresar hora de cierre" />
+                    <Form.Control id={wronghorarioCierre?"isWrong":"isNotWrong"} type="text" name='horarioCierre' value={horarioCierre} onChange={onInputChange} placeholder="Ingresar hora de cierre" />
                   </Form.Group>
 
                   <Form.Label>Seleccione Empresa</Form.Label>
-                  <Form.Select id="empresa-select" name='empresaSelect' value={empresaSelect} onChange={handleSelectChange}>
+                  <Form.Select className="isNotWrongSelect" id="empresa-select" name='empresaSelect' value={empresaSelect} onChange={handleSelectChange}>
 
                         {dataTable.map((pais)=>(
                           <option key={pais.id} value={pais.nombre}>{pais.nombre}</option>
@@ -188,7 +263,7 @@ export const AddSucursal = () => {
 
                   <Form.Group as={Col} >
                     <Form.Label>Ingresar imagen de la sucursal</Form.Label>
-                    <Form.Control type="text" name='logo' value={logo} onChange={onInputChange} placeholder="Ingresar el link de la imagen" />
+                    <Form.Control id='isNotWrong' type="text" name='logo' value={logo} onChange={onInputChange} placeholder="Ingresar el link de la imagen" />
                   </Form.Group>
 
                 </div>
@@ -217,7 +292,7 @@ export const AddSucursal = () => {
                   </Form.Group>
                   <Form.Group className='form-element' as={Col}>
                   <Form.Label>Seleccione localidad</Form.Label>
-                    <Form.Select id="localidad-select" name='localidadSelect' value={localidadSelect} onChange={handleSelectChange}>
+                    <Form.Select className="isNotWrongSelect" id="localidad-select" name='localidadSelect' value={localidadSelect} onChange={handleSelectChange}>
 
                         {localidadTable.map((localidad)=>(
                           <option key={localidad.id} value={localidad.nombre}>{localidad.nombre}</option>
@@ -226,25 +301,25 @@ export const AddSucursal = () => {
                     </Form.Select>
                   </Form.Group>
                   <Form.Group className='form-element' as={Col}>
-                    <Form.Control type="text" name='calle' value={calle} onChange={onInputChange} placeholder="Ingresar calle" />
+                    <Form.Control id={wrongcalle?"isWrong":"isNotWrong"} type="text" name='calle' value={calle} onChange={onInputChange} placeholder="Ingresar calle" />
                   </Form.Group>
                   <Form.Group className='form-element' as={Col}>
-                    <Form.Control type="text" name='nroCalle' value={nroCalle} onChange={onInputChange} placeholder="Ingresar numero de calle" />
+                    <Form.Control id={wrongnroCalle?"isWrong":"isNotWrong"} type="text" name='nroCalle' value={nroCalle} onChange={onInputChange} placeholder="Ingresar numero de calle" />
                   </Form.Group>
                   <Form.Group className='form-element' as={Col}>
-                    <Form.Control type="text" name='cp' value={cp} onChange={onInputChange} placeholder="Ingresar cp" />
+                    <Form.Control id={wrongcp?"isWrong":"isNotWrong"} type="text" name='cp' value={cp} onChange={onInputChange} placeholder="Ingresar cp" />
                   </Form.Group>
                   <Form.Group className='form-element' as={Col}>
-                    <Form.Control type="text" name='piso' value={piso} onChange={onInputChange} placeholder="Ingresar cp" />
+                    <Form.Control id={wrongpiso?"isWrong":"isNotWrong"} type="text" name='piso' value={piso} onChange={onInputChange} placeholder="Ingresar del piso del piso" />
                   </Form.Group>
                   <Form.Group className='form-element' as={Col}>
-                    <Form.Control type="text" name='nroDpto' value={nroDpto} onChange={onInputChange} placeholder="Ingresar cp" />
+                    <Form.Control id={wrongnroDepto?"isWrong":"isNotWrong"} type="text" name='nroDpto' value={nroDpto} onChange={onInputChange} placeholder="Ingresar numero departamento" />
                   </Form.Group>
                   <Form.Group className='form-element' as={Col}>
-                    <Form.Control type="text"  name='latitud' value={latitud} onChange={onInputChange} placeholder="latitud" />
+                    <Form.Control id={wronglatitud?"isWrong":"isNotWrong"} type="text"  name='latitud' value={latitud} onChange={onInputChange} placeholder="latitud" />
                   </Form.Group>
                   <Form.Group className='form-element' as={Col}>
-                    <Form.Control type="text" name='longitud' value={longitud} onChange={onInputChange} placeholder="longitud" />
+                    <Form.Control type="text" id={wronglongitud?"isWrong":"isNotWrong"} name='longitud' value={longitud} onChange={onInputChange} placeholder="longitud" />
                   </Form.Group>
                 </div>
             </div>

@@ -5,17 +5,17 @@ interface IAddCategory{
   addSucursal: boolean; 
 }
 interface ISeeMore{
-  seeMore:boolean;
+  seeMoreSucursal:boolean;
 } 
 interface IEdit{
-  edit:boolean;
+  editSucursal:boolean;
 }
 interface IStates extends IAddCategory, ISeeMore, IEdit { }
 
 const initialState: IStates = {
   addSucursal:false,
-  seeMore:false,
-  edit:false
+  seeMoreSucursal:false,
+  editSucursal:false
 }
 
 export const sucursalSlice = createSlice({
@@ -24,24 +24,24 @@ export const sucursalSlice = createSlice({
   reducers: {
     onAddSucursal: (state) => {
       state.addSucursal=!state.addSucursal;
-      state.edit=false;
-      state.seeMore=false;
+      state.editSucursal=false;
+      state.seeMoreSucursal=false;
     },
     onSeeDetailsSucursal:(state)=>{
       state.addSucursal=false;
-      state.edit=false;
-      state.seeMore=!state.seeMore; 
+      state.editSucursal=false;
+      state.seeMoreSucursal=!state.seeMoreSucursal; 
     },
-    onEditSucursal:(state)=>{
+    oneditSucursalSucursal:(state)=>{
       state.addSucursal=false;
-      state.edit=!state.edit;
-      state.seeMore=false; 
+      state.editSucursal=!state.editSucursal;
+      state.seeMoreSucursal=false; 
 
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const {onAddSucursal,onSeeDetailsSucursal,onEditSucursal} = sucursalSlice.actions
+export const {onAddSucursal,onSeeDetailsSucursal,oneditSucursalSucursal} = sucursalSlice.actions
 
 export default sucursalSlice.reducer

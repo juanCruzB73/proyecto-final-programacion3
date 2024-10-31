@@ -38,18 +38,34 @@
     height: 6vh;
     
 }
-.form-container input{
+#isNotWrong{
     width: 100%;
     padding: 0.4rem;
     border: 0.1rem black solid;
     border-radius: 0.2rem;
 }
-.form-element select{
+#isWrong{
+    width: 100%;
+    padding: 0.4rem;
+    border-radius: 0.2rem;
+    border: 1px solid red;
+    color: white;
+    background-color: rgba(230, 68, 68, 0.822);
+}
+.isNotWrongSelect{
     width: 80%;
     padding: 0.4rem;
     border: 1px white solid;
     border-radius: 0.4rem;
     background-color: #21232A;
+    color: white;
+}
+.isWrongSelect{
+    width: 80%;
+    padding: 0.4rem;
+    border: 1px solid red;
+    border-radius: 0.4rem;
+    background-color: rgba(230, 68, 68, 0.822);
     color: white;
 }
 .bloqueInfomation select{
@@ -66,6 +82,18 @@
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+}
+.errorMessagge{
+    padding: .6rem;
+    width: 80%;
+    height: 10vh;
+    color: white;
+    border: 1px solid red;
+    background-color: rgba(230, 68, 68, 0.822);
+    border-radius: 0.5rem;
+}
+.noErrors{
+    display: none;
 }
 @media (min-width: 768px){
     .addEditSucursalContainer{

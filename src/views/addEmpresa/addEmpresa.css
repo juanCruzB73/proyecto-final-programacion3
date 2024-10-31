@@ -21,15 +21,36 @@
     flex-direction: column;
     align-items: center;
 }
-.col{
-    width: 80%;
-
-}
-.form-container input{
+#isNotWrong{
     width: 100%;
     padding: 0.6rem;
     border: 0.1rem black solid;
     border-radius: 0.2rem;
+    width: 80%;
+}
+#isWrong{
+    width: 100%;
+    padding: 0.6rem;
+    border-radius: 0.2rem;
+    width: 80%;
+    border: 1px solid red;
+    color: white;
+    background-color: rgba(230, 68, 68, 0.822);
+}
+.errorMessagge{
+    padding: .6rem;
+    width: 80%;
+    height: 10vh;
+    color: white;
+    border: 1px solid red;
+    background-color: rgba(230, 68, 68, 0.822);
+    border-radius: 0.5rem;
+}
+.noErrors{
+    display: none;
+}
+.form-container input{
+    
 }
 .buttonEmpresa{
 

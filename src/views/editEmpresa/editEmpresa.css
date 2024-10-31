@@ -1,9 +1,8 @@
 .addEditEmpresaContainer{
-    position: absolute;
     top: 5%;
     left: 30%;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     border: 1px solid black;
     border-radius: 0.5rem;
     align-items: center;
@@ -11,7 +10,7 @@
     background-color: white;
     color: black;
     padding: 5%;
-    height: 70%;
+    height: 80%;
     width: 45%;
 }
 .form-container{
@@ -25,11 +24,33 @@
     width: 80%;
 
 }
-.form-container input{
+#isNotWrong{
     width: 100%;
     padding: 0.6rem;
     border: 0.1rem black solid;
     border-radius: 0.2rem;
+    width: 80%;
+}
+#isWrong{
+    width: 100%;
+    padding: 0.6rem;
+    border-radius: 0.2rem;
+    width: 80%;
+    border: 1px solid red;
+    color: white;
+    background-color: rgba(230, 68, 68, 0.822);
+}
+.errorMessagge{
+    padding: .6rem;
+    width: 80%;
+    height: 10vh;
+    color: white;
+    border: 1px solid red;
+    background-color: rgba(230, 68, 68, 0.822);
+    border-radius: 0.5rem;
+}
+.noErrors{
+    display: none;
 }
 .buttonEmpresa{
 
