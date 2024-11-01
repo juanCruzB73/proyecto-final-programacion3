@@ -8,6 +8,7 @@ import { ISucursal } from '../types/dtos/sucursal/ISucursal';
 import { oneditSucursalSucursal, onSeeDetailsSucursal } from '../redux/slices/sucursalesSlices';
 
 import { setElementActive } from '../redux/slices/tablaSucursalSlice';
+import { Link } from 'react-router-dom';
 
 
 interface Props{
@@ -36,7 +37,10 @@ export const SucursalCard:FC<Props> = ({element}) => {
                         dispatch(oneditSucursalSucursal())
                         dispatch(setElementActive({element:element}))
                         }} variant="primary" style={{ border:"none",borderRadius:"0.2rem",width:"90%" ,backgroundColor:" #21232A",color:"white",padding:"0.3rem",margin:"8px 0px"}} >Editar</Button>
+                        <Button  onClick={()=>{dispatch(setElementActive({element:element}))}} variant="primary" style={{ border:"none",borderRadius:"0.2rem",width:"90%" ,backgroundColor:" #21232A",padding:"0.3rem",margin:"8px 0px"}} >
+                        <Link to={'/categorias'} style={{color:"white"}}>Categorias</Link></Button>
                     <Button  variant="primary" style={{ border:"none",borderRadius:"0.2rem",width:"90%" ,backgroundColor:" #21232A",color:"white",padding:"0.3rem",margin:"8px 0px"}} >Borrar</Button>
+                    
                 </Card.Body>
         </Card>
         </Card>

@@ -22,7 +22,7 @@ export const EmpresaCard:FC<Props> = ({element}) => {
 
     <Card style={{ width: '18rem' }}>
         <Card.Body style={{display: "flex",flexDirection: "column",justifyContent:"center",alignItems:"center"}}>
-          <Card.Title>{element.nombre}</Card.Title>
+          <Card.Title style={{cursor: "pointer"}} onClick={()=>dispatch(setElementActive({element:element}))}>{element.nombre}</Card.Title>
           <Button onClick={()=>{
             dispatch(onSeeDetails())
             dispatch(setElementActive({element:element}))

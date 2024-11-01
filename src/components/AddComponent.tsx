@@ -1,7 +1,7 @@
 import { FC } from "react"
-import { AppDispatch } from "../redux/store/store"
+import { AppDispatch, RootState } from "../redux/store/store"
 import { onAddCompany } from "../redux/slices/companySlice"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { onAddSucursal } from "../redux/slices/sucursalesSlices"
 
 interface Props{
@@ -10,7 +10,7 @@ interface Props{
 
 export const AddComponent:FC<Props> = ({name}) => {
   const dispatch=useDispatch<AppDispatch>()
-
+  const {elementActive}=useSelector((state:RootState)=>state.tablaEmpresa);
   const operation = ()=>{
     if(name=="Empresas"){
       dispatch(onAddCompany())
@@ -21,7 +21,7 @@ export const AddComponent:FC<Props> = ({name}) => {
   
   return (
     <div className="agregar">
-      <h2>{name}</h2>
+      {name=="Empresa"?<h2>{name}</h2>:<h2>{name} {elementActive?.nombre}</h2>}
       <button onClick={() => operation()} >{`Agregar ${name}`}</button>
     </div>
   )
