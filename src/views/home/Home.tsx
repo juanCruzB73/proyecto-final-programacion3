@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
-import { HomeSideVar } from '../../components/HomeSideVar'
-import { SucursalesMenu } from '../../components/SucursalesMenu'
+import { HomeSideVar } from '../../components/empresasSucursales/HomeSideVar'
+import { SucursalesMenu } from '../../components/empresasSucursales/SucursalesMenu'
 import { RootState } from '../../redux/store/store'
 import  './home.css'
 import { EmpresaDetails } from '../empresaDetails/EmpresaDetails'
@@ -8,7 +8,7 @@ import { AddEmpresa } from '../addEmpresa/AddEmpresa'
 import { EditEmpresa } from '../editEmpresa/EditEmpresa'
 import { SucursalDetails } from '../sucursalDetails/SucursalDetails'
 import { EditSucursal } from '../editSucursal/EditSucursal'
-import { AddSucursal } from '../addSucursal/AddSucursal'
+import { AddSucursal } from '../addSucursal/addSucursal'
 import { useEffect, useState } from 'react'
 
 //view home con sucursales y empresas

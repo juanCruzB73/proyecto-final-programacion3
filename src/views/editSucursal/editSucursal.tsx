@@ -325,7 +325,7 @@ export const EditSucursal = () => {
                     <Form.Control id={wrongcp?"isWrong":"isNotWrong"} type="text" name='cp' value={cp} onChange={onInputChange} placeholder="Ingresar cp" />
                   </Form.Group>
                   <Form.Group className='form-element' as={Col}>
-                    <Form.Control id={wrongpiso?"isWrong":"isNotWrong"} type="text" name='piso' value={piso} onChange={onInputChange} placeholder="Ingresar del piso del piso" />
+                    <Form.Control id={wrongpiso?"isWrong":"isNotWrong"} type="text" name='piso' value={piso} onChange={onInputChange} placeholder="Ingresar nro del piso" />
                   </Form.Group>
                   <Form.Group className='form-element' as={Col}>
                     <Form.Control id={wrongnroDepto?"isWrong":"isNotWrong"} type="text" name='nroDpto' value={nroDpto} onChange={onInputChange} placeholder="Ingresar numero departamento" />

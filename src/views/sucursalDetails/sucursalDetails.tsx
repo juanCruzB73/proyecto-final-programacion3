@@ -1,14 +1,12 @@
 import Card from 'react-bootstrap/Card';
 import { AppDispatch, RootState } from '../../redux/store/store';
-import { onSeeDetails } from '../../redux/slices/companySlice';
 import { useDispatch, useSelector } from "react-redux"
-
-import './sucursalDetails.css'
 import { Button } from 'react-bootstrap';
 import { onSeeDetailsSucursal } from '../../redux/slices/sucursalesSlices';
-import { EmpresaCard } from '../../components/EmpresaCard';
+import './sucursalDetails.css'
 
 //view para detalles de empresa
+
 export const SucursalDetails = () => {
 
     const dispatch=useDispatch<AppDispatch>();
