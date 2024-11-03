@@ -11,14 +11,20 @@ import { LocalidadService } from "../services/LocalidadService";
 import { setTableLocalidad } from "../redux/slices/tablaLocalidadSlice";
 import { SucursalService } from "../services/SucursalService";
 import { setDataSucursalTable } from "../redux/slices/tablaSucursalSlice";
+import {setAdministracionTable} from "../redux/slices/tableAdministracionSlice"
+import { AlergenosService } from "../services/AlergenosService";
+import { CategoriasService } from "../services/CategoriasService";
 
 export const useServices= (apiURL:string,) => {
 
-    const empresaService=new EmpresaService(apiURL)
-    const sucursalService=new SucursalService(apiURL)
+    const empresaService=new EmpresaService(apiURL);
+    const sucursalService=new SucursalService(apiURL);
     const paisService=new PaisService(apiURL);
     const provinciaService=new ProvinciaService(apiURL);
-    const localidadService=new LocalidadService(apiURL)
+    const localidadService=new LocalidadService(apiURL);
+    const productoService=new ProvinciaService(apiURL);
+    const alergenosService=new AlergenosService(apiURL);
+    const categoriaService=new CategoriasService(apiURL);
 
     const dispatch=useDispatch<AppDispatch>()
     const [loading,setLoading]=useState(false);
@@ -55,8 +61,28 @@ export const useServices= (apiURL:string,) => {
       })
     }
 
+    const getProductos=async()=>{
+      
+      await productoService.getAll().then(response=>{
+        dispatch(setAdministracionTable(response));
+        setLoading(false)
+      })
+    }
+    const getAlergenos=async()=>{
+      await alergenosService.getAll().then(response=>{
+        dispatch(setAdministracionTable(response));
+        setLoading(false)
+      })
+    }
+    const getCategorias=async()=>{
+      await categoriaService.getAll().then(response=>{
+        dispatch(setAdministracionTable(response));
+        setLoading(false)
+      })
+    }
+
     return {
-        getEmpresas,getPaises,getProvincia,getLocalidad,getSucursales,
+        getEmpresas,getPaises,getProvincia,getLocalidad,getSucursales,getProductos,getAlergenos,getCategorias,
         loading,setLoading,
     }
 }

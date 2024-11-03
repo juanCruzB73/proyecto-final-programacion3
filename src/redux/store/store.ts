@@ -6,6 +6,9 @@ import { sucursalSlice } from '../slices/sucursalesSlices'
 import tablaPaises from '../slices/tablaPaisSlice'
 import tablaProvincia from '../slices/provinciaSlice'
 import tablaLocalidad from "../slices/tablaLocalidadSlice"
+import tableAdministracionSlice from '../slices/tableAdministracionSlice'
+import { administracionSlice } from '../slices/administracionSlice'
+
 export const store = configureStore({
   reducer: {
     company:companySlice.reducer,
@@ -19,6 +22,9 @@ export const store = configureStore({
     tablaProvincia:tablaProvincia,
     //localidad
     tablaLocalidad:tablaLocalidad,
+    //administracion
+    tableAdministracion:tableAdministracionSlice,
+    administracion:administracionSlice.reducer,
   },
 })
 

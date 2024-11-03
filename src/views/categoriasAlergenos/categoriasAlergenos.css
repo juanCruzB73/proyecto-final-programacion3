@@ -7,12 +7,15 @@
     background-color: rgb(173, 165, 165);
 }
 .topBar{
-    height: 11%;
+    height: 8%;
     display: flex;
     align-items: center;
     background-color: #21232A;
-    justify-content: space-around;
+    padding: 1rem;
     border-bottom: 1px solid white;
+}
+.topBar h1{
+    margin-left: 1rem;
 }
 .topBar button{
     background-color: "white";
@@ -27,7 +30,7 @@
     background-color: #21232A;
 }
 .sideBar{
-    width: 30%;
+    width: 20%;
     height: 90%;
     background-color: #21232A;
     display: flex;
@@ -57,10 +60,9 @@
 
 }
 .itemMenu{
-    width: 70%;
+    width: 80%;
     height: 100%;
     display: flex;
-    background-color: red;
     flex-direction: column;
 }
 .Items{
@@ -78,17 +80,56 @@
 }
 .categoria{
     list-style: none;
-    padding: 0.9rem;
+    padding: 1rem;
     width: 75%;
+    display: flex;
+    justify-content: space-between;
     background-color: white;
     color: black;
     border-bottom: 1px solid black;
     margin-left: 0.3rem;
 }
 .subcategorias{
+    opacity: 1;
+    max-height: 100vh; /* Set a large max-height to allow expansion */
+    overflow: hidden;
+    transition: opacity 0.5s ease, max-height 0.5s ease;
     display: flex;
     flex-direction: column;
 }
 .subcategorias span{
     margin-left: 2rem;
+}
+.notDisplayed{
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.5s ease, max-height 0.5s ease;
+    
+}
+@media (min-width: 768px){
+    .sideBar{
+        text-align: center;
+    }
+    .categoria{
+        width: 80%;
+    }
+    .subcategorias span{
+        margin-left: 4rem;
+    }
+}
+@media (min-width: 1200px){
+    .sideBar{
+        width: 15%;
+    }
+    .itemMenu{
+        width: 85%;
+    }
+    .categoria{
+        width: 85%;
+        margin-left: 2rem;
+    }
+    .subcategorias span{
+        margin-left: 6rem;
+    }
 }
