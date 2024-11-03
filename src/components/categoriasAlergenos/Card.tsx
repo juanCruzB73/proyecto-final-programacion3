@@ -3,8 +3,9 @@ import { ICategorias } from '../../types/dtos/categorias/ICategorias';
 import { IProductos } from '../../types/dtos/productos/IProductos';
 import { IAlergenos } from '../../types/dtos/alergenos/IAlergenos';
 import { FC, useState } from 'react';
-import { RootState } from '../../redux/store/store';
-import { useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../redux/store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { onAddSubCategoria, onEditAlergeno, onEditCategoria, onEditProducto } from '../../redux/slices/administracionSlice';
 
 interface Iprops{
     element:ICategorias | IProductos | IAlergenos
@@ -13,7 +14,12 @@ interface Iprops{
 
 export const Card:FC<Iprops> = ({element}) => {
 
-  const {categoriaFilter,productoFilter,alergenosFilter}=useSelector((state:RootState)=>state.administracion)
+  const {categoriaFilter,productoFilter,alergenosFilter,}=useSelector((state:RootState)=>state.administracion)
+
+  /*
+  onAddSubCategoria,onAddProducto,onAddAlergeno,onEditCategoria,onEditSubCategoria,onEditProducto,onEditAlergeno
+  */
+  const dispatch=useDispatch<AppDispatch>()
 
   const [display,setDisplay]=useState(false);
   
@@ -22,7 +28,10 @@ export const Card:FC<Iprops> = ({element}) => {
     {
         categoriaFilter&&(
           <>
-            <span className='categoria'>{element.denominacion?element.denominacion : "no name"} <div><i onClick={()=>setDisplay(!display)} className="bi bi-arrow-down-circle"></i> <i className="bi bi-pencil-square"></i> <i className="bi bi-plus-circle"></i></div></span>
+            <span className='categoria'>{element.denominacion?element.denominacion : "no name"}
+              <div> 
+                <i onClick={()=>setDisplay(!display)} className="bi bi-arrow-down-circle"></i> <i  onClick={()=>dispatch(onEditCategoria())} className="bi bi-pencil-square"></i> <i onClick={()=>dispatch(onAddSubCategoria())} className="bi bi-plus-circle"></i>
+              </div></span> 
             <div className={ display ? 'subcategorias' : "notDisplayed"}>
               <span className='categoria'>item</span>
               <span className='categoria'>item</span>
@@ -33,7 +42,8 @@ export const Card:FC<Iprops> = ({element}) => {
       {
         productoFilter&&(
           <>
-            <span className='categoria'>{element.denominacion?element.denominacion : "no name"} <div><i className="bi bi-eye-fill"></i> <i className="bi bi-pencil-square"></i> <i className="bi bi-trash"></i></div></span>
+            <span className='categoria'>{element.denominacion?element.denominacion : "no name"} <div>
+              <i className="bi bi-eye-fill"></i> <i onClick={()=>dispatch(onEditProducto())} className="bi bi-pencil-square"></i> <i className="bi bi-trash"></i></div></span>
             <div className={ display ? 'subcategorias' : "notDisplayed"}>
               <span className='categoria'>item</span>
               <span className='categoria'>item</span>
@@ -44,7 +54,8 @@ export const Card:FC<Iprops> = ({element}) => {
       {
         alergenosFilter&&(
           <>
-            <span className='categoria'>{element.denominacion?element.denominacion : "no name"} <div><i className="bi bi-eye-fill"></i> <i className="bi bi-pencil-square"></i> <i className="bi bi-trash"></i></div></span>
+            <span className='categoria'>{element.denominacion?element.denominacion : "no name"} <div>
+              <i className="bi bi-eye-fill"></i> <i onClick={()=>dispatch(onEditAlergeno())} className="bi bi-pencil-square"></i> <i className="bi bi-trash"></i></div></span>
             <div className={ display ? 'subcategorias' : "notDisplayed"}>
               <span className='categoria'>item</span>
               <span className='categoria'>item</span>
