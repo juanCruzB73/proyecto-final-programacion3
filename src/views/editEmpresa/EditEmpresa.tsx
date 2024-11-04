@@ -10,6 +10,7 @@ import { useForm } from '../../hooks/useForm';
 import { EmpresaService } from '../../services/EmpresaService';
 import { useEffect, useState } from 'react';
 import { useValidations } from '../../hooks/useValidations';
+import { UploadImage } from '../../components/UploadImage';
 
 
 const api_url = "http://190.221.207.224:8090"
@@ -32,6 +33,7 @@ let initialValue:IForm={
 export const EditEmpresa=()=> {
   
   const {loading,setLoading,getEmpresas}=useServices(full_api)
+  const [image, setImage] = useState<string | null>(null);
   
   const dispatch=useDispatch<AppDispatch>()
   
@@ -75,7 +77,7 @@ export const EditEmpresa=()=> {
 
   const handleSubmit=async(e:React.FormEvent)=>{
     e.preventDefault();
-    const data={...elementActive,nombre:nombre,razonSocial:razonSocial,cuit:cuit,logo:logo}
+    const data={...elementActive,nombre:nombre,razonSocial:razonSocial,cuit:cuit,logo:image}
     const newData={...data,id:elementActive?.id}
 
     if(isEmpty(nombre) || isEmpty(razonSocial) || isEmpty(cuit.toString())){
@@ -121,10 +123,9 @@ export const EditEmpresa=()=> {
                 <Form.Control id={wrongCuit?"isWrong":"isNotWrong"} name='cuit' value={cuit} onChange={onInputChange} placeholder="Ingrese CUIT" />
               </Form.Group>
 
-              <Form.Group as={Col} className="mb-3">
-                <Form.Label>Ingrese el Logo</Form.Label>
-                <Form.Control type="text" name='logo' value={logo} onChange={onInputChange}/>
-              </Form.Group>
+              <h1>Ingrese su imagen</h1>
+
+              <UploadImage image={image} setImage={setImage} />
 
               <div className="buttonEmpresa">
                 <Button variant="primary" type='submit' style={{padding:"0.4rem",border:"none",borderRadius:"0.4rem",background:"#32cd32"  }}>

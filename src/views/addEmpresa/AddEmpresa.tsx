@@ -7,10 +7,11 @@ import { onAddCompany } from '../../redux/slices/companySlice';
 import { useForm } from '../../hooks/useForm';
 import { EmpresaService } from '../../services/EmpresaService';
 import { useServices } from '../../hooks/useServices';
-import './addEmpresa.css'
 import { useEffect, useState } from 'react';
 import { useValidations } from '../../hooks/useValidations';
-
+import './addEmpresa.css'
+import { IImagen } from '../../types/IImagen';
+import { UploadImage } from '../../components/UploadImage';
 
 
 interface IForm {
@@ -36,6 +37,13 @@ const empresaService=new EmpresaService(full_api);
 
 export const AddEmpresa=()=> {
 
+  /*
+  <Form.Group as={Col} className="mb-3">
+                <Form.Label>Agregar Logo</Form.Label>
+                <Form.Control name='logo' value={logo} onChange={onInputChange} type="text" />
+              </Form.Group>
+  */
+
   const {loading,setLoading,getEmpresas}=useServices(full_api)
   
   const dispatch=useDispatch<AppDispatch>()
@@ -44,6 +52,10 @@ export const AddEmpresa=()=> {
   
 
   const {dataTable}=useSelector((state:RootState)=>state.tablaEmpresa)
+
+  //images
+  //const [imageAlergeno, setImageAlergeno] = useState<IImagen | null>(null);
+  const [image, setImage] = useState<string | null>(null);
 
   //validations
   const [wrongName,setWrongName]=useState(false);
@@ -71,7 +83,7 @@ export const AddEmpresa=()=> {
       nombre:nombre,
       razonSocial:razonSocial,
       cuit:cuit,
-      logo:logo
+      logo:image
     }
     if(isEmpty(nombre) || isEmpty(razonSocial) || isEmpty(cuit.toString())){
       setIsEmptyCondition(true)
@@ -97,7 +109,7 @@ export const AddEmpresa=()=> {
   }
 //
   return (
-      <div className="addEditEmpresaContainer">
+      <div className="addEmpresaContainer">
       <h1>Crear una empresa</h1>
       <Form className="form-container" onSubmit={handleSubmit}>
               <div className={isEmptyCondition||containsLetterCondition ? 'errorMessagge' : "noErrors"}>
@@ -115,19 +127,20 @@ export const AddEmpresa=()=> {
                 <Form.Control id={wrongCuit?"isWrong":"isNotWrong"} name='cuit' value={cuit} onChange={onInputChange} placeholder="Ingrese CUIT" />
               </Form.Group>
 
-              <Form.Group as={Col} className="mb-3">
-                <Form.Label>Agregar Logo</Form.Label>
-                <Form.Control name='logo' value={logo} onChange={onInputChange} type="text" />
-              </Form.Group>
+              <h1>Ingrese su imagen</h1>
+
+              <UploadImage image={image} setImage={setImage} />
 
               <div className="buttonEmpresa">
-                <Button variant="primary" type='submit'  style={{padding:"0.4rem",border:"none",borderRadius:"0.4rem",background:"#32cd32"  }}>
-                  Confirmar
-                </Button>
-                <Button onClick={()=>dispatch(onAddCompany())}  variant="primary"  style={{padding:"0.4rem",border:"none",borderRadius:"0.4rem",background:"#ba3939"  }}>
-                  Cancelar
-                </Button>
+                  <Button variant="primary" type='submit'  style={{padding:"0.4rem",border:"none",borderRadius:"0.4rem",background:"#32cd32"  }}>
+                    Confirmar
+                  </Button>
+                  <Button onClick={()=>dispatch(onAddCompany())}  variant="primary"  style={{padding:"0.4rem",border:"none",borderRadius:"0.4rem",background:"#ba3939"  }}>
+                    Cancelar
+                  </Button>
               </div>
+
+              
         </Form>
       </div> 
   

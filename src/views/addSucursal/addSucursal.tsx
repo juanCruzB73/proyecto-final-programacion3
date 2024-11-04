@@ -12,6 +12,7 @@ import { useSelect } from '../../hooks/useSelect';
 import { SucursalService } from '../../services/SucursalService';
 import { ICreateSucursal } from '../../types/dtos/sucursal/ICreateSucursal';
 import { useValidations } from '../../hooks/useValidations';
+import { UploadImage } from '../../components/UploadImage';
 
 
 interface IForm {
@@ -109,6 +110,8 @@ export const AddSucursal = () => {
   const [conditionMessage,setconditionMessage]=useState('');
 
   const {containLetters,isEmpty,isTime}=useValidations();
+
+  const [image, setImage] = useState<string | null>(null);
   
   //const {sucursalTable}=useSelector((state:RootState)=>state.tablaSucursal)
   useEffect(()=>{
@@ -154,7 +157,7 @@ export const AddSucursal = () => {
         idLocalidad:localidad.id,
       },
       idEmpresa:empresa.id,
-      logo:logo,
+      logo:image,
     }
     //validaciones para inputs vacios
     if(
@@ -261,10 +264,9 @@ export const AddSucursal = () => {
                           <option value={"no"}>No</option>
                   </Form.Select>
 
-                  <Form.Group as={Col} >
-                    <Form.Label>Ingresar imagen de la sucursal</Form.Label>
-                    <Form.Control id='isNotWrong' type="text" name='logo' value={logo} onChange={onInputChange} placeholder="Ingresar el link de la imagen" />
-                  </Form.Group>
+                <h1>Ingrese su imagen</h1>
+
+                <UploadImage image={image} setImage={setImage} />
 
                 </div>
 

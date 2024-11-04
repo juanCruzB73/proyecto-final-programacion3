@@ -12,7 +12,9 @@ export const EmpresaDetails = () => {
   
   const dispatch=useDispatch<AppDispatch>()
   const {elementActive}=useSelector((state:RootState)=>state.tablaEmpresa)
-
+  let logo=elementActive?.logo;
+  console.log(elementActive);
+  
   return (
     <div className="empresa-detail">
     
@@ -20,11 +22,10 @@ export const EmpresaDetails = () => {
           
           <Card.Body >
             <Card.Title style={{paddingBottom: "3vh",
-    fontSize: "5vh",
-    display: "flex",
-    justifyContent: "center",
-    fontWeight: "bold"}}>Empresa Datos</Card.Title>
-          
+            fontSize: "5vh",
+            display: "flex",
+            justifyContent: "center",
+            fontWeight: "bold"}}>Empresa Datos</Card.Title>
           <Card.Text>
             Nombre de sucursal: {elementActive?.nombre}
           </Card.Text>
@@ -38,7 +39,7 @@ export const EmpresaDetails = () => {
           </Card.Text>
 
           <Card.Text className="img-empresa" style={{width:"80%",height:"35%"}}>
-            {elementActive?.logo!==null && <Card.Img variant="top" src={elementActive?.logo} style={{width:"100%",height:"100%"}} />} 
+            {<Card.Img variant="top" src={logo} style={{width:"100%",height:"100%"}} />} 
           </Card.Text>
           <Button variant="primary" style={{background:"#21232A",color:"white",padding:"0.3rem",border:"node",borderRadius:"0.4rem"}} onClick={()=>dispatch(onSeeDetails())} >Cerrar</Button>
         </Card.Body>

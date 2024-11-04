@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import { useSelect } from '../../hooks/useSelect';
 import { IUpdateSucursal } from '../../types/dtos/sucursal/IUpdateSucursal';
 import { useValidations } from '../../hooks/useValidations';
+import { UploadImage } from '../../components/UploadImage';
 
 
 interface IForm {
@@ -44,11 +45,10 @@ export const EditSucursal = () => {
     const {elementActive}=useSelector((state:RootState)=>state.tablaSucursal)
     let casaMatrizValue:string;
     let categoriasValue:any;
+    let valueLogo=""
     if(!elementActive)return
 
-    if(elementActive.logo?.length===0){
-      elementActive.logo=""
-    }
+    
     if(elementActive.esCasaMatriz){
       casaMatrizValue="si"
     }else{
@@ -99,7 +99,7 @@ export const EditSucursal = () => {
     const {getSucursales}=useServices("http://190.221.207.224:8090/sucursales")
 
     const {paisSelect,provinciaSelect,localidadSelect,empresaSelect,casaMatrizSelect,handleSelectChange}=useSelect<ISelect>(selectInitialValue);
-
+    const [image, setImage] = useState<string | null>(null);
     //validations
     //validations
   const [wrongName,setWrongName]=useState(false);
@@ -168,7 +168,7 @@ export const EditSucursal = () => {
         },
         idEmpresa:empresa.id,
         categorias:categoriasValue,
-        logo:logo,
+        logo:image,
       }
       //validaciones para inputs vacios
     if(
@@ -276,10 +276,9 @@ export const EditSucursal = () => {
                           <option value={"no"}>No</option>
                   </Form.Select>
 
-                  <Form.Group as={Col} >
-                    <Form.Label>Ingresar imagen de la sucursal</Form.Label>
-                    <Form.Control id='isNotWrong' type="text" name='logo' value={logo} onChange={onInputChange} placeholder="Ingresar el link de la imagen" />
-                  </Form.Group>
+                  <h1>Ingrese su imagen</h1>
+
+                  <UploadImage image={image} setImage={setImage} />
 
                 </div>
 

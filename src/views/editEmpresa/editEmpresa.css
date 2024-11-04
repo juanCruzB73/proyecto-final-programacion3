@@ -1,17 +1,16 @@
 .addEditEmpresaContainer{
-    top: 5%;
+    position: absolute;
     left: 30%;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     border: 1px solid black;
     border-radius: 0.5rem;
     align-items: center;
     flex-direction: column;
     background-color: white;
     color: black;
-    padding: 5%;
-    height: 80%;
-    width: 45%;
+    height: 100%;
+    width: 60%;
 }
 .form-container{
     height: 100%;
@@ -60,14 +59,11 @@
     justify-content: space-evenly;
 }
 @media (min-width: 768px){
-    .addEditEmpresaContainer{
-        left: 30%;
-        width: 40%;
+    .addEmpresaContainer{
+        left: 25%;
+        justify-content: center;
     }
 @media (min-width: 1200px){
-     .addEditEmpresaContainer{
-        width: 35%;
-        left: 27%;
-     }
+     
 }
 }
