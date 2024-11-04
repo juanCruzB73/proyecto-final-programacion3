@@ -1,0 +1,68 @@
+.addSubcategoria {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90vw;
+    max-width: 25rem;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 0.6rem;
+    box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    font-size: 4vh;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+.formContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.formInput {
+    display: flex;
+    flex-direction: column;
+}
+
+.formInput .mb-3 {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; 
+    font-size: 1.5rem;
+}
+.control{
+    height: 4vh;
+    font-size: 1.25rem;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.buttons Button {
+    width: 100%;
+    font-weight: bold;
+    padding: 0.8rem;
+    color: white;
+    font-size: 1rem;
+}
+
+.buttons Button:first-child {
+    background-color: #4c7fed;
+    border: none;
+}
+
+.buttons Button:last-child {
+    background-color: #d9534f;
+    border: none;
+}
