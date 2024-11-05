@@ -11,7 +11,7 @@ import { LocalidadService } from "../services/LocalidadService";
 import { setTableLocalidad } from "../redux/slices/tablaLocalidadSlice";
 import { SucursalService } from "../services/SucursalService";
 import { setDataSucursalTable } from "../redux/slices/tablaSucursalSlice";
-import {setAdministracionTable} from "../redux/slices/tableAdministracionSlice"
+import {setAdministracionTable,setAdministracionTable2} from "../redux/slices/tableAdministracionSlice"
 import { AlergenosService } from "../services/AlergenosService";
 import { CategoriasService } from "../services/CategoriasService";
 
@@ -70,7 +70,7 @@ export const useServices= (apiURL:string,) => {
     }
     const getAlergenos=async()=>{
       await alergenosService.getAll().then(response=>{
-        dispatch(setAdministracionTable(response));
+        dispatch(setAdministracionTable2(response));
         setLoading(false)
       })
     }

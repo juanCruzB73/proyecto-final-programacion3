@@ -36,6 +36,8 @@ export class CategoriasService extends BackendClient<ICategorias|ICreateCategori
         return newData as ICreateCategoria;
     }
     async put(id: number, data: IUpdateCategoria): Promise<IUpdateCategoria> {
+        console.log(data);
+        
         const response=await fetch(`${this.baseURL}/${id}`,{
             method:"PUT",
             headers:{
@@ -43,6 +45,10 @@ export class CategoriasService extends BackendClient<ICategorias|ICreateCategori
             },
             body:JSON.stringify(data),
         });
+        if (!response.ok) {
+            console.error("Failed to post data:", response.statusText);
+            
+        }
         const newData=await response.json();
         return newData as IUpdateCategoria;
     }

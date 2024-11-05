@@ -1,10 +1,19 @@
 .main-container-administracion{
+    position: relative;
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     color: white;
     background-color: rgb(173, 165, 165);
+}
+.admin-pop-up-container{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+.admin-pop-up-container-deactivated{
+    display: none;
 }
 .topBar{
     height: 8%;

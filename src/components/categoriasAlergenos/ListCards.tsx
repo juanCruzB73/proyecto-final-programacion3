@@ -13,10 +13,10 @@ export const ListCards:FC = () => {
 
   const {getProductos}=useServices(`http://190.221.207.224:8090/articulos/porSucursal/${elementActive?.id}`);
   const {getAlergenos}=useServices('http://190.221.207.224:8090/alergenos')
-  const {getCategorias}=useServices('http://190.221.207.224:8090/categorias')
+  const {getCategorias}=useServices(`http://190.221.207.224:8090/categorias/allCategoriasPorSucursal/${elementActive?.id}`)
   //const {administracionTable}=useSelector((state:RootState)=>state.tableAdministracion)
 
-  const {administracionTable}=useSelector((state:RootState)=>state.tableAdministracion)
+  const {administracionTable,administracionTable2}=useSelector((state:RootState)=>state.tableAdministracion)
 
   const {categoriaFilter,productoFilter,alergenosFilter}=useSelector((state:RootState)=>state.administracion)
   
@@ -46,10 +46,13 @@ export const ListCards:FC = () => {
   //hacer filtro por sucursal para categoria preguntar profe
 
   useEffect(() => {
-    if (categoriaFilter || productoFilter || alergenosFilter) {      
+    if (categoriaFilter || productoFilter) {      
       setSelectedFilter(administracionTable);
     }
-  }, [administracionTable]);
+    if(alergenosFilter){
+      setSelectedFilter(administracionTable2)
+    }
+  }, [administracionTable,administracionTable2]);
 
     return (
         <div className='categoriaContainer'>

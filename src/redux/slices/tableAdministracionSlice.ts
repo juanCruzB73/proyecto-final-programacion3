@@ -9,18 +9,30 @@ import { IAlergenos } from "../../types/dtos/alergenos/IAlergenos";
 // Definimos la interfaz para el estado inicial del slice
 interface IInitialState {
   administracionTable: ICategorias[]|IProductos[]|IAlergenos[]; // Datos de la tabla
-  elementActive: null | ISucursal; // Elemento activo seleccionado
+  administracionTable2: ICategorias[]|IProductos[]|IAlergenos[];
+  elementActiveCategoria: null | ICategorias;
+  elementActiveProducto:null|IProductos; // Elemento activo seleccionado
+  elemetActiveAlergeno:null|IAlergenos;
 }
 
 // Estado inicial del slice
 const initialState: IInitialState = {
     administracionTable: [], // Inicialmente la tabla está vacía
-  elementActive: null, // No hay ningún elemento activo seleccionado inicialmente
-};
+    administracionTable2: [],
+    elementActiveCategoria: null, // No hay ningún elemento activo seleccionado inicialmente
+    elementActiveProducto:null,
+    elemetActiveAlergeno:null,
+  };
 
 // Interfaz para la acción del payload personalizado
-interface PayloadSetElement {
-  element: ISucursal; // Elemento de tipo IPersona
+interface PayloadSetElementCategoria {
+  element: ICategorias; // Elemento de tipo IPersona
+}
+interface PayloadSetElementProductos {
+  element: IProductos; // Elemento de tipo IPersona
+}
+interface PayloadSetElementAlergenos {
+  element: IAlergenos; // Elemento de tipo IPersona
 }
 
 // Creamos un slice con Redux Toolkit para manejar la tabla
@@ -32,19 +44,26 @@ const tableAdministracionSlice = createSlice({
     setAdministracionTable(state, action: PayloadAction<any[]>) {
       state.administracionTable = action.payload; // Actualizamos los datos de la tabla con los datos proporcionados
     },
+    setAdministracionTable2(state, action: PayloadAction<any[]>) {
+      state.administracionTable2 = action.payload; // Actualizamos los datos de la tabla con los datos proporcionados
+    },
     // Reducer para establecer el elemento activo
-    setElementActive(state, action: PayloadAction<PayloadSetElement>) {
-      state.elementActive = action.payload.element; // Establecemos el elemento activo con el elemento proporcionado en el payload
+    setElementActiveAdministracionCategoria(state, action: PayloadAction<PayloadSetElementCategoria>) {
+      state.elementActiveCategoria = action.payload.element; // Establecemos el elemento activo con el elemento proporcionado en el payload
+    },
+    setElementActiveAdministracionProductos(state, action: PayloadAction<PayloadSetElementProductos>) {
+      state.elementActiveProducto = action.payload.element; // Establecemos el elemento activo con el elemento proporcionado en el payload
+    },
+    setElementActiveAdministracionAlergenos(state, action: PayloadAction<PayloadSetElementAlergenos>) {
+      state.elemetActiveAlergeno = action.payload.element; // Establecemos el elemento activo con el elemento proporcionado en el payload
     },
     // Reducer para eliminar el elemento activo
-    removeElementActive(state) {
-      state.elementActive = null; // Eliminamos el elemento activo estableciéndolo como null
-    },
+    
   },
 });
 
 // Exportamos los actions generados por el slice
-export const { setAdministracionTable, setElementActive, removeElementActive } =
+export const {setAdministracionTable, setAdministracionTable2,setElementActiveAdministracionCategoria,setElementActiveAdministracionProductos,setElementActiveAdministracionAlergenos } =
 tableAdministracionSlice.actions;
 
 // Exportamos el reducer generado por el slice

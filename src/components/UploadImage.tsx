@@ -98,7 +98,7 @@ export const UploadImage:FC<IUploadImage> = ({
           alt="Uploaded"
           style={{
             backgroundColor: "#ccc",
-            width: "10vw",
+            width: "15vw",
             borderRadius: ".4rem",
             height: "10vh",
             objectFit: "fill",

@@ -1,16 +1,13 @@
 import { IAlergenos } from "../types/dtos/alergenos/IAlergenos";
 import { ICreateAlergeno } from "../types/dtos/alergenos/ICreateAlergeno";
 import { IUpdateAlergeno } from "../types/dtos/alergenos/IUpdateAlergeno";
-import { ICreateProducto } from "../types/dtos/productos/ICreateProducto";
-import { IProductos } from "../types/dtos/productos/IProductos";
-import { IUpdateProducto } from "../types/dtos/productos/IUpdateProducto";
 import { BackendClient } from "./BackenClient";
 
 export class AlergenosService extends BackendClient<IAlergenos|ICreateAlergeno|IUpdateAlergeno>{
+    
     async getAll(): Promise<IAlergenos[]> {
         const response=await fetch(`${this.baseURL}`);
-        
-        const data= await response.json();
+        const data = await response.json();
         return data as IAlergenos[];
     }
 
