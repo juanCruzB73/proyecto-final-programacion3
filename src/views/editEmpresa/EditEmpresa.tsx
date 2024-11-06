@@ -42,7 +42,7 @@ export const EditEmpresa=()=> {
   let logoValue=""
 
   if(elementActive?.logo){
-    logoValue=elementActive?.logo
+    logoValue=elementActive.logo
   }
 
   if(elementActive){

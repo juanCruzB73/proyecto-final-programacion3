@@ -1,6 +1,5 @@
 // Importaciones necesarias
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ISucursal } from "../../types/dtos/sucursal/ISucursal"; // Importamos el tipo de dato IPersona
 import { ICategorias } from "../../types/dtos/categorias/ICategorias";
 import { IProductos } from "../../types/dtos/productos/IProductos";
 import { IAlergenos } from "../../types/dtos/alergenos/IAlergenos";
@@ -9,8 +8,7 @@ import { IAlergenos } from "../../types/dtos/alergenos/IAlergenos";
 // Definimos la interfaz para el estado inicial del slice
 interface IInitialState {
   administracionTable: ICategorias[]|IProductos[]|IAlergenos[]; // Datos de la tabla
-  administracionTable2: ICategorias[]|IProductos[]|IAlergenos[];
-  elementActiveCategoria: null | ICategorias;
+  administracionTable2: ICategorias[]|IProductos[]|IAlergenos[];  elementActiveCategoria: null | ICategorias;
   elementActiveProducto:null|IProductos; // Elemento activo seleccionado
   elemetActiveAlergeno:null|IAlergenos;
 }
@@ -63,7 +61,7 @@ const tableAdministracionSlice = createSlice({
 });
 
 // Exportamos los actions generados por el slice
-export const {setAdministracionTable, setAdministracionTable2,setElementActiveAdministracionCategoria,setElementActiveAdministracionProductos,setElementActiveAdministracionAlergenos } =
+export const {setAdministracionTable, setAdministracionTable2,setElementActiveAdministracionCategoria,setElementActiveAdministracionProductos,setElementActiveAdministracionAlergenos,setSubCategoriasTable } =
 tableAdministracionSlice.actions;
 
 // Exportamos el reducer generado por el slice

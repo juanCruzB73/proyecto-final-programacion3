@@ -72,7 +72,7 @@ const AddEditProducto = () => {
     //titulo de carta
     const [title,setTitle]=useState("Crear Producto")
     //imagenes
-    const [imageAlergeno, setImageAlergeno] = useState<IImagen[] | null>(null);
+    const [imagenProducto, setImageProducto] = useState<IImagen | null>(null);
 
     //select
     const initalSelectValues:ISelectForm= editProducto && elementActiveProducto
@@ -108,10 +108,11 @@ const AddEditProducto = () => {
                 codigo:codigo,
                 idCategoria:parseInt(categoriaSelect),
                 idAlergenos:selectedValues,
-                imagenes:imageAlergeno ?? []
+                imagenes:imagenProducto ? [imagenProducto] : [],
             }
             try{
                 await productoService.post(data)
+                getProductos()
                 dispatch(onAddProducto())
             }catch(error){
                 console.log(error);
@@ -128,10 +129,11 @@ const AddEditProducto = () => {
                 codigo:codigo,
                 idCategoria:parseInt(categoriaSelect),
                 idAlergenos:selectedValues,
-                imagenes:imageAlergeno ?? []
+                imagenes: [...elementActiveProducto.imagenes, imagenProducto].filter((img): img is IImagen => img !== null)
             }
             try{
                 await productoService.put(elementActiveProducto.id,data)
+                getProductos()
                 dispatch(onEditProducto())
             }catch(error){
                 console.log(error);
@@ -180,8 +182,8 @@ const AddEditProducto = () => {
                     <h1>Ingrese su imagen</h1>
 
                     <UploadImage
-                        imageObjeto={imageAlergeno}
-                        setImageObjeto={setImageAlergeno}
+                        imageObjeto={imagenProducto}
+                        setImageObjeto={setImageProducto}
                         typeElement="articulos" // el tipe element es para que sepa en que parte del endpoint tiene que hacer la union "articulos" o "alergenos"
                     />
                 

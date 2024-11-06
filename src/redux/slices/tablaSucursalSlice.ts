@@ -1,8 +1,6 @@
 // Importaciones necesarias
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ISucursal } from "../../types/dtos/sucursal/ISucursal"; // Importamos el tipo de dato IPersona
-import { ICreateSucursal } from "../../types/dtos/sucursal/ICreateSucursal";
-import { IUpdateSucursal } from "../../types/dtos/sucursal/IUpdateSucursal";
 
 // Definimos la interfaz para el estado inicial del slice
 interface IInitialState {

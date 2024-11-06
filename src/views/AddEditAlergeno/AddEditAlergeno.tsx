@@ -7,12 +7,16 @@ import { onAddAlergeno, onEditAlergeno } from "../../redux/slices/administracion
 import { useForm } from "../../hooks/useForm";
 import { AlergenosService } from "../../services/AlergenosService";
 import { useServices } from "../../hooks/useServices";
+import { IImagen } from "../../types/IImagen";
+import { UploadImage } from "../../components/UploadImage";
 const AddEditAlergeno = () => {
 
     const {addAlergeno,editAlergeno}=useSelector((state:RootState)=>state.administracion);
     const {elemetActiveAlergeno}=useSelector((state:RootState)=>state.tableAdministracion)
     const alergenoService = new AlergenosService("http://190.221.207.224:8090/alergenos")
     const [title,setTitle]=useState("Crear Alergeno")
+    //imagenes
+    const [imagenAlergeno, setImageAlergeno] = useState<IImagen | null>(null);
 
     const initialFormValue=editAlergeno && elemetActiveAlergeno
     ? {denominacion:elemetActiveAlergeno.denominacion}
@@ -37,7 +41,7 @@ const AddEditAlergeno = () => {
             const data={
                 id:elemetActiveAlergeno.id,
                 denominacion:denominacion,
-                imagen:null
+                imagen:imagenAlergeno ? imagenAlergeno : null,
             }
             try{
                 await alergenoService.put(elemetActiveAlergeno.id,data)
@@ -50,7 +54,7 @@ const AddEditAlergeno = () => {
         if(addAlergeno){
             const data={
                 denominacion:denominacion,
-                imagen:null
+                imagen:imagenAlergeno ? imagenAlergeno : null,
             }
             try{
                 await alergenoService.post(data)
@@ -72,6 +76,11 @@ return (
                     <Form.Control name="denominacion" value={denominacion} onChange={onInputChange} className="control" type="text" placeholder="Nombre:" />
                 </Form.Group>
             </div>
+            <UploadImage
+                        imageObjeto={imagenAlergeno}
+                        setImageObjeto={setImageAlergeno}
+                        typeElement="alergenos" // el tipe element es para que sepa en que parte del endpoint tiene que hacer la union "articulos" o "alergenos"
+                    />
             <div className="buttons">
                 <Button variant="primary" type="submit">
                     Guardar

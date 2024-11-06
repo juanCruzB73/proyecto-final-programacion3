@@ -62,8 +62,20 @@ export const UploadImage:FC<IUploadImage> = ({
       Swal.close(); // Cerramos el mensaje de carga
     }
   };
-        
-
+      
+  const handleDeleteImagen=()=>{
+    if(image && setImage ){
+      setImage(null)
+    }
+    if(imageObjeto && setImageObjeto){
+      setImageObjeto(null)
+    }
+    
+  }
+  console.log(image);
+  console.log(imageObjeto);
+  
+  
   return (
     <div
     style={{
@@ -89,7 +101,11 @@ export const UploadImage:FC<IUploadImage> = ({
         }}
       >
         <div style={{ width: "10vw" }}>
-          <Button>
+          <Button
+          onClick={handleDeleteImagen} // Ejecuta la función de eliminación de imagen
+          variant="outlined"
+          color="error"
+          >
             Eliminar imagen
           </Button>
         </div>

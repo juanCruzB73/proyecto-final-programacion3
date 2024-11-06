@@ -11,7 +11,7 @@ import { LocalidadService } from "../services/LocalidadService";
 import { setTableLocalidad } from "../redux/slices/tablaLocalidadSlice";
 import { SucursalService } from "../services/SucursalService";
 import { setDataSucursalTable } from "../redux/slices/tablaSucursalSlice";
-import {setAdministracionTable,setAdministracionTable2} from "../redux/slices/tableAdministracionSlice"
+import {setAdministracionTable,setAdministracionTable2,setSubCategoriasTable} from "../redux/slices/tableAdministracionSlice"
 import { AlergenosService } from "../services/AlergenosService";
 import { CategoriasService } from "../services/CategoriasService";
 
@@ -25,6 +25,8 @@ export const useServices= (apiURL:string,) => {
     const productoService=new ProvinciaService(apiURL);
     const alergenosService=new AlergenosService(apiURL);
     const categoriaService=new CategoriasService(apiURL);
+    const subCategoryService=new CategoriasService(apiURL)
+
 
     const dispatch=useDispatch<AppDispatch>()
     const [loading,setLoading]=useState(false);

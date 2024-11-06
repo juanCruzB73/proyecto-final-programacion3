@@ -1,6 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
+
+//see more popup
+interface ISeeProduct{
+  seeProduct:boolean;
+}
+interface ISeeAlergeno{
+  seeAlergeno:boolean;
+}
 //add popUps
 interface IAddCategoria {
   addCategoria: boolean; 
@@ -39,9 +47,13 @@ interface IAlergenosFilter{
 }
 
 interface IStates extends IAddCategoria,IAddSubCategoria,IAddProducto,IAddAlergeno,IEditCategoria,
-                          IEditSubCategoria, IEditProducto, IEditAlergeno,ICategoriaFilter,IProductoFilter,IAlergenosFilter { }
+                          IEditSubCategoria, IEditProducto, IEditAlergeno,ICategoriaFilter,IProductoFilter,
+                          IAlergenosFilter,ISeeAlergeno,ISeeProduct { }
 
 const initialState: IStates = {
+  //see more popups
+  seeAlergeno:false,
+  seeProduct:false,
   //popups adss
   addCategoria:false,
   addSubCategoria:false,
@@ -80,6 +92,9 @@ export const administracionSlice = createSlice({
     },
     //add popups
     onAddCategoria: (state) => {
+      //see more
+      state.seeAlergeno=false;
+      state.seeProduct=false;
       //addPopUps
       state.addCategoria=!state.addCategoria;
       state.addSubCategoria=false;
@@ -92,6 +107,9 @@ export const administracionSlice = createSlice({
       state.editAlergeno=false;
     },
     onAddSubCategoria:(state)=>{
+      //see more
+      state.seeAlergeno=false;
+      state.seeProduct=false;
       //addPopUps
       state.addCategoria=false;
       state.addSubCategoria=!state.addSubCategoria;
@@ -104,6 +122,9 @@ export const administracionSlice = createSlice({
       state.editAlergeno=false;
     },
     onAddProducto:(state)=>{
+      //see more
+      state.seeAlergeno=false;
+      state.seeProduct=false;
       //addPopUps
       state.addCategoria=false;
       state.addSubCategoria=false;
@@ -117,6 +138,9 @@ export const administracionSlice = createSlice({
 
     },
     onAddAlergeno:(state)=>{
+      //see more
+      state.seeAlergeno=false;
+      state.seeProduct=false;
       //addPopUps
       state.addCategoria=false;
       state.addSubCategoria=false;
@@ -129,6 +153,9 @@ export const administracionSlice = createSlice({
       state.editAlergeno=false;
     },
     onEditCategoria:(state)=>{
+      //see more
+      state.seeAlergeno=false;
+      state.seeProduct=false;
       //addPopUps
       state.addCategoria=false;
       state.addSubCategoria=false;
@@ -141,6 +168,9 @@ export const administracionSlice = createSlice({
       state.editAlergeno=false;
     },
     onEditSubCategoria:(state)=>{
+      //see more
+      state.seeAlergeno=false;
+      state.seeProduct=false;
       //addPopUps
       state.addCategoria=false;
       state.addSubCategoria=false;
@@ -153,6 +183,9 @@ export const administracionSlice = createSlice({
       state.editAlergeno=false;
     },
     onEditProducto:(state)=>{
+        //see more
+        state.seeAlergeno=false;
+        state.seeProduct=false;
         //addPopUps
         state.addCategoria=false;
         state.addSubCategoria=false;
@@ -165,6 +198,9 @@ export const administracionSlice = createSlice({
         state.editAlergeno=false;
     },
     onEditAlergeno:(state)=>{
+      //see more
+      state.seeAlergeno=false;
+      state.seeProduct=false;
       //addPopUps
       state.addCategoria=false;
       state.addSubCategoria=false;
@@ -175,13 +211,43 @@ export const administracionSlice = createSlice({
       state.editSubCategoria=false;
       state.editProducto=false;
       state.editAlergeno=!state.editAlergeno;
-  },
+    },
+    onSeeAlergeno:(state)=>{
+      //see more
+      state.seeAlergeno=!state.seeAlergeno;
+      state.seeProduct=false;
+      //addPopUps
+      state.addCategoria=false;
+      state.addSubCategoria=false;
+      state.addProducto=false;
+      state.addAlergeno=false;
+      //editPopUps
+      state.editCategoria=false;
+      state.editSubCategoria=false;
+      state.editProducto=false;
+      state.editAlergeno=false;
+    },
+    onSeeProduct:(state)=>{
+      //see more
+      state.seeAlergeno=false;
+      state.seeProduct=!state.seeProduct;
+      //addPopUps
+      state.addCategoria=false;
+      state.addSubCategoria=false;
+      state.addProducto=false;
+      state.addAlergeno=false;
+      //editPopUps
+      state.editCategoria=false;
+      state.editSubCategoria=false;
+      state.editProducto=false;
+      state.editAlergeno=false;
+    },
   },
 })
 
 // Action creators are generated for each case reducer function
 export const {onActiveCategoria,onActiveProducto,onActiveAlergeno,onAddCategoria,onAddSubCategoria,
               onAddProducto,onAddAlergeno,onEditCategoria,onEditSubCategoria,onEditProducto
-              ,onEditAlergeno,} = administracionSlice.actions
+              ,onEditAlergeno,onSeeAlergeno,onSeeProduct} = administracionSlice.actions
 
 export default administracionSlice.reducer
