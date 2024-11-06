@@ -18,6 +18,9 @@ export const AppRoutes = () => {
         )
     }
       <Route path='/' element={<Home/>} />
+      
+
+      
     </Routes>
   )
 }
