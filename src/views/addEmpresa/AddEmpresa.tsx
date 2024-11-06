@@ -109,6 +109,8 @@ export const AddEmpresa=()=> {
   }
 //
   return (
+    <div className='contenedorPadre'>
+
       <div className="addEmpresaContainer">
       <h1>Crear una empresa</h1>
       <Form className="form-container" onSubmit={handleSubmit}>
@@ -143,6 +145,7 @@ export const AddEmpresa=()=> {
               
         </Form>
       </div> 
+    </div>
   
   )
 }

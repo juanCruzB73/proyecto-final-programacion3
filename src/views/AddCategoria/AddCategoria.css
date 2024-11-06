@@ -2,7 +2,7 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);   /* este atributo sirve para decirle que se ponga al 50 porciento de un lado y del otro, es para que se quede en*/
     display: flex;
     flex-direction: column;
     align-items: center;

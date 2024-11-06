@@ -98,29 +98,31 @@ const AddCategoria:FC = () => {
     
     
     return (
-        <div className="addCategoria">
-        <h1 style={{color:"black"}}>{title}</h1>
-        <Form className="formContainer" onSubmit={handleFinalSubmit}>
-            <div className="formInput">
-                <Form.Group className="mb-3">
-                    <Form.Label>Ingresar el nombre</Form.Label>
-                    <Form.Control name="denominacion"  onChange={onInputChange} value={denominacion} className="control" type="text" placeholder="Nombre:" />
-                </Form.Group>
-            </div>
-            <div className="buttons">
-                <Button variant="primary" type="submit">
-                    Guardar Categoria
-                </Button>
-                <Button variant="primary" onClick={()=>{
-                    addCategoria&&dispatch(onAddCategoria())
-                    editCategoria&&dispatch(onEditCategoria())
-                }}>
-                    Cancelar
-                </Button>
-            </div>
-        </Form>
+        <div className="contenedorPadre">
+            <div className="addCategoria">
+                <h1 style={{color:"black"}}>{title}</h1>
+                <Form className="formContainer" onSubmit={handleFinalSubmit}>
+                    <div className="formInput">
+                        <Form.Group className="mb-3">
+                            <Form.Label>Ingresar el nombre</Form.Label>
+                            <Form.Control name="denominacion"  onChange={onInputChange} value={denominacion} className="control" type="text" placeholder="Nombre:" />
+                        </Form.Group>
+                    </div>
+                    <div className="buttons">
+                        <Button variant="primary" type="submit">
+                            Guardar Categoria
+                        </Button>
+                        <Button variant="primary" onClick={()=>{
+                            addCategoria&&dispatch(onAddCategoria())
+                            editCategoria&&dispatch(onEditCategoria())
+                        }}>
+                            Cancelar
+                        </Button>
+                    </div>
+                </Form>
 
-    </div>
+            </div>
+        </div>
 )
 }
 
