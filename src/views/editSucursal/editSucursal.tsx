@@ -41,7 +41,7 @@ interface IForm {
 
 export const EditSucursal = () => {
     const dispatch=useDispatch<AppDispatch>()
-    const sucursalService=new SucursalService("http://190.221.207.224:8090/sucursales/update")
+    const sucursalService=new SucursalService("http://localhost:8090/sucursales/update")
     const {elementActive}=useSelector((state:RootState)=>state.tablaSucursal)
     let casaMatrizValue:string;
     let categoriasValue:any;

@@ -14,8 +14,8 @@ export const SideBar = () => {
       <div style={{width:"100%"}}><h3  >Administracion</h3></div>
       <div className="buttonsSideBar">
       <button onClick={()=>{dispatch(onActiveCategoria())}} >Categorias</button>
-      <button onClick={()=>dispatch(onActiveProducto())} >Productos</button>
-      <button onClick={()=>dispatch(onActiveAlergeno())} >Alergenos</button>
+      <button onClick={()=>{dispatch(onActiveProducto())}} >Productos</button>
+      <button onClick={()=>{dispatch(onActiveAlergeno())}} >Alergenos</button>
       </div>
     </>
   )

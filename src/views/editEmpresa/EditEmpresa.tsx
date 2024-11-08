@@ -13,7 +13,7 @@ import { useValidations } from '../../hooks/useValidations';
 import { UploadImage } from '../../components/UploadImage';
 
 
-const api_url = "http://190.221.207.224:8090"
+const api_url = "http://localhost:8090"
 const full_api=api_url+"/empresas"
 const empresaService=new EmpresaService(full_api);
 

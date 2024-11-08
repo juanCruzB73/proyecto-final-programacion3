@@ -23,9 +23,8 @@ const AddCategoria:FC = () => {
 
     const dispatch=useDispatch<AppDispatch>()
     
-    const categoriaService= addCategoria ? new CategoriasService("http://190.221.207.224:8090/categorias/create") : new CategoriasService("http://190.221.207.224:8090/categorias/update")
-    const {getCategorias}=useServices(`http://190.221.207.224:8090/categorias/allCategoriasPorSucursal/${elementActive?.id}`)
-
+    const categoriaService= addCategoria ? new CategoriasService("http://localhost:8090/categorias/create") : new CategoriasService("http://localhost:8090/categorias/update")
+    const {getCategorias}=useServices(`http://localhost:8090/categorias/allCategoriasPadrePorSucursal/${elementActive?.id}`)    
     const initialFormValues = editCategoria && elementActiveCategoria
     ? { denominacion: elementActiveCategoria.denominacion }
     : { denominacion: "" };
@@ -50,14 +49,13 @@ const AddCategoria:FC = () => {
             if(!elementActiveCategoria)return
             if(!elementActive)return
             const idSucursales=getIdSucursales()
-            let categoriaPadreValue=elementActiveCategoria.categoriaPadre ? elementActiveCategoria.categoriaPadre.id : null
             const data={
-                id:elementActive.id,
+                id:elementActiveCategoria.id,
                 denominacion:denominacion,
                 idEmpresa:elementActive.empresa.id,
-                eliminado:!elementActiveCategoria.eliminado,
+                eliminado:elementActiveCategoria.eliminado,
                 idSucursales:idSucursales,
-                idCategoriaPadre:categoriaPadreValue
+                idCategoriaPadre:null
             }
 
             try{

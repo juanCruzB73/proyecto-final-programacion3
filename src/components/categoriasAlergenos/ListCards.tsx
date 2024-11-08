@@ -11,9 +11,9 @@ export const ListCards:FC = () => {
 
   const {elementActive}=useSelector((state:RootState)=>state.tablaSucursal)
 
-  const {getProductos}=useServices(`http://190.221.207.224:8090/articulos/porSucursal/${elementActive?.id}`);
-  const {getAlergenos}=useServices('http://190.221.207.224:8090/alergenos')
-  const {getCategorias}=useServices(`http://190.221.207.224:8090/categorias/allCategoriasPorSucursal/${elementActive?.id}`)
+  const {getProductos}=useServices(`http://localhost:8090/articulos/porSucursal/${elementActive?.id}`);
+  const {getAlergenos}=useServices('http://localhost:8090/alergenos')
+  const {getCategorias}=useServices(`http://localhost:8090/categorias/allCategoriasPadrePorSucursal/${elementActive?.id}`)
   //const {administracionTable}=useSelector((state:RootState)=>state.tableAdministracion)
 
   const {administracionTable,administracionTable2}=useSelector((state:RootState)=>state.tableAdministracion)

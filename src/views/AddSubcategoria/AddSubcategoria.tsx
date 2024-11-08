@@ -2,7 +2,7 @@ import { Button, Form } from "react-bootstrap"
 import "./AddSubcategoria.css"
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store/store";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useForm } from "../../hooks/useForm";
 import { onAddSubCategoria, onEditSubCategoria } from "../../redux/slices/administracionSlice";
 import { useServices } from "../../hooks/useServices";
@@ -12,55 +12,57 @@ interface IForm{
     denominacion:string
 }
 
-const AddSubcategoria = () => {
+const AddSubcategoria:FC = () => {
 
     const {addSubCategoria,editSubCategoria}=useSelector((state:RootState)=>state.administracion);
     const {elementActive}=useSelector((state:RootState)=>state.tablaSucursal);
-    const {elementActiveCategoria}=useSelector((state:RootState)=>state.tableAdministracion)
+    const {elementActiveCategoria,elementActiveCategoriaSubCategoria}=useSelector((state:RootState)=>state.tableAdministracion)
     const [title,setTitle]=useState("Crear Subcategoria")
 
     const dispatch=useDispatch<AppDispatch>()
 
-    const categoriaService= addSubCategoria ? new CategoriasService("http://190.221.207.224:8090/categorias/create") : new CategoriasService("http://190.221.207.224:8090/categorias/update")
+    const categoriaService= addSubCategoria ? new CategoriasService(`http://localhost:8090/categorias/create`) : new CategoriasService(`http://localhost:8090/categorias/update`)
 
-    const {getCategorias}=useServices(`http://190.221.207.224:8090/categorias/allCategoriasPorSucursal/${elementActive?.id}`)
-
-    const initialFormValues = editSubCategoria && elementActiveCategoria
-    ? { denominacion: elementActiveCategoria.denominacion }
+    const {getCategorias}=useServices(`http://localhost:8090/categorias/allCategoriasPadrePorSucursal/${elementActive?.id}`)
+    
+    const initialFormValues = editSubCategoria
+    ? { denominacion: elementActiveCategoriaSubCategoria?.denominacion }
     : { denominacion: "" };
 
     const {denominacion,onInputChange,onResetForm}=useForm<IForm>(initialFormValues);
 
     useEffect(() => {
-        if (editSubCategoria && elementActiveCategoria) {
+        if (editSubCategoria) {
             setTitle("Editar SubCategoria");
             onResetForm();
         } else {
             setTitle("Crear SubCategoria");
         }
-    }, [addSubCategoria, editSubCategoria, elementActiveCategoria]);
+    }, [addSubCategoria, editSubCategoria, elementActiveCategoria,elementActiveCategoriaSubCategoria]);
 
     const handleFinalSubmit = async(e:React.FormEvent)=>{
         e.preventDefault()
-        
+
         if(editSubCategoria){
             
             if(!elementActiveCategoria)return
             if(!elementActive)return
+            if(!elementActiveCategoriaSubCategoria) return
             const idSucursales=getIdSucursales()
-            let categoriaPadreValue=elementActiveCategoria.categoriaPadre ? elementActiveCategoria.categoriaPadre.id : null
+            
             const data={
-                id:elementActive.id,
+                id:elementActiveCategoriaSubCategoria.id,
                 denominacion:denominacion,
                 idEmpresa:elementActive.empresa.id,
-                eliminado:!elementActiveCategoria.eliminado,
+                eliminado:elementActiveCategoriaSubCategoria.eliminado,
                 idSucursales:idSucursales,
-                idCategoriaPadre:categoriaPadreValue
+                idCategoriaPadre:elementActiveCategoria.id
             }
-
+            
             try{
-                await categoriaService.put(elementActiveCategoria.id,data)
+                await categoriaService.put(elementActiveCategoriaSubCategoria.id,data)
                 getCategorias()
+                
                 dispatch(onEditSubCategoria())
             }catch(error){
                 console.log(error);
@@ -96,7 +98,7 @@ const AddSubcategoria = () => {
 
     return (
         <div className="addSubcategoria">
-                <h1 style={{color:"black"}}>Crear Subcategoria</h1>
+                <h1 style={{color:"black"}}>{title}</h1>
                 <Form className="formContainer" onSubmit={handleFinalSubmit}>
                     <div className="formInput">
                         <Form.Group className="mb-3">

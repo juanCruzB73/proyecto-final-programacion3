@@ -13,7 +13,7 @@ const AddEditAlergeno = () => {
 
     const {addAlergeno,editAlergeno}=useSelector((state:RootState)=>state.administracion);
     const {elemetActiveAlergeno}=useSelector((state:RootState)=>state.tableAdministracion)
-    const alergenoService = new AlergenosService("http://190.221.207.224:8090/alergenos")
+    const alergenoService = new AlergenosService("http://localhost:8090/alergenos")
     const [title,setTitle]=useState("Crear Alergeno")
     //imagenes
     const [imagenAlergeno, setImageAlergeno] = useState<IImagen | null>(null);
@@ -24,7 +24,7 @@ const AddEditAlergeno = () => {
 
     const dispatch=useDispatch<AppDispatch>()
     const{denominacion,onInputChange,onResetForm}=useForm(initialFormValue)
-    const {getAlergenos}=useServices("http://190.221.207.224:8090/alergenos")
+    const {getAlergenos}=useServices("http://localhost:8090/alergenos")
     useEffect(()=>{
         if(editAlergeno && elemetActiveAlergeno ){
             setTitle("Editar Alergeno")

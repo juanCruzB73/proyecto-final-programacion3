@@ -12,7 +12,7 @@ export const EmpresaDetails = () => {
   
   const dispatch=useDispatch<AppDispatch>()
   const {elementActive}=useSelector((state:RootState)=>state.tablaEmpresa)
-  let logo=elementActive?.logo;
+  let logo=elementActive?.logo ?? "";
   console.log(elementActive);
   
   return (

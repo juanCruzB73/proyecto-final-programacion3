@@ -75,6 +75,7 @@
     align-items: center;
     flex-direction: column;
     background-color: rgb(192, 189, 189);
+    overflow: auto;
 }
 .itemMenu button{
     padding: 0.6rem;
@@ -94,6 +95,7 @@
     padding: 1rem;
     border-radius: 1rem;
     background-color: white;
+    overflow: auto;
     
 }
 .categoriaContainer{

@@ -30,7 +30,7 @@ const initialValue:IForm={
 
 }
 
-const api_url = "http://190.221.207.224:8090"
+const api_url = "http://localhost:8090"
 const full_api=api_url+"/empresas"
 const empresaService=new EmpresaService(full_api);
 
@@ -107,7 +107,7 @@ export const AddEmpresa=()=> {
       }
     }
   }
-//
+  
   return (
     <div className='contenedorPadre'>
 

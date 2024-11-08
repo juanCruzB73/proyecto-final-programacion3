@@ -21,7 +21,7 @@ export const UploadImage:FC<IUploadImage> = ({
     typeElement,
 }) => {
 
-    const imageService=new ImageService("http://190.221.207.224:8090/images");
+    const imageService=new ImageService("http://localhost:8090/images");
 
     const handleFileChange=async(event: React.ChangeEvent<HTMLInputElement>)=>{
         console.log("ghgh")

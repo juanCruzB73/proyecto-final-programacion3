@@ -13,21 +13,23 @@ import AddEditAlergeno from '../AddEditAlergeno/AddEditAlergeno'
 import AlergenosDetails from '../AlergenosDetails/AlegenosDetails'
 import ProductosDetail from '../ProductosDetails/ProductosDetail'
 
-
 export const CategoriasAlergenos = () => {
 
   const dispatch=useDispatch<AppDispatch>()
   const {categoriaFilter,productoFilter,alergenosFilter,}=useSelector((state:RootState)=>state.administracion)
-  
+
   const {addCategoria,addSubCategoria,addProducto,addAlergeno,editCategoria,editSubCategoria,editProducto,editAlergeno,seeAlergeno,seeProduct}=useSelector((state:RootState)=>state.administracion)
+  
+  
   return (
     <div className="main-container-administracion">
       <div className={addCategoria||addSubCategoria||addProducto||addAlergeno||editCategoria||editSubCategoria||editProducto||editAlergeno||seeAlergeno||seeProduct?'admin-pop-up-container':'admin-pop-up-container-deactivated'}>
           {addCategoria&&<AddCategoria/>}
           {editCategoria&&<AddCategoria/>}
           {addSubCategoria&&<AddSubcategoria/>}
-          {addProducto&&<AddEditProducto/>}
-          {editProducto&&<AddEditProducto/>}
+          {editSubCategoria&&<AddSubcategoria/>}
+          {addProducto&&<AddEditProducto />}
+          {editProducto&&<AddEditProducto />}
           {addAlergeno&&<AddEditAlergeno/>}
           {editAlergeno&&<AddEditAlergeno/>}
           {seeAlergeno&&<AlergenosDetails/>}

@@ -62,13 +62,13 @@ interface ISelect{
 export const AddSucursal = () => {
 
   const dispatch=useDispatch<AppDispatch>()
-  const sucursalService=new SucursalService("http://190.221.207.224:8090/sucursales/create")
+  const sucursalService=new SucursalService("http://localhost:8090/sucursales/create")
 
   //peticiones http con hook
-  const {loading,setLoading,getPaises}=useServices("http://190.221.207.224:8090/paises")
-  const {getProvincia}=useServices("http://190.221.207.224:8090/provincias")
-  const {getLocalidad}=useServices("http://190.221.207.224:8090/localidades")
-  const {getSucursales}=useServices("http://190.221.207.224:8090/sucursales")
+  const {loading,setLoading,getPaises}=useServices("http://localhost:8090/paises")
+  const {getProvincia}=useServices("http://localhost:8090/provincias")
+  const {getLocalidad}=useServices("http://localhost:8090/localidades")
+  const {getSucursales}=useServices("http://localhost:8090/sucursales")
 
   //datos redux
   const {paisTable}=useSelector((state:RootState)=>state.tablaPaises)
@@ -224,7 +224,7 @@ export const AddSucursal = () => {
       console.log("no hay resultado");
     }
   }
-  
+
   return (
     <div className="addEditSucursalContainer"> 
       <h1>Crear una sucursal</h1> 

@@ -2,7 +2,7 @@ import { Button, Form } from "react-bootstrap";
 import "./AddEditProducto.css"
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store/store";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { onAddProducto, onEditProducto } from "../../redux/slices/administracionSlice";
 import { ProductoService } from "../../services/ProductoService";
 import { useServices } from "../../hooks/useServices";
@@ -21,24 +21,26 @@ interface IForm{
 }
 
 interface ISelectForm{
-    //habilitado:true;
-    categoriaSelect:string;
+    categoriaSelect:number;
 }
 //imagenes
-const AddEditProducto = () => {
+const AddEditProducto:FC = () => {
     
     const {addProducto,editProducto}=useSelector((state:RootState)=>state.administracion);
+
     const {elementActive}=useSelector((state:RootState)=>state.tablaSucursal);
     const {elementActiveProducto,administracionTable,administracionTable2}=useSelector((state:RootState)=>state.tableAdministracion)
 
-    const {getCategorias}=useServices(`http://190.221.207.224:8090/categorias/allCategoriasPorSucursal/${elementActive?.id}`)
-    const {getAlergenos}=useServices("http://190.221.207.224:8090/alergenos")
-    const {getProductos}=useServices(`http://190.221.207.224:8090/articulos/porSucursal/${elementActive?.id}`)
-    const productoService= addProducto ? new ProductoService("http://190.221.207.224:8090/articulos/create") : new ProductoService("http://190.221.207.224:8090/articulos/update");
+    const {getCategorias}=useServices(`http://localhost:8090/categorias/allCategoriasPadrePorSucursal/${elementActive?.id}`)
+    const {getAlergenos}=useServices("http://localhost:8090/alergenos")
+    const {getProductos}=useServices(`http://localhost:8090/articulos/porSucursal/${elementActive?.id}`)
+    const productoService= addProducto ? new ProductoService("http://localhost:8090/articulos/create") : new ProductoService("http://localhost:8090/articulos/update");
     
+    /*const subCategoryService = elementActive?.id && category?.id
+    ? new CategoriasService(`http://localhost:8090/categorias/allSubCategoriasPorCategoriaPadre/${category.id}/${elementActive.id}`)
+    : null;*/  
 
     //alergenos checkBox
-    const [selectedValues,setSelectedValues]=useState<number[]>([]);
     const [alergenosTable,setAlergenosTable]=useState<any>([]);
     const [categoryTable,setCategoryTable]=useState<any>([]);
     //handle change checkbox change
@@ -58,6 +60,8 @@ const AddEditProducto = () => {
         
     },[administracionTable,administracionTable2])
     
+    const [selectedValues,setSelectedValues]=useState<number[]>([]);
+
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value, checked } = event.target;
         const id=parseInt(value);
@@ -75,16 +79,20 @@ const AddEditProducto = () => {
     const [imagenProducto, setImageProducto] = useState<IImagen | null>(null);
 
     //select
-    const initalSelectValues:ISelectForm= editProducto && elementActiveProducto
-    ? {categoriaSelect:elementActiveProducto.categoria.denominacion}
-    : {categoriaSelect:""}
+    let initalSelectValues: ISelectForm= {
+        categoriaSelect: addProducto
+            ? (categoryTable[0]?.id) // Use the first category's ID if adding a new product
+            : elementActiveProducto?.categoria.id || 0 // Use the active product's category ID if editing
+    };;
+    
+
+    const {categoriaSelect,handleSelectChange}=useSelect<ISelectForm>(initalSelectValues);
 
     const initialFormValues = editProducto && elementActiveProducto
     ? { denominacion: elementActiveProducto.denominacion,precioVenta:elementActiveProducto.precioVenta,descripcion:elementActiveProducto.descripcion,habilitado:elementActiveProducto.habilitado,codigo:elementActiveProducto.codigo,idCategoria:elementActiveProducto.id,imagenes:elementActiveProducto.imagenes }//falatan alegenos
     : { denominacion: "",precioVenta:0,descripcion:"",codigo:"" };
 
     const {denominacion,precioVenta,descripcion,codigo,onInputChange,onResetForm}=useForm<IForm>(initialFormValues)
-    const {categoriaSelect,handleSelectChange}=useSelect<ISelectForm>(initalSelectValues);
 
     useEffect(() => {
         if (editProducto && elementActiveProducto) {
@@ -106,7 +114,7 @@ const AddEditProducto = () => {
                 descripcion:descripcion,
                 habilitado:true,
                 codigo:codigo,
-                idCategoria:parseInt(categoriaSelect),
+                idCategoria:categoriaSelect??categoryTable[0].id,
                 idAlergenos:selectedValues,
                 imagenes:imagenProducto ? [imagenProducto] : [],
             }
@@ -127,7 +135,7 @@ const AddEditProducto = () => {
                 descripcion:descripcion,
                 habilitado:elementActiveProducto.habilitado,
                 codigo:codigo,
-                idCategoria:parseInt(categoriaSelect),
+                idCategoria:categoriaSelect,
                 idAlergenos:selectedValues,
                 imagenes: [...elementActiveProducto.imagenes, imagenProducto].filter((img): img is IImagen => img !== null)
             }
@@ -140,7 +148,23 @@ const AddEditProducto = () => {
             }
         }
     }
-    
+    /*const filterCategoriasHijas=(table:ICategorias[])=>{
+        const result = table.map(category=>category.sucursales.)
+        setHijasCategoryTable(result);
+    }
+    const [hijasCategoryTable,setHijasCategoryTable]=useState<any[]>([])
+
+    useEffect(()=>{
+        console.log(categoryTable);
+        
+        filterCategoriasHijas(categoryTable);
+        console.log(hijasCategoryTable);
+        
+    },[categoryTable])
+
+    console.log(categoryTable.length);
+    console.log(hijasCategoryTable.length);
+    */    
     return (
         <div className="addEditProducto">
         <h1 style={{color:"black"}}>{title}</h1>
@@ -170,7 +194,7 @@ const AddEditProducto = () => {
                     </div>
                     
                     
-                    <Form.Label>Seleccione Pais</Form.Label>
+                    <Form.Label>Seleccione La categoria</Form.Label>
                     <Form.Select id="categoriaSelect" name='categoriaSelect' value={categoriaSelect} onChange={handleSelectChange}>
 
                         {categoryTable.map((category:ICategorias)=>(

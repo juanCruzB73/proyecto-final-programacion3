@@ -6,7 +6,7 @@ import { FC, useEffect, useState } from 'react';
 import { AppDispatch, RootState } from '../../redux/store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { onAddSubCategoria, onEditAlergeno, onEditCategoria, onEditProducto, onEditSubCategoria, onSeeAlergeno, onSeeProduct } from '../../redux/slices/administracionSlice';
-import { setElementActiveAdministracionAlergenos, setElementActiveAdministracionCategoria, setElementActiveAdministracionProductos } from '../../redux/slices/tableAdministracionSlice';
+import { setElementActiveSubCategoria,setElementActiveAdministracionAlergenos, setElementActiveAdministracionCategoria, setElementActiveAdministracionProductos } from '../../redux/slices/tableAdministracionSlice';
 import { CategoriasService } from '../../services/CategoriasService';
 import { ProductoService } from '../../services/ProductoService';
 import { AlergenosService } from '../../services/AlergenosService';
@@ -27,21 +27,26 @@ export const Card: FC<Iprops> = ({ element }) => {
   const [promiseResponse, setPromiseResponse] = useState<any>();
   const [subCategorias, setSubCategorias] = useState<ICategorias[]>([]);
 
-  const categoriaService = new CategoriasService('http://190.221.207.224:8090/categorias');
-  const articuloService = new ProductoService('http://190.221.207.224:8090/articulos');
-  const alergenosService = new AlergenosService('http://190.221.207.224:8090/alergenos');
-
-  // Conditionally initialize subCategoryService if IDs are available
+  const categoriaService = new CategoriasService('http://localhost:8090/categorias');
+  const categoriasPadreService = new CategoriasService(`http://localhost:8090/categorias`)
+  const articuloService = new ProductoService('http://localhost:8090/articulos');
+  const alergenosService = new AlergenosService('http://localhost:8090/alergenos');
   const subCategoryService = elementActive?.id && category?.id
-    ? new CategoriasService(`http://190.221.207.224:8090/categorias/allSubCategoriasPorCategoriaPadre/${elementActive.id}/${category.id}`)
-    : null;
-
+    ? new CategoriasService(`http://localhost:8090/categorias/allSubCategoriasPorCategoriaPadre/${category.id}/${elementActive.id}`)
+    : null;  
+  
   useEffect(() => {
     const fetchData = async () => {
       if (categoriaFilter && categoriaService) {
-        await categoriaService.getById(element.id).then(response => response && setPromiseResponse(response));
+        await categoriasPadreService.getById(element.id).then(response => response && setPromiseResponse(response));
         if (subCategoryService) {
           await subCategoryService.getAll().then(response => setSubCategorias(response || []));
+        }
+        
+        if (subCategoryService) {
+          await subCategoryService.getAll().then(response => setSubCategorias(response || []));
+        }else{
+          console.log("subcategorias null"); 
         }
       } else if (productoFilter) {
         await articuloService.getById(element.id).then(response => response && setPromiseResponse(response));
@@ -52,6 +57,7 @@ export const Card: FC<Iprops> = ({ element }) => {
     fetchData();
   }, [categoriaFilter, productoFilter, alergenosFilter,display]);
 
+  
   useEffect(() => {
     if (categoriaFilter) {
       setCategory(promiseResponse);
@@ -61,7 +67,6 @@ export const Card: FC<Iprops> = ({ element }) => {
       setAlergeno(promiseResponse);
     }
   }, [promiseResponse]);
-
   return (
     <>
       {categoriaFilter && (
@@ -80,6 +85,7 @@ export const Card: FC<Iprops> = ({ element }) => {
               <i onClick={() => {
                 category && dispatch(setElementActiveAdministracionCategoria({ element: category }));
                 dispatch(onAddSubCategoria())
+                setDisplay(false)
                 }} className="bi bi-plus-circle"></i>
             </div>
           </span>
@@ -89,7 +95,12 @@ export const Card: FC<Iprops> = ({ element }) => {
                   <span className="categoria" key={subCategoria.id}>
                     {subCategoria.denominacion || 'no name'}
                     <div>
-                      <i onClick={() => dispatch(onEditSubCategoria())} className="bi bi-pencil-square"></i>
+                      <i onClick={() =>{
+                         dispatch(onEditSubCategoria())
+                         category && dispatch(setElementActiveAdministracionCategoria({ element: category }));
+                         dispatch(setElementActiveSubCategoria({element:subCategoria}) )
+                         setDisplay(false)
+                         }} className="bi bi-pencil-square"></i>
                     </div>
                   </span>
                 ))
