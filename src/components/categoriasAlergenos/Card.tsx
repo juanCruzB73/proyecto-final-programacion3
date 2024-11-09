@@ -6,7 +6,7 @@ import { FC, useEffect, useState } from 'react';
 import { AppDispatch, RootState } from '../../redux/store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { onAddSubCategoria, onEditAlergeno, onEditCategoria, onEditProducto, onEditSubCategoria, onSeeAlergeno, onSeeProduct } from '../../redux/slices/administracionSlice';
-import { setElementActiveSubCategoria,setElementActiveAdministracionAlergenos, setElementActiveAdministracionCategoria, setElementActiveAdministracionProductos } from '../../redux/slices/tableAdministracionSlice';
+import { setElementActiveSubCategoria,setElementActiveAdministracionAlergenos, setElementActiveAdministracionCategoria, setElementActiveAdministracionProductos, removeElementActiveProducto } from '../../redux/slices/tableAdministracionSlice';
 import { CategoriasService } from '../../services/CategoriasService';
 import { ProductoService } from '../../services/ProductoService';
 import { AlergenosService } from '../../services/AlergenosService';
@@ -18,6 +18,8 @@ interface Iprops {
 export const Card: FC<Iprops> = ({ element }) => {
   const { elementActive } = useSelector((state: RootState) => state.tablaSucursal);
   const { categoriaFilter, productoFilter, alergenosFilter } = useSelector((state: RootState) => state.administracion);
+  const { administracionTable,administracionTable2,administracionTable3 } = useSelector((state: RootState) => state.tableAdministracion);
+
   const dispatch = useDispatch<AppDispatch>();
 
   const [display, setDisplay] = useState(false);
@@ -55,7 +57,7 @@ export const Card: FC<Iprops> = ({ element }) => {
       }
     };
     fetchData();
-  }, [categoriaFilter, productoFilter, alergenosFilter,display]);
+  }, [categoriaFilter, productoFilter, alergenosFilter,display,administracionTable,administracionTable2,administracionTable3]);
 
   
   useEffect(() => {
@@ -67,6 +69,7 @@ export const Card: FC<Iprops> = ({ element }) => {
       setAlergeno(promiseResponse);
     }
   }, [promiseResponse]);
+
   return (
     <>
       {categoriaFilter && (
@@ -96,9 +99,9 @@ export const Card: FC<Iprops> = ({ element }) => {
                     {subCategoria.denominacion || 'no name'}
                     <div>
                       <i onClick={() =>{
-                         dispatch(onEditSubCategoria())
                          category && dispatch(setElementActiveAdministracionCategoria({ element: category }));
-                         dispatch(setElementActiveSubCategoria({element:subCategoria}) )
+                         dispatch(setElementActiveSubCategoria({element:subCategoria}))
+                         dispatch(onEditSubCategoria())
                          setDisplay(false)
                          }} className="bi bi-pencil-square"></i>
                     </div>

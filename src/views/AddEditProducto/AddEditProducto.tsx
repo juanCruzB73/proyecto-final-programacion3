@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store/store";
 import { FC, useEffect, useState } from "react";
 import { onAddProducto, onEditProducto } from "../../redux/slices/administracionSlice";
+import { removeElementActiveProducto } from "../../redux/slices/tableAdministracionSlice";
+
 import { ProductoService } from "../../services/ProductoService";
 import { useServices } from "../../hooks/useServices";
 import { useForm } from "../../hooks/useForm";
@@ -25,7 +27,6 @@ interface ISelectForm{
 }
 //imagenes
 const AddEditProducto:FC = () => {
-    
     const {addProducto,editProducto}=useSelector((state:RootState)=>state.administracion);
 
     const {elementActive}=useSelector((state:RootState)=>state.tablaSucursal);
@@ -74,7 +75,7 @@ const AddEditProducto:FC = () => {
     };
     
     //titulo de carta
-    const [title,setTitle]=useState("Crear Producto")
+    const [title,setTitle]=useState("Crear Producto aaaaaaa")
     //imagenes
     const [imagenProducto, setImageProducto] = useState<IImagen | null>(null);
 
@@ -96,10 +97,10 @@ const AddEditProducto:FC = () => {
 
     useEffect(() => {
         if (editProducto && elementActiveProducto) {
-            setTitle("Editar Categoria");
+            setTitle("Editar Producto");
             onResetForm();
         } else {
-            setTitle("Crear Categoria");
+            setTitle("Crear Producto");
         }
     }, [addProducto, editProducto, elementActiveProducto]);   
 
@@ -164,7 +165,9 @@ const AddEditProducto:FC = () => {
 
     console.log(categoryTable.length);
     console.log(hijasCategoryTable.length);
-    */    
+    */
+   console.log(title);
+   
     return (
         <div className="addEditProducto">
         <h1 style={{color:"black"}}>{title}</h1>
