@@ -13,6 +13,11 @@ import { SucursalService } from '../../services/SucursalService';
 import { ICreateSucursal } from '../../types/dtos/sucursal/ICreateSucursal';
 import { useValidations } from '../../hooks/useValidations';
 import { UploadImage } from '../../components/UploadImage';
+import { ProvinciaService } from '../../services/ProvinciaService';
+import { setTableProvincia } from '../../redux/slices/provinciaSlice';
+import { LocalidadService } from '../../services/LocalidadService';
+import { setTablePais } from '../../redux/slices/tablaPaisSlice';
+import { setTableLocalidad } from '../../redux/slices/tablaLocalidadSlice';
 
 
 interface IForm {
@@ -66,9 +71,9 @@ export const AddSucursal = () => {
 
   //peticiones http con hook
   const {loading,setLoading,getPaises}=useServices("http://localhost:8090/paises")
-  const {getProvincia}=useServices("http://localhost:8090/provincias")
-  const {getLocalidad}=useServices("http://localhost:8090/localidades")
-  const {getSucursales}=useServices("http://localhost:8090/sucursales")
+  //const {getProvincia}=useServices(`http://localhost:8090/provincias`)
+  const {getLocalidad}=useServices(`http://localhost:8090/localidades`)
+  const {getSucursales}=useServices(`http://localhost:8090/sucursales`)
 
   //datos redux
   const {paisTable}=useSelector((state:RootState)=>state.tablaPaises)
@@ -84,7 +89,7 @@ export const AddSucursal = () => {
     empresaSelect:"",
     casaMatrizSelect:"si",
   }
-
+  
   //selct fields
   const {paisSelect,provinciaSelect,localidadSelect,empresaSelect,casaMatrizSelect,handleSelectChange}=useSelect<ISelect>(selectInitialValue);
 
@@ -102,7 +107,7 @@ export const AddSucursal = () => {
   const [wrongnroCalle,setWrongnroCalle]=useState(false);
   const [wrongcp,setWrongcp]=useState(false);  
   const [wrongpiso,setWrongpiso]=useState(false);
-  const [wrongnroDepto,setWrongnroDepto]=useState(false);;
+  const [wrongnroDepto,setWrongnroDepto]=useState(false);
   
   const [isEmptyCondition,setIsEmptyCondition]=useState(false);
   const [containsLetterCondition,setcontainsLetterCondition]=useState(false);
@@ -119,6 +124,7 @@ export const AddSucursal = () => {
       setWrongName(false);setWronghorarioApertura(false);setWronghorarioCierre(false);setWronglatitud(false);
       setWronglongitud(false);setWrongcalle(false);setWrongnroCalle(false);setWrongcp(false);setWrongpiso(false)
       setWrongnroDepto(false);setIsEmptyCondition(false);setisTimeCondition(false);setcontainsLetterCondition(false);
+      
     }
   },
   [
@@ -128,10 +134,49 @@ export const AddSucursal = () => {
 
   useEffect(()=>{
     getPaises();
-    getProvincia();
-    getLocalidad();
-    setLoading(true);
+    //getProvincia();
+    //getLocalidad();
+    
   },[])
+
+  useEffect(()=>{
+    const fetchData=async()=>{
+      console.log("asasd");
+      
+      if(!paisSelect)return
+        let pais=findIdPais(paisSelect)
+        if(!pais)return
+        const provinciaService=new ProvinciaService(`http://localhost:8090/provincias/findByPais/1`);
+        console.log("http://localhost:8090/provincias/findByPais/1");
+        
+        await provinciaService.getAll().then(response=>{
+          dispatch(setTableProvincia(response));
+          setLoading(false)
+      })
+      console.log(paisSelect);
+      console.log(provinciaTable);
+    }
+    fetchData()
+  },[paisSelect,paisTable])
+
+  useEffect(()=>{
+    const fetchData=async()=>{
+      console.log("aaaa");
+      
+      if(!provinciaSelect)return
+        let provincia=findProvinciaById(provinciaSelect)
+        if(!provincia)return
+        console.log(`http://localhost:8090/localidades/findByProvincia/${provincia.id}`);
+        
+        const localidadService=new LocalidadService(`http://localhost:8090/localidades/findByProvincia/${provincia.id}`);
+        await localidadService.getAll().then(response=>{
+          dispatch(setTableLocalidad(response));
+          setLoading(false)
+      })
+      console.log(provinciaSelect);
+    }
+    fetchData()
+  },[provinciaSelect,provinciaTable])
 
   const handleSubmit=async(e:React.FormEvent)=>{
     e.preventDefault();
@@ -139,7 +184,7 @@ export const AddSucursal = () => {
    const localidad=findIdLocalidadLocation(localidadSelect);
    const empresa=findIdEmpresa(empresaSelect)
    
-    if(!localidad || !empresa)return
+    //if(!localidad || !empresa)return
     
     const data:ICreateSucursal={
       nombre:nombre,
@@ -154,17 +199,18 @@ export const AddSucursal = () => {
         cp:parseInt(cp),
         piso:parseInt(piso),
         nroDpto:parseInt(nroDpto),
-        idLocalidad:localidad.id,
+        idLocalidad:localidad?.id ?? localidadTable[0].id,
       },
-      idEmpresa:empresa.id,
+      idEmpresa:empresa?.id ?? dataTable[0].id,
       logo:image,
     }
+    console.log(data);
+    
     //validaciones para inputs vacios
     if(
       isEmpty(nombre) || isEmpty(horarioApertura) || isEmpty(horarioCierre)
       || isEmpty(latitud) || isEmpty(longitud) || isEmpty(calle) || isEmpty(nroCalle)
-      || isEmpty(localidadSelect) || isEmpty(empresaSelect) || isEmpty(nroDpto) || isEmpty(cp)
-      || isEmpty(piso)
+      || isEmpty(nroDpto) || isEmpty(cp) || isEmpty(piso)
     ){
       setIsEmptyCondition(true);
       setconditionMessage("algun campo esta vacio");
@@ -215,7 +261,23 @@ export const AddSucursal = () => {
       console.log("no hay resultado");
     }
   }
-  
+
+    const findIdPais=(nombre:string)=>{
+    let result=paisTable.filter(e=>e.nombre==nombre)
+    if(result){
+      return result[0];
+    }else{
+      console.log("no hay provincias");
+      }
+    }
+    const findProvinciaById=(nombre:string)=>{
+      let result=provinciaTable.filter(e=>e.nombre==nombre)
+      if(result){
+        return result[0];
+      }else{
+        console.log("no hay provincias");
+        }
+    }
     const findIdLocalidadLocation=(nombre:string)=>{
     let result=localidadTable.filter(e=>e.nombre==nombre)
     if(result){
@@ -223,6 +285,7 @@ export const AddSucursal = () => {
     }else{
       console.log("no hay resultado");
     }
+    
   }
 
   return (
@@ -284,9 +347,9 @@ export const AddSucursal = () => {
                   </Form.Group>
                   <Form.Group className='form-element' as={Col}>
                     <Form.Label>Seleccione Provincia</Form.Label>
-                    <Form.Select id="provincia-select" name='provinciaSelect' value={provinciaSelect} onChange={handleSelectChange}>
+                    <Form.Select disabled={provinciaTable.length === 0} id="provincia-select" name='provinciaSelect' value={provinciaSelect} onChange={handleSelectChange}>
 
-                        {provinciaTable.map((provincia)=>(
+                        {Array.isArray(provinciaTable) && provinciaTable.map((provincia)=>(
                           <option key={provincia.id} value={provincia.nombre}>{provincia.nombre}</option>
                         ))}
 
@@ -294,9 +357,9 @@ export const AddSucursal = () => {
                   </Form.Group>
                   <Form.Group className='form-element' as={Col}>
                   <Form.Label>Seleccione localidad</Form.Label>
-                    <Form.Select className="isNotWrongSelect" id="localidad-select" name='localidadSelect' value={localidadSelect} onChange={handleSelectChange}>
+                    <Form.Select disabled={localidadTable.length === 0} className="isNotWrongSelect" id="localidad-select" name='localidadSelect' value={localidadSelect} onChange={handleSelectChange}>
 
-                        {localidadTable.map((localidad)=>(
+                        { Array.isArray(localidadTable) && localidadTable.map((localidad)=>(
                           <option key={localidad.id} value={localidad.nombre}>{localidad.nombre}</option>
                         ))}
 

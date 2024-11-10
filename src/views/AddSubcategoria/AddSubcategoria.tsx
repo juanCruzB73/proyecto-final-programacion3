@@ -7,6 +7,7 @@ import { useForm } from "../../hooks/useForm";
 import { onAddSubCategoria, onEditSubCategoria } from "../../redux/slices/administracionSlice";
 import { useServices } from "../../hooks/useServices";
 import { CategoriasService } from "../../services/CategoriasService";
+import { useValidations } from "../../hooks/useValidations";
 
 interface IForm{
     denominacion:string
@@ -31,6 +32,11 @@ const AddSubcategoria:FC = () => {
 
     const {denominacion,onInputChange,onResetForm}=useForm<IForm>(initialFormValues);
 
+    //validation
+    const [denominacionCorrect,setDenominacionCorrect]=useState<boolean>(true);
+    const [messageError,setMessageError]=useState<string>("");
+    const {isEmpty}=useValidations();
+
     useEffect(() => {
         if (editSubCategoria) {
             setTitle("Editar SubCategoria");
@@ -50,41 +56,54 @@ const AddSubcategoria:FC = () => {
             if(!elementActiveCategoriaSubCategoria) return
             const idSucursales=getIdSucursales()
             
-            const data={
-                id:elementActiveCategoriaSubCategoria.id,
-                denominacion:denominacion,
-                idEmpresa:elementActive.empresa.id,
-                eliminado:elementActiveCategoriaSubCategoria.eliminado,
-                idSucursales:idSucursales,
-                idCategoriaPadre:elementActiveCategoria.id
-            }
-            
-            try{
-                await categoriaService.put(elementActiveCategoriaSubCategoria.id,data)
-                getCategorias()
+            if(isEmpty(denominacion)){
+                setDenominacionCorrect(false);
+                setMessageError("La denominacion no puede estar vacia.")
+            }else{
+                const data={
+                    id:elementActiveCategoriaSubCategoria.id,
+                    denominacion:denominacion,
+                    idEmpresa:elementActive.empresa.id,
+                    eliminado:elementActiveCategoriaSubCategoria.eliminado,
+                    idSucursales:idSucursales,
+                    idCategoriaPadre:elementActiveCategoria.id
+                }
                 
-                dispatch(onEditSubCategoria())
-            }catch(error){
-                console.log(error);
+                try{
+                    await categoriaService.put(elementActiveCategoriaSubCategoria.id,data)
+                    getCategorias()
+                    
+                    dispatch(onEditSubCategoria())
+                }catch(error){
+                    console.log(error);
+                }
             }
+
+            
         }
         if (addSubCategoria){
             
             if(!elementActive || !elementActiveCategoria)return
-        
-            const data={
-                denominacion:denominacion,
-                idEmpresa:elementActive.empresa.id,
-                idCategoriaPadre:elementActiveCategoria.id
-            }
-
-            try{
-                await categoriaService.post(data)
-                getCategorias()
-                dispatch(onAddSubCategoria())
-            }catch(error){
-                console.log(error);    
-            }
+            
+            if(isEmpty(denominacion)){
+                setDenominacionCorrect(false);
+                setMessageError("La denominacion no puede estar vacia.")
+            }else{
+                const data={
+                    denominacion:denominacion,
+                    idEmpresa:elementActive.empresa.id,
+                    idCategoriaPadre:elementActiveCategoria.id
+                }
+    
+                try{
+                    await categoriaService.post(data)
+                    getCategorias()
+                    dispatch(onAddSubCategoria())
+                }catch(error){
+                    console.log(error);    
+                }
+            } 
+            
         }
     }
     
@@ -99,9 +118,12 @@ const AddSubcategoria:FC = () => {
     return (
         <div className="addSubcategoria">
                 <h1 style={{color:"black"}}>{title}</h1>
+                <div className={!denominacionCorrect ? 'errorMessagge' : "noErrors"}>
+                    <span>{messageError}</span>
+                </div>
                 <Form className="formContainer" onSubmit={handleFinalSubmit}>
                     <div className="formInput">
-                        <Form.Group className="mb-3">
+                        <Form.Group className={ denominacionCorrect ? "mb-3" : "denominacionError"}>
                             <Form.Label>Ingresar el nombre</Form.Label>
                             <Form.Control className="control" name="denominacion" value={denominacion} onChange={onInputChange} type="text" placeholder="Nombre:" />
                         </Form.Group>

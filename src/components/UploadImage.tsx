@@ -24,7 +24,6 @@ export const UploadImage:FC<IUploadImage> = ({
     const imageService=new ImageService("http://localhost:8090/images");
 
     const handleFileChange=async(event: React.ChangeEvent<HTMLInputElement>)=>{
-        console.log("ghgh")
 
         if (event.target.files && event.target.files.length > 0){
             const file = event.target.files[0];
@@ -41,7 +40,6 @@ export const UploadImage:FC<IUploadImage> = ({
       try {
         // Subimos la imagen utilizando el servicio y obtenemos la URL de la imagen cargada
         const data = await imageService.uploadImage(formData);
-        console.log(data);
         
         // Si setImage está definido, actualizamos la URL de la imagen cargada
         if (setImage) {
@@ -72,8 +70,6 @@ export const UploadImage:FC<IUploadImage> = ({
     }
     
   }
-  console.log(image);
-  console.log(imageObjeto);
   
   
   return (

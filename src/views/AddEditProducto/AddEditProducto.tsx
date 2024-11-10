@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store/store";
 import { FC, useEffect, useState } from "react";
 import { onAddProducto, onEditProducto } from "../../redux/slices/administracionSlice";
-import { removeElementActiveProducto } from "../../redux/slices/tableAdministracionSlice";
-
 import { ProductoService } from "../../services/ProductoService";
 import { useServices } from "../../hooks/useServices";
 import { useForm } from "../../hooks/useForm";
@@ -14,6 +12,8 @@ import { ICategorias } from "../../types/dtos/categorias/ICategorias";
 import { useSelect } from "../../hooks/useSelect";
 import { IImagen } from "../../types/IImagen";
 import { UploadImage } from "../../components/UploadImage";
+import { useValidations } from "../../hooks/useValidations";
+import { CategoriasService } from "../../services/CategoriasService";
 
 interface IForm{
     denominacion:string;
@@ -24,9 +24,11 @@ interface IForm{
 
 interface ISelectForm{
     categoriaSelect:number;
+    subcategoriaSelect:number;
 }
 //imagenes
 const AddEditProducto:FC = () => {
+
     const {addProducto,editProducto}=useSelector((state:RootState)=>state.administracion);
 
     const {elementActive}=useSelector((state:RootState)=>state.tablaSucursal);
@@ -36,14 +38,11 @@ const AddEditProducto:FC = () => {
     const {getAlergenos}=useServices("http://localhost:8090/alergenos")
     const {getProductos}=useServices(`http://localhost:8090/articulos/porSucursal/${elementActive?.id}`)
     const productoService= addProducto ? new ProductoService("http://localhost:8090/articulos/create") : new ProductoService("http://localhost:8090/articulos/update");
-    
-    /*const subCategoryService = elementActive?.id && category?.id
-    ? new CategoriasService(`http://localhost:8090/categorias/allSubCategoriasPorCategoriaPadre/${category.id}/${elementActive.id}`)
-    : null;*/  
-
     //alergenos checkBox
     const [alergenosTable,setAlergenosTable]=useState<any>([]);
     const [categoryTable,setCategoryTable]=useState<any>([]);
+    const [subcategoryTable,setSubcategoryTable]=useState<ICategorias[]>([]);
+
     //handle change checkbox change
 
     useEffect(()=>{
@@ -60,6 +59,7 @@ const AddEditProducto:FC = () => {
         setCategoryTable(administracionTable)
         
     },[administracionTable,administracionTable2])
+
     
     const [selectedValues,setSelectedValues]=useState<number[]>([]);
 
@@ -75,25 +75,109 @@ const AddEditProducto:FC = () => {
     };
     
     //titulo de carta
-    const [title,setTitle]=useState("Crear Producto aaaaaaa")
+    const [title,setTitle]=useState("Crear Producto")
     //imagenes
     const [imagenProducto, setImageProducto] = useState<IImagen | null>(null);
-
-    //select
-    let initalSelectValues: ISelectForm= {
-        categoriaSelect: addProducto
-            ? (categoryTable[0]?.id) // Use the first category's ID if adding a new product
-            : elementActiveProducto?.categoria.id || 0 // Use the active product's category ID if editing
-    };;
     
+    const [categoriaPadreEdit,setCategoriaPadreEdit]=useState(0);
+    useEffect(() => {
+        if(categoryTable && editProducto){
+            const getCategoriaPadreFromChild = () => {
+                let result=20;
+                
+                categoryTable.forEach((category: ICategorias) => {
+                    const aux = category.subCategorias.filter(
+                        (subcategory: ICategorias) => subcategory.id === elementActiveProducto?.categoria.id
+                    );
+                    
+                    if (aux.length > 0) {
+                        result = category.id;
+                        return;
+                    }
+                });
+                
+                console.log("result",result);
+                return result;
+            };
+        
+            setCategoriaPadreEdit(getCategoriaPadreFromChild());
+        }
 
-    const {categoriaSelect,handleSelectChange}=useSelect<ISelectForm>(initalSelectValues);
+    }, [categoryTable, elementActiveProducto]);
+    //selects    
+    const [initalSelectValues, setInitalSelectValues] = useState<ISelectForm>({
+        categoriaSelect: 0,
+        subcategoriaSelect: 0,
+    });
+    console.log(categoriaPadreEdit);
+
+    useEffect(() => {
+        if (categoriaPadreEdit && categoryTable.length > 0) {
+            setInitalSelectValues({
+                categoriaSelect: addProducto ? categoryTable[0].id : categoriaPadreEdit,
+                subcategoriaSelect: addProducto ? categoryTable[0].categoria[0]?.id : elementActiveProducto?.categoria.id,
+            });
+            setSelectedValue(initalSelectValues);
+        }
+    }, [categoriaPadreEdit, categoryTable, elementActiveProducto]);
+
+    const {categoriaSelect,subcategoriaSelect,setSelectedValue,handleSelectChange}=useSelect<ISelectForm>(initalSelectValues);
+
+    useEffect(() => {
+        console.log(categoriaSelect);
+        
+        if (!categoriaSelect || !elementActive?.id) return;
+            
+            let selectedCategoryId;
+            console.log(categoryTable.length)
+            if(addProducto){
+                selectedCategoryId = categoryTable.length===0 ? categoryTable[0].id : categoriaSelect
+            }else{
+                selectedCategoryId = categoryTable.length===0 ? categoriaPadreEdit:categoriaSelect;
+            }
+            
+                        
+            const subCatService = new CategoriasService(`http://localhost:8090/categorias/allSubCategoriasPorCategoriaPadre/${selectedCategoryId}/${elementActive.id}`);
+            
+            const fetchData = async () => {
+                try {
+                    const response = await subCatService.getAll();
+                    console.log("Fetched subcategories:", response); // Debugging line
+                    setSubcategoryTable(response);
+                } catch (error) {
+                    console.error("Error fetching subcategories:", error);
+                }
+            };
+            fetchData()
+
+    }, [categoriaSelect, categoryTable, elementActive]);
+
+
+    //validation
+    const [denominacionCorrect,setDenominacionCorrect]=useState<boolean>(true);
+    const [precioVentaCorrect,setPrecioVentaCorrect]=useState<boolean>(true);
+    const [descripcionCorrect,setDescripcionCorrect]=useState<boolean>(true);
+    const [categoriaCorrect,setCategorianCorrect]=useState<boolean>(true);
+    const [codigoCorrect,setCodigoCorrect]=useState<boolean>(true);
+
+    const [messageError,setMessageError]=useState<string>("");
+    const {isEmpty,containLetters}=useValidations();
+
 
     const initialFormValues = editProducto && elementActiveProducto
     ? { denominacion: elementActiveProducto.denominacion,precioVenta:elementActiveProducto.precioVenta,descripcion:elementActiveProducto.descripcion,habilitado:elementActiveProducto.habilitado,codigo:elementActiveProducto.codigo,idCategoria:elementActiveProducto.id,imagenes:elementActiveProducto.imagenes }//falatan alegenos
     : { denominacion: "",precioVenta:0,descripcion:"",codigo:"" };
 
     const {denominacion,precioVenta,descripcion,codigo,onInputChange,onResetForm}=useForm<IForm>(initialFormValues)
+
+    useEffect(()=>{
+        setDenominacionCorrect(true);
+        setPrecioVentaCorrect(true);
+        setDescripcionCorrect(true);
+        setCategorianCorrect(true);
+        setCodigoCorrect(true)
+        setMessageError("");
+    },[categoriaSelect,subcategoriaSelect,denominacion,precioVenta,descripcion,codigo])
 
     useEffect(() => {
         if (editProducto && elementActiveProducto) {
@@ -104,81 +188,92 @@ const AddEditProducto:FC = () => {
         }
     }, [addProducto, editProducto, elementActiveProducto]);   
 
+    
     const dispatch=useDispatch<AppDispatch>()
     
     const handleFinalSubmit =async(e:React.FormEvent)=>{
         e.preventDefault()
         if(addProducto){
-            const data = {
-                denominacion:denominacion,
-                precioVenta:precioVenta,
-                descripcion:descripcion,
-                habilitado:true,
-                codigo:codigo,
-                idCategoria:categoriaSelect??categoryTable[0].id,
-                idAlergenos:selectedValues,
-                imagenes:imagenProducto ? [imagenProducto] : [],
-            }
-            try{
-                await productoService.post(data)
-                getProductos()
-                dispatch(onAddProducto())
-            }catch(error){
-                console.log(error);
+            if(isEmpty(denominacion) || isEmpty(precioVenta.toString()) || isEmpty(descripcion) || isEmpty(codigo) || subcategoryTable.length===0  ){
+                isEmpty(denominacion) && setDenominacionCorrect(false);
+                isEmpty(precioVenta.toString()) && setPrecioVentaCorrect(false);
+                isEmpty(descripcion) && setDescripcionCorrect(false);
+                isEmpty(codigo) && setCodigoCorrect(false);
+                subcategoryTable.length===0 && setCategorianCorrect(false);
+                setMessageError("Alguno de los campos esta vacio")
+            }else if(containLetters(precioVenta.toString())){
+                setPrecioVentaCorrect(false);
+                setMessageError("El campo de precio solo puede llevar numeros")
+            }else{
+                
+                const data = {
+                    denominacion:denominacion,
+                    precioVenta:precioVenta,
+                    descripcion:descripcion,
+                    habilitado:true,
+                    codigo:codigo,
+                    idCategoria:subcategoriaSelect === 0 ? subcategoryTable[0].id : subcategoriaSelect ,
+                    idAlergenos:selectedValues,
+                    imagenes:imagenProducto ? [imagenProducto] : [],
+                }
+                try{
+                    await productoService.post(data)
+                    getProductos()
+                    dispatch(onAddProducto())
+                }catch(error){
+                    console.log(error);
+                }
             }
         }
         if(editProducto){
             if(!elementActiveProducto)return
-            const data = {
-                id:elementActiveProducto.id,
-                denominacion:denominacion,
-                precioVenta:precioVenta,
-                descripcion:descripcion,
-                habilitado:elementActiveProducto.habilitado,
-                codigo:codigo,
-                idCategoria:categoriaSelect,
-                idAlergenos:selectedValues,
-                imagenes: [...elementActiveProducto.imagenes, imagenProducto].filter((img): img is IImagen => img !== null)
-            }
-            try{
-                await productoService.put(elementActiveProducto.id,data)
-                getProductos()
-                dispatch(onEditProducto())
-            }catch(error){
-                console.log(error);
+            if(isEmpty(denominacion) || isEmpty(precioVenta.toString()) || isEmpty(descripcion) || isEmpty(codigo) || isEmpty(subcategoriaSelect.toString()) || subcategoriaSelect===0  ){
+                isEmpty(denominacion) && setDenominacionCorrect(false);
+                isEmpty(precioVenta.toString()) && setPrecioVentaCorrect(false);
+                isEmpty(descripcion) && setDescripcionCorrect(false);
+                isEmpty(codigo) && setCodigoCorrect(false);
+                isEmpty(subcategoriaSelect.toString())||subcategoriaSelect===0 && setCategorianCorrect(false);
+                setMessageError("Alguno de los campos esta vacio")
+            }else if(containLetters(precioVenta.toString())){
+                setPrecioVentaCorrect(false);
+                setMessageError("El campo de precio solo puede llevar numeros")
+            }else{
+                const data = {
+                    id:elementActiveProducto.id,
+                    denominacion:denominacion,
+                    precioVenta:precioVenta,
+                    descripcion:descripcion,
+                    habilitado:elementActiveProducto.habilitado,
+                    codigo:codigo,
+                    idCategoria:subcategoriaSelect,
+                    idAlergenos:selectedValues,
+                    imagenes: [...elementActiveProducto.imagenes, imagenProducto].filter((img): img is IImagen => img !== null)
+                }
+                try{
+                    await productoService.put(elementActiveProducto.id,data)
+                    getProductos()
+                    dispatch(onEditProducto())
+                }catch(error){
+                    console.log(error);
+                }
             }
         }
     }
-    /*const filterCategoriasHijas=(table:ICategorias[])=>{
-        const result = table.map(category=>category.sucursales.)
-        setHijasCategoryTable(result);
-    }
-    const [hijasCategoryTable,setHijasCategoryTable]=useState<any[]>([])
-
-    useEffect(()=>{
-        console.log(categoryTable);
-        
-        filterCategoriasHijas(categoryTable);
-        console.log(hijasCategoryTable);
-        
-    },[categoryTable])
-
-    console.log(categoryTable.length);
-    console.log(hijasCategoryTable.length);
-    */
-   console.log(title);
    
     return (
         <div className="addEditProducto">
         <h1 style={{color:"black"}}>{title}</h1>
+        <div className={(!denominacionCorrect || !precioVentaCorrect  ||  !descripcionCorrect || !codigoCorrect || !categoriaCorrect ) ? 'errorMessagge' : "noErrors"}>
+            <span>{messageError}</span>
+        </div>
         <Form className="formContainer" onSubmit={handleFinalSubmit}>
             <div className="formInput">
                 <Form.Group className="mb-3">
 
-                    <Form.Control name="denominacion" value={denominacion} onChange={onInputChange} className="control" type="text" placeholder="Denominacion:" />
-                    <Form.Control name="precioVenta" value={precioVenta} onChange={onInputChange} className="control" type="number" placeholder="Precio:" />
-                    <Form.Control name="descripcion" value={descripcion} onChange={onInputChange} className="control" type="text" placeholder="Categoria:" />
-                    <Form.Control name="codigo" value={codigo} onChange={onInputChange} className="control" type="text" placeholder="Codigo:" />
+                    <Form.Control name="denominacion" value={denominacion} onChange={onInputChange} className={ denominacionCorrect ? "control" : "denominacionError"} type="text" placeholder="Denominacion:" />
+                    <Form.Control name="precioVenta" value={precioVenta} onChange={onInputChange} className={ precioVentaCorrect ? "control" : "denominacionError"} type="number" placeholder="Precio:" />
+                    <Form.Control name="descripcion" value={descripcion} onChange={onInputChange}  className={ descripcionCorrect ? "control" : "denominacionError"} type="text" placeholder="Descripcion:" />
+                    <Form.Control name="codigo" value={codigo} onChange={onInputChange} className={ codigoCorrect ? "control" : "denominacionError"} type="text" placeholder="Codigo:" />
                     <div>
 
                         <h3 style={{color:"black"}}>Select Alergenos:</h3>
@@ -198,9 +293,17 @@ const AddEditProducto:FC = () => {
                     
                     
                     <Form.Label>Seleccione La categoria</Form.Label>
-                    <Form.Select id="categoriaSelect" name='categoriaSelect' value={categoriaSelect} onChange={handleSelectChange}>
+                    <Form.Select id="categoriaSelect" className={ categoriaCorrect ? "control" : "denominacionError"} name='categoriaSelect' value={categoriaSelect} onChange={handleSelectChange}>
 
                         {categoryTable.map((category:ICategorias)=>(
+                          <option key={category.id} value={category.id}>{category.denominacion}</option>
+                        ))}
+
+                    </Form.Select>
+                    <Form.Label>Seleccione La SubCat</Form.Label>
+                    <Form.Select disabled={subcategoryTable.length === 0} className={ categoriaCorrect ? "control" : "denominacionError"} id="subcategoriaSelect" name='subcategoriaSelect' value={subcategoriaSelect} onChange={handleSelectChange}>
+
+                        {Array.isArray(subcategoryTable) && subcategoryTable.map((category:ICategorias)=>(
                           <option key={category.id} value={category.id}>{category.denominacion}</option>
                         ))}
 

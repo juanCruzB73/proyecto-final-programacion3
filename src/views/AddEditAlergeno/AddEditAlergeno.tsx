@@ -9,6 +9,7 @@ import { AlergenosService } from "../../services/AlergenosService";
 import { useServices } from "../../hooks/useServices";
 import { IImagen } from "../../types/IImagen";
 import { UploadImage } from "../../components/UploadImage";
+import { useValidations } from "../../hooks/useValidations";
 const AddEditAlergeno = () => {
 
     const {addAlergeno,editAlergeno}=useSelector((state:RootState)=>state.administracion);
@@ -21,6 +22,11 @@ const AddEditAlergeno = () => {
     const initialFormValue=editAlergeno && elemetActiveAlergeno
     ? {denominacion:elemetActiveAlergeno.denominacion}
     : {denominacion:""};
+
+    //validation
+    const [denominacionCorrect,setDenominacionCorrect]=useState<boolean>(true);
+    const [messageError,setMessageError]=useState<string>("");
+    const {isEmpty}=useValidations();
 
     const dispatch=useDispatch<AppDispatch>()
     const{denominacion,onInputChange,onResetForm}=useForm(initialFormValue)
@@ -38,41 +44,56 @@ const AddEditAlergeno = () => {
         e.preventDefault();
         if(editAlergeno){
             if(!elemetActiveAlergeno) return
-            const data={
-                id:elemetActiveAlergeno.id,
-                denominacion:denominacion,
-                imagen:imagenAlergeno ? imagenAlergeno : null,
+            if(isEmpty(denominacion)){
+                setDenominacionCorrect(false);
+                setMessageError("La denominacion no puede estar vacia.")
+            }else{
+                const data={
+                    id:elemetActiveAlergeno.id,
+                    denominacion:denominacion,
+                    imagen:imagenAlergeno ? imagenAlergeno : elemetActiveAlergeno.imagen,
+                }
+                try{
+                    await alergenoService.put(elemetActiveAlergeno.id,data)
+                    getAlergenos()
+                    dispatch(onEditAlergeno())
+                }catch(error){
+                    console.log(error);  
+                }
             }
-            try{
-                await alergenoService.put(elemetActiveAlergeno.id,data)
-                getAlergenos()
-                dispatch(onEditAlergeno())
-            }catch(error){
-                console.log(error);  
-            }
+            
         }
         if(addAlergeno){
-            const data={
-                denominacion:denominacion,
-                imagen:imagenAlergeno ? imagenAlergeno : null,
+            if(isEmpty(denominacion)){
+                setDenominacionCorrect(false);
+                setMessageError("La denominacion no puede estar vacia.")
+            }else{
+                const data={
+                    denominacion:denominacion,
+                    imagen:imagenAlergeno ? imagenAlergeno : null,
+                }
+                try{
+                    await alergenoService.post(data)
+                    getAlergenos()
+                    dispatch(onAddAlergeno())
+                }catch(error){
+                    console.log(error);  
+                }
             }
-            try{
-                await alergenoService.post(data)
-                getAlergenos()
-                dispatch(onAddAlergeno())
-            }catch(error){
-                console.log(error);  
-            }
+            
         }
     }
 
 return (
     <div className="containerAddEditAlergeno">
         <h1 style={{color:"black"}}>{title}</h1>
+        <div className={!denominacionCorrect ? 'errorMessagge' : "noErrors"}>
+            <span>{messageError}</span>
+        </div>
         <Form className="formContainer" onSubmit={handleFinalSubmit}>
             <div className="formInput">
-                <Form.Group className="mb-3">
-                    <Form.Label>Ingresar el nombre</Form.Label>
+                <Form.Group className={ denominacionCorrect ? "mb-3" : "denominacionError"}>
+                    <Form.Label>Ingresar la denominacion</Form.Label>
                     <Form.Control name="denominacion" value={denominacion} onChange={onInputChange} className="control" type="text" placeholder="Nombre:" />
                 </Form.Group>
             </div>

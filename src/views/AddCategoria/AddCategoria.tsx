@@ -7,6 +7,7 @@ import { onAddCategoria, onEditCategoria } from "../../redux/slices/administraci
 import { CategoriasService } from "../../services/CategoriasService"
 import { useForm } from "../../hooks/useForm"
 import { useServices } from "../../hooks/useServices"
+import { useValidations } from "../../hooks/useValidations"
 
 
 
@@ -31,6 +32,11 @@ const AddCategoria:FC = () => {
 
     const {denominacion,onInputChange,onResetForm}=useForm<IForm>(initialFormValues)
 
+    //validation
+    const [denominacionCorrect,setDenominacionCorrect]=useState<boolean>(true);
+    const [messageError,setMessageError]=useState<string>("");
+    const {isEmpty}=useValidations();
+    
     useEffect(() => {
         if (editCategoria && elementActiveCategoria) {
             setTitle("Editar Categoria");
@@ -48,41 +54,53 @@ const AddCategoria:FC = () => {
             
             if(!elementActiveCategoria)return
             if(!elementActive)return
-            const idSucursales=getIdSucursales()
-            const data={
-                id:elementActiveCategoria.id,
-                denominacion:denominacion,
-                idEmpresa:elementActive.empresa.id,
-                eliminado:elementActiveCategoria.eliminado,
-                idSucursales:idSucursales,
-                idCategoriaPadre:null
+
+            if(isEmpty(denominacion)){
+                setDenominacionCorrect(false);
+                setMessageError("La denominacion no puede estar vacia.")
+            }else{
+                const idSucursales=getIdSucursales()
+                const data={
+                    id:elementActiveCategoria.id,
+                    denominacion:denominacion,
+                    idEmpresa:elementActive.empresa.id,
+                    eliminado:elementActiveCategoria.eliminado,
+                    idSucursales:idSucursales,
+                    idCategoriaPadre:null
+                }
+    
+                try{
+                    await categoriaService.put(elementActiveCategoria.id,data)
+                    getCategorias()
+                    dispatch(onEditCategoria())
+                }catch(error){
+                    console.log(error);
+    
+                }
+     
             }
 
-            try{
-                await categoriaService.put(elementActiveCategoria.id,data)
-                getCategorias()
-                dispatch(onEditCategoria())
-            }catch(error){
-                console.log(error);
-
-            }
         }
         if (addCategoria){
             
             if(!elementActive)return
-        
-            const data={
-                denominacion:denominacion,
-                idEmpresa:elementActive.empresa.id,
-                idCategoriaPadre:null
-            }
-
-            try{
-                await categoriaService.post(data)
-                getCategorias()
-                dispatch(onAddCategoria())
-            }catch(error){
-                console.log(error);    
+            if(isEmpty(denominacion)){
+                setDenominacionCorrect(false);
+                setMessageError("La denominacion no puede estar vacia.")
+            }else{
+                const data={
+                    denominacion:denominacion,
+                    idEmpresa:elementActive.empresa.id,
+                    idCategoriaPadre:null
+                }
+    
+                try{
+                    await categoriaService.post(data)
+                    getCategorias()
+                    dispatch(onAddCategoria())
+                }catch(error){
+                    console.log(error);    
+                }
             }
         }
     }
@@ -99,10 +117,13 @@ const AddCategoria:FC = () => {
         <div className="contenedorPadre">
             <div className="addCategoria">
                 <h1 style={{color:"black"}}>{title}</h1>
+                <div className={!denominacionCorrect ? 'errorMessagge' : "noErrors"}>
+                    <span>{messageError}</span>
+                </div>
                 <Form className="formContainer" onSubmit={handleFinalSubmit}>
                     <div className="formInput">
-                        <Form.Group className="mb-3">
-                            <Form.Label>Ingresar el nombre</Form.Label>
+                        <Form.Group className={ denominacionCorrect ? "mb-3" : "denominacionError"}>
+                            <Form.Label>Ingresar la denominación</Form.Label>
                             <Form.Control name="denominacion"  onChange={onInputChange} value={denominacion} className="control" type="text" placeholder="Nombre:" />
                         </Form.Group>
                     </div>

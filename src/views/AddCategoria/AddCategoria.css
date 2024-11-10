@@ -13,7 +13,6 @@
     border-radius: 0.6rem;
     box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.2);
 }
-
 h1 {
     font-size: 4vh;
     font-weight: bold;
@@ -37,6 +36,28 @@ h1 {
     flex-direction: column;
     gap: 0.5rem; 
     font-size: 1.5rem;
+}
+.formInput .denominacionError{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; 
+    font-size: 1.5rem;
+    border: 1px solid red;
+    color: white;
+    background-color: rgba(230, 68, 68, 0.822);
+}
+.noErrors{
+    display: none;
+}
+.errorMessagge{
+    padding: .3rem;
+    width: 80%;
+    height: 5vh;
+    margin-bottom: .5rem;
+    color: white;
+    border: 1px solid red;
+    background-color: rgba(230, 68, 68, 0.822);
+    border-radius: 0.5rem;
 }
 .control{
     height: 4vh;

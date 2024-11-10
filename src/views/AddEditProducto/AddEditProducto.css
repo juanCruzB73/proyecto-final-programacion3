@@ -7,6 +7,7 @@
     flex-direction: column;
     align-items: center;
     width: 90vw;
+    max-height: 70vh;
     max-width: 25rem;
     padding: 2rem;
     background-color: #ffffff;
@@ -38,6 +39,28 @@ h1 {
     flex-direction: column;
     gap: 0.5rem; 
     font-size: 1.5rem;
+}
+.formInput .denominacionError{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; 
+    font-size: 1.5rem;
+    border: 1px solid red;
+    color: white;
+    background-color: rgba(230, 68, 68, 0.822);
+}
+.noErrors{
+    display: none;
+}
+.errorMessagge{
+    padding: .3rem;
+    width: 80%;
+    height: 5vh;
+    margin-bottom: .5rem;
+    color: white;
+    border: 1px solid red;
+    background-color: rgba(230, 68, 68, 0.822);
+    border-radius: 0.5rem;
 }
 .control{
     height: 4vh;

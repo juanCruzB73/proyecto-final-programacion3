@@ -1,4 +1,28 @@
-http://190.221.207.224:8090/empresas
-http://190.221.207.224:8090/sucursales
+useEffect(() => {
+        console.log(categoriaSelect);
+        
+        if (!categoriaSelect || !elementActive?.id) return;
+            
+            let selectedCategoryId;
+            console.log(categoryTable.length)
+            if(addProducto){
+                selectedCategoryId = categoryTable.length===0 ? categoryTable[0].id : categoriaSelect
+            }else{
+                selectedCategoryId = categoryTable.length===0 ? categoriaPadreEdit:categoriaSelect;
+            }
+            
+                        
+            const subCatService = new CategoriasService(`http://localhost:8090/categorias/allSubCategoriasPorCategoriaPadre/${selectedCategoryId}/${elementActive.id}`);
+            
+            const fetchData = async () => {
+                try {
+                    const response = await subCatService.getAll();
+                    console.log("Fetched subcategories:", response); // Debugging line
+                    setSubcategoryTable(response);
+                } catch (error) {
+                    console.error("Error fetching subcategories:", error);
+                }
+            };
+            fetchData()
 
-#1c1b22
+    }, [categoriaSelect, categoryTable, elementActive]);

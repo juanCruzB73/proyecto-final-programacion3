@@ -16,5 +16,5 @@ export const useSelect=<T extends SelectValues>(initialState:T) => {
         });
     };
     
-    return {...selectedValues,selectedValues,handleSelectChange}
+    return {...selectedValues,selectedValues,setSelectedValue,handleSelectChange}
 }
