@@ -19,13 +19,16 @@
     height: 8%;
     display: flex;
     align-items: center;
+    
     background-color: #21232A;
     padding: 1rem;
     border-bottom: 1px solid white;
 }
 .topBar h1{
+    margin-top: 1rem;
     margin-left: 1rem;
 }
+
 .topBar button{
     background-color: "white";
     color:"black";
@@ -56,10 +59,17 @@
     align-items: center;
     
 }
-.buttonsSideBar button{
+.notActive{
     font-size: 1rem;
     background-color: transparent;
     border: none;
+    padding: 1rem;
+    color: white;
+}
+.activeFilter{
+    font-size: 1rem;
+    background-color: transparent;
+    border: 1px solid white;
     padding: 1rem;
     color: white;
 }

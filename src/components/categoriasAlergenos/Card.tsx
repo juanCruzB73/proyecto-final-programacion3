@@ -47,9 +47,8 @@ export const Card: FC<Iprops> = ({ element }) => {
         
         if (subCategoryService) {
           await subCategoryService.getAll().then(response => setSubCategorias(response || []));
-        }else{
-          console.log("subcategorias null"); 
         }
+        
       } else if (productoFilter) {
         await articuloService.getById(element.id).then(response => response && setPromiseResponse(response));
       } else if (alergenosFilter) {

@@ -71,7 +71,7 @@ export const AddSucursal = () => {
 
   //peticiones http con hook
   const {loading,setLoading,getPaises}=useServices("http://localhost:8090/paises")
-  //const {getProvincia}=useServices(`http://localhost:8090/provincias`)
+  const {getProvincia}=useServices(`http://localhost:8090/provincias`)
   const {getLocalidad}=useServices(`http://localhost:8090/localidades`)
   const {getSucursales}=useServices(`http://localhost:8090/sucursales`)
 
@@ -134,46 +134,35 @@ export const AddSucursal = () => {
 
   useEffect(()=>{
     getPaises();
-    //getProvincia();
-    //getLocalidad();
+    getProvincia();
+    getLocalidad();
     
   },[])
 
   useEffect(()=>{
-    const fetchData=async()=>{
-      console.log("asasd");
-      
+    const fetchData=async()=>{      
       if(!paisSelect)return
         let pais=findIdPais(paisSelect)
         if(!pais)return
-        const provinciaService=new ProvinciaService(`http://localhost:8090/provincias/findByPais/1`);
-        console.log("http://localhost:8090/provincias/findByPais/1");
-        
+        const provinciaService=new ProvinciaService(`http://localhost:8090/provincias/findByPais/1`);        
         await provinciaService.getAll().then(response=>{
           dispatch(setTableProvincia(response));
           setLoading(false)
       })
-      console.log(paisSelect);
-      console.log(provinciaTable);
     }
     fetchData()
   },[paisSelect,paisTable])
 
   useEffect(()=>{
-    const fetchData=async()=>{
-      console.log("aaaa");
-      
+    const fetchData=async()=>{      
       if(!provinciaSelect)return
         let provincia=findProvinciaById(provinciaSelect)
-        if(!provincia)return
-        console.log(`http://localhost:8090/localidades/findByProvincia/${provincia.id}`);
-        
+        if(!provincia)return        
         const localidadService=new LocalidadService(`http://localhost:8090/localidades/findByProvincia/${provincia.id}`);
         await localidadService.getAll().then(response=>{
           dispatch(setTableLocalidad(response));
           setLoading(false)
       })
-      console.log(provinciaSelect);
     }
     fetchData()
   },[provinciaSelect,provinciaTable])
@@ -203,9 +192,7 @@ export const AddSucursal = () => {
       },
       idEmpresa:empresa?.id ?? dataTable[0].id,
       logo:image,
-    }
-    console.log(data);
-    
+    }    
     //validaciones para inputs vacios
     if(
       isEmpty(nombre) || isEmpty(horarioApertura) || isEmpty(horarioCierre)

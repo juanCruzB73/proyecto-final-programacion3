@@ -20,7 +20,6 @@ export abstract class BackendClient<T>extends AbstractBackendClient<T>{
     }
 
     async post(data: T): Promise<T | null> {
-        console.log(data)
         const response=await fetch(`${this.baseURL}`,{
             method:"POST",
             headers:{

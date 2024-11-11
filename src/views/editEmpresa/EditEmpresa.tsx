@@ -33,12 +33,12 @@ let initialValue:IForm={
 export const EditEmpresa=()=> {
   
   const {loading,setLoading,getEmpresas}=useServices(full_api)
-  const [image, setImage] = useState<string | null>(null);
   
   const dispatch=useDispatch<AppDispatch>()
   
   const {elementActive}=useSelector((state:RootState)=>state.tablaEmpresa)
-
+  const [image, setImage] = useState<string | null>(elementActive?.logo);
+  
   let logoValue=""
 
   if(elementActive?.logo){
@@ -93,9 +93,7 @@ export const EditEmpresa=()=> {
     }else{
       try{
         if (!elementActive) return;
-        await empresaService.put(elementActive.id,newData)
-        console.log("fetcch");
-        
+        await empresaService.put(elementActive.id,newData)        
         setLoading(true)
         getEmpresas()
         dispatch(onEditCompany())

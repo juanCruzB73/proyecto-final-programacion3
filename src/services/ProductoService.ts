@@ -20,7 +20,6 @@ export class ProductoService extends BackendClient<IProductos|ICreateProducto|IU
     }
 
     async post(data: ICreateProducto): Promise<ICreateProducto | null> {
-        console.log(data)
         const response=await fetch(`${this.baseURL}`,{
             method:"POST",
             headers:{

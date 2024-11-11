@@ -42,6 +42,7 @@ const AddEditProducto:FC = () => {
     const [alergenosTable,setAlergenosTable]=useState<any>([]);
     const [categoryTable,setCategoryTable]=useState<any>([]);
     const [subcategoryTable,setSubcategoryTable]=useState<ICategorias[]>([]);
+    const [selectedValues,setSelectedValues]=useState<number[]>([]);
 
     //handle change checkbox change
 
@@ -58,10 +59,7 @@ const AddEditProducto:FC = () => {
         setAlergenosTable(administracionTable2)
         setCategoryTable(administracionTable)
         
-    },[administracionTable,administracionTable2])
-
-    
-    const [selectedValues,setSelectedValues]=useState<number[]>([]);
+    },[administracionTable,administracionTable2,selectedValues])
 
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value, checked } = event.target;
@@ -95,8 +93,6 @@ const AddEditProducto:FC = () => {
                         return;
                     }
                 });
-                
-                console.log("result",result);
                 return result;
             };
         
@@ -109,49 +105,60 @@ const AddEditProducto:FC = () => {
         categoriaSelect: 0,
         subcategoriaSelect: 0,
     });
-    console.log(categoriaPadreEdit);
-
-    useEffect(() => {
-        if (categoriaPadreEdit && categoryTable.length > 0) {
-            setInitalSelectValues({
-                categoriaSelect: addProducto ? categoryTable[0].id : categoriaPadreEdit,
-                subcategoriaSelect: addProducto ? categoryTable[0].categoria[0]?.id : elementActiveProducto?.categoria.id,
-            });
-            setSelectedValue(initalSelectValues);
-        }
-    }, [categoriaPadreEdit, categoryTable, elementActiveProducto]);
 
     const {categoriaSelect,subcategoriaSelect,setSelectedValue,handleSelectChange}=useSelect<ISelectForm>(initalSelectValues);
 
     useEffect(() => {
-        console.log(categoriaSelect);
+        if (categoriaPadreEdit && categoryTable.length > 0 && editProducto && elementActiveProducto) {
+            
+            setInitalSelectValues({
+                categoriaSelect: categoriaPadreEdit,
+                subcategoriaSelect: elementActiveProducto?.categoria.id,
+            });
+            setSelectedValue(initalSelectValues);            
+        }
+
+        if(categoryTable.length > 0 && addProducto){
+            
+            
+            setInitalSelectValues({
+                categoriaSelect: categoryTable[0].id,
+                subcategoriaSelect: (categoryTable[0].subCategorias?.[0]?.id ?? 0),
+            });
+            setSelectedValue(initalSelectValues);            
+        }
+           
+    }, [categoriaPadreEdit, categoryTable, elementActiveProducto]);//subir sefunda sub cat
+
+    
+
+    useEffect(() => {
         
-        if (!categoriaSelect || !elementActive?.id) return;
-            
-            let selectedCategoryId;
-            console.log(categoryTable.length)
-            if(addProducto){
-                selectedCategoryId = categoryTable.length===0 ? categoryTable[0].id : categoriaSelect
-            }else{
-                selectedCategoryId = categoryTable.length===0 ? categoriaPadreEdit:categoriaSelect;
-            }
-            
-                        
-            const subCatService = new CategoriasService(`http://localhost:8090/categorias/allSubCategoriasPorCategoriaPadre/${selectedCategoryId}/${elementActive.id}`);
-            
-            const fetchData = async () => {
-                try {
-                    const response = await subCatService.getAll();
-                    console.log("Fetched subcategories:", response); // Debugging line
-                    setSubcategoryTable(response);
-                } catch (error) {
-                    console.error("Error fetching subcategories:", error);
+        if (!elementActive?.id || categoryTable.length === 0 || categoriaSelect === 0) return;
+        const selectedCategoryId = addProducto ? (categoriaSelect || categoryTable[0]?.id) : categoriaSelect;
+        
+        const subCatService = new CategoriasService(
+            `http://localhost:8090/categorias/allSubCategoriasPorCategoriaPadre/${selectedCategoryId}/${elementActive.id}`
+        );
+        
+        const fetchData = async () => {
+            try {
+                const response = await subCatService.getAll();
+                setSubcategoryTable(response);
+                if(subcategoryTable.length > 0){                    
+                    setSelectedValue({
+                        categoriaSelect: selectedCategoryId,
+                        subcategoriaSelect: response[0].id,
+                    });            
                 }
-            };
-            fetchData()
-
-    }, [categoriaSelect, categoryTable, elementActive]);
-
+                
+            } catch (error) {
+                console.error("Error fetching subcategories:", error);
+            }
+        };
+        fetchData();
+        
+    }, [categoriaSelect, elementActive]);
 
     //validation
     const [denominacionCorrect,setDenominacionCorrect]=useState<boolean>(true);
@@ -205,14 +212,13 @@ const AddEditProducto:FC = () => {
                 setPrecioVentaCorrect(false);
                 setMessageError("El campo de precio solo puede llevar numeros")
             }else{
-                
                 const data = {
                     denominacion:denominacion,
                     precioVenta:precioVenta,
                     descripcion:descripcion,
                     habilitado:true,
                     codigo:codigo,
-                    idCategoria:subcategoriaSelect === 0 ? subcategoryTable[0].id : subcategoriaSelect ,
+                    idCategoria:subcategoriaSelect === 0 ? subcategoryTable[0].id : subcategoriaSelect,
                     idAlergenos:selectedValues,
                     imagenes:imagenProducto ? [imagenProducto] : [],
                 }

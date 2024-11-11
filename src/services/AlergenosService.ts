@@ -21,7 +21,6 @@ export class AlergenosService extends BackendClient<IAlergenos|ICreateAlergeno|I
     }
 
     async post(data: ICreateAlergeno): Promise<ICreateAlergeno | null> {
-        console.log(data)
         const response=await fetch(`${this.baseURL}`,{
             method:"POST",
             headers:{

@@ -20,7 +20,6 @@ export class CategoriasService extends BackendClient<ICategorias|ICreateCategori
     }
 
     async post(data: ICreateCategoria): Promise<ICreateCategoria | null> {
-        console.log(data)
         const response=await fetch(`${this.baseURL}`,{
             method:"POST",
             headers:{

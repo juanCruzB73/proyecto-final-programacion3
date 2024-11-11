@@ -4,7 +4,6 @@ import { BackendClient } from "./BackenClient";
 
 export class SucursalService extends BackendClient<ICreateSucursal>{
     async post(data: ICreateSucursal): Promise<ICreateSucursal | null> {
-        console.log(data)
         const response=await fetch(`${this.baseURL}`,{
             method:"POST",
             headers:{

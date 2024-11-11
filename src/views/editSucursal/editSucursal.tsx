@@ -48,7 +48,6 @@ export const EditSucursal = () => {
     let valueLogo=""
     if(!elementActive)return
 
-    
     if(elementActive.esCasaMatriz){
       casaMatrizValue="si"
     }else{
@@ -86,20 +85,20 @@ export const EditSucursal = () => {
 
 
 
-    const {nombre,horarioApertura,horarioCierre,latitud,longitud,calle,nroCalle,cp,piso,nroDpto,logo,onInputChange,onResetForm}=useForm<IForm>(initialValue)
+    const {nombre,horarioApertura,horarioCierre,latitud,longitud,calle,nroCalle,cp,piso,nroDpto,onInputChange,onResetForm}=useForm<IForm>(initialValue)
 
     const {dataTable}=useSelector((state:RootState)=>state.tablaEmpresa)
     const {paisTable}=useSelector((state:RootState)=>state.tablaPaises)
     const {provinciaTable}=useSelector((state:RootState)=>state.tablaProvincia)
     const {localidadTable}=useSelector((state:RootState)=>state.tablaLocalidad)
 
-    const {loading,setLoading,getPaises}=useServices("http://190.221.207.224:8090/paises")
-    const {getProvincia}=useServices("http://190.221.207.224:8090/provincias")
-    const {getLocalidad}=useServices("http://190.221.207.224:8090/localidades")
-    const {getSucursales}=useServices("http://190.221.207.224:8090/sucursales")
+    const {loading,setLoading,getPaises}=useServices("http://localhost:8090/paises")
+    const {getProvincia}=useServices("http://localhost:8090/provincias")
+    const {getLocalidad}=useServices("http://localhost:8090/localidades")
+    const {getSucursales}=useServices("http://localhost:8090/sucursales")
 
     const {paisSelect,provinciaSelect,localidadSelect,empresaSelect,casaMatrizSelect,handleSelectChange}=useSelect<ISelect>(selectInitialValue);
-    const [image, setImage] = useState<string | null>(null);
+    const [image, setImage] = useState<string | null>(elementActive.logo);
     //validations
     //validations
   const [wrongName,setWrongName]=useState(false);
@@ -230,7 +229,6 @@ export const EditSucursal = () => {
   const findIdLocalidadLocation=(nombre:string)=>{
     let result=localidadTable.filter(e=>e.nombre==nombre)
     if(result){
-      console.log(nombre,result)
       return result[0];
     }else{
       console.log("no hay resultado");
