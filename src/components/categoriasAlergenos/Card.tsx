@@ -29,14 +29,26 @@ export const Card: FC<Iprops> = ({ element }) => {
   const [promiseResponse, setPromiseResponse] = useState<any>();
   const [subCategorias, setSubCategorias] = useState<ICategorias[]>([]);
 
-  const categoriaService = new CategoriasService('http://localhost:8090/categorias');
-  const categoriasPadreService = new CategoriasService(`http://localhost:8090/categorias`)
-  const articuloService = new ProductoService('http://localhost:8090/articulos');
-  const alergenosService = new AlergenosService('http://localhost:8090/alergenos');
+  // URL para la API en Docker
+  const categoriaService = new CategoriasService("http://190.221.207.224:8090/categorias");
+  const categoriasPadreService = new CategoriasService("http://190.221.207.224:8090/categorias");
+  const articuloService = new ProductoService("http://190.221.207.224:8090/articulos");
+  const alergenosService = new AlergenosService("http://190.221.207.224:8090/alergenos");
   const subCategoryService = elementActive?.id && category?.id
-    ? new CategoriasService(`http://localhost:8090/categorias/allSubCategoriasPorCategoriaPadre/${category.id}/${elementActive.id}`)
+    ? new CategoriasService(`http://190.221.207.224:8090/categorias/allSubCategoriasPorCategoriaPadre/${category.id}/${elementActive.id}`)
     : null;  
   
+  // URL para la API del profesor
+  /*
+  const categoriaService = new CategoriasService("http://localhost:8090/categorias");
+  const categoriasPadreService = new CategoriasService("http://localhost:8090/categorias");
+  const articuloService = new ProductoService("http://localhost:8090/articulos");
+  const alergenosService = new AlergenosService("http://localhost:8090/alergenos");
+  const subCategoryService = elementActive?.id && category?.id
+    ? new CategoriasService(`http://localhost:8090/categorias/allSubCategoriasPorCategoriaPadre/${category.id}/${elementActive.id}`)
+    : null;
+  */
+
   useEffect(() => {
     const fetchData = async () => {
       if (categoriaFilter && categoriaService) {
@@ -98,11 +110,11 @@ export const Card: FC<Iprops> = ({ element }) => {
                     {subCategoria.denominacion || 'no name'}
                     <div>
                       <i onClick={() =>{
-                         category && dispatch(setElementActiveAdministracionCategoria({ element: category }));
-                         dispatch(setElementActiveSubCategoria({element:subCategoria}))
-                         dispatch(onEditSubCategoria())
-                         setDisplay(false)
-                         }} className="bi bi-pencil-square"></i>
+                        category && dispatch(setElementActiveAdministracionCategoria({ element: category }));
+                        dispatch(setElementActiveSubCategoria({element:subCategoria}))
+                        dispatch(onEditSubCategoria())
+                        setDisplay(false)
+                        }} className="bi bi-pencil-square"></i>
                     </div>
                   </span>
                 ))

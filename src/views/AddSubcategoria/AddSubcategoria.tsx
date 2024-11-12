@@ -22,9 +22,13 @@ const AddSubcategoria:FC = () => {
 
     const dispatch=useDispatch<AppDispatch>()
 
-    const categoriaService= addSubCategoria ? new CategoriasService(`http://localhost:8090/categorias/create`) : new CategoriasService(`http://localhost:8090/categorias/update`)
+//URL para la API en Docker
+const categoriaService= addSubCategoria ? new CategoriasService(`http://190.221.207.224:8090/categorias/create`) : new CategoriasService(`http://190.221.207.224:8090/categorias/update`)
+const {getCategorias}=useServices(`http://190.221.207.224:8090/categorias/allCategoriasPadrePorSucursal/${elementActive?.id}`)
 
-    const {getCategorias}=useServices(`http://localhost:8090/categorias/allCategoriasPadrePorSucursal/${elementActive?.id}`)
+    //URL para la API del profesor
+    // const categoriaService= addSubCategoria ? new CategoriasService(`http://localhost:8090/categorias/create`) : new CategoriasService(`http://localhost:8090/categorias/update`)
+    // const {getCategorias}=useServices(`http://localhost:8090/categorias/allCategoriasPadrePorSucursal/${elementActive?.id}`)
     
     const initialFormValues = editSubCategoria
     ? { denominacion: elementActiveCategoriaSubCategoria?.denominacion }

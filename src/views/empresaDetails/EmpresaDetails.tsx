@@ -17,7 +17,7 @@ export const EmpresaDetails = () => {
   return (
     <div className="empresa-detail">
     
-       <Card className="details-container" >
+      <Card className="details-container" >
           
           <Card.Body >
             <Card.Title style={{paddingBottom: "3vh",

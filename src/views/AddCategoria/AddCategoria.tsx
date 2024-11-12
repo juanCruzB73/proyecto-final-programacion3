@@ -23,13 +23,21 @@ const AddCategoria:FC = () => {
     const [title,setTitle]=useState("Crear Categoria")
 
     const dispatch=useDispatch<AppDispatch>()
-    
+
+//URL para la API en docker
+const categoriaService= addCategoria ? new CategoriasService("http://190.221.207.224:8090/categorias/create") : new CategoriasService("http://190.221.207.224:8090/categorias/update")
+const {getCategorias}=useServices(`http://190.221.207.224:8090/categorias/allCategoriasPadrePorSucursal/${elementActive?.id}`)    
+const initialFormValues = editCategoria && elementActiveCategoria
+? { denominacion: elementActiveCategoria.denominacion }
+: { denominacion: "" };
+//URL para la API del profesor
+/*
     const categoriaService= addCategoria ? new CategoriasService("http://localhost:8090/categorias/create") : new CategoriasService("http://localhost:8090/categorias/update")
     const {getCategorias}=useServices(`http://localhost:8090/categorias/allCategoriasPadrePorSucursal/${elementActive?.id}`)    
     const initialFormValues = editCategoria && elementActiveCategoria
     ? { denominacion: elementActiveCategoria.denominacion }
     : { denominacion: "" };
-
+*/
     const {denominacion,onInputChange,onResetForm}=useForm<IForm>(initialFormValues)
 
     //validation

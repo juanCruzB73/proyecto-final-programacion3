@@ -20,8 +20,11 @@ export const UploadImage:FC<IUploadImage> = ({
     setImageObjeto,
     typeElement,
 }) => {
+//URL para la API  en Docker 
+const imageService=new ImageService("http://190.221.207.224:8090/images");
 
-    const imageService=new ImageService("http://localhost:8090/images");
+//URL para la API del profesor
+//    const imageService=new ImageService("http://localhost:8090/images");
 
     const handleFileChange=async(event: React.ChangeEvent<HTMLInputElement>)=>{
 

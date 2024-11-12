@@ -41,7 +41,11 @@ interface IForm {
 
 export const EditSucursal = () => {
     const dispatch=useDispatch<AppDispatch>()
-    const sucursalService=new SucursalService("http://localhost:8090/sucursales/update")
+    //URL para la API en docker
+    const sucursalService=new SucursalService("http://190.221.207.224:8090/sucursales/update")
+
+    //URL para la API del profesor
+    // const sucursalService=new SucursalService("http://localhost:8090/sucursales/update")
     const {elementActive}=useSelector((state:RootState)=>state.tablaSucursal)
     let casaMatrizValue:string;
     let categoriasValue:any;
@@ -142,8 +146,8 @@ export const EditSucursal = () => {
     const handleSubmit=async(e:React.FormEvent)=>{
       e.preventDefault();
 
-     const localidad=findIdLocalidadLocation(localidadSelect);
-     const empresa=findIdEmpresa(empresaSelect)
+    const localidad=findIdLocalidadLocation(localidadSelect);
+    const empresa=findIdEmpresa(empresaSelect)
     
       if(!localidad || !empresa)return
       

@@ -8,12 +8,21 @@ import {Card} from './Card';
 import { useServices } from '../../hooks/useServices';
 
 export const ListCards:FC = () => { 
+//URL para la API  en Docker
+const {elementActive}=useSelector((state:RootState)=>state.tablaSucursal)
 
-  const {elementActive}=useSelector((state:RootState)=>state.tablaSucursal)
+const {getProductos}=useServices(`http://190.221.207.224:8090/articulos/porSucursal/${elementActive?.id}`);
+const {getAlergenos}=useServices('http://190.221.207.224:8090/alergenos')
+const {getCategorias}=useServices(`http://190.221.207.224:8090/categorias/allCategoriasPadrePorSucursal/${elementActive?.id}`)
 
-  const {getProductos}=useServices(`http://localhost:8090/articulos/porSucursal/${elementActive?.id}`);
-  const {getAlergenos}=useServices('http://localhost:8090/alergenos')
-  const {getCategorias}=useServices(`http://localhost:8090/categorias/allCategoriasPadrePorSucursal/${elementActive?.id}`)
+  //URL para la API del profesor
+  /**
+const {elementActive}=useSelector((state:RootState)=>state.tablaSucursal)
+
+const {getProductos}=useServices(`http://localhost:8090/articulos/porSucursal/${elementActive?.id}`);
+const {getAlergenos}=useServices('http://localhost:8090/alergenos')
+const {getCategorias}=useServices(`http://localhost:8090/categorias/allCategoriasPadrePorSucursal/${elementActive?.id}`)
+*/
   //const {administracionTable}=useSelector((state:RootState)=>state.tableAdministracion)
 
   const {administracionTable,administracionTable2,administracionTable3}=useSelector((state:RootState)=>state.tableAdministracion)
