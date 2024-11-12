@@ -45,15 +45,15 @@ export abstract class BackendClient<T>extends AbstractBackendClient<T>{
         const newData=await response.json();
         return newData as T;
     }
-    /*
+    
     async delete(id: number): Promise<void> {
-        const response = await fetch(`${this.baseUrl}/${id}`, {
+        const response = await fetch(`${this.baseURL}/${id}`, {
         method: "DELETE",
         });
         if (!response.ok) {
             throw new Error(`Error al eliminar el elemento con ID ${id}`);
         }
     }
-    */
+    
 
 }

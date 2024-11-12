@@ -15,7 +15,6 @@ import {setAdministracionTable,setAdministracionTable2,setAdministracionTable3} 
 import { AlergenosService } from "../services/AlergenosService";
 import { CategoriasService } from "../services/CategoriasService";
 import { ProductoService } from "../services/ProductoService";
-import { IProvincia } from "../types/IProvincia";
 
 export const useServices= (apiURL:string,) => {
 
@@ -50,12 +49,6 @@ export const useServices= (apiURL:string,) => {
         setLoading(false)
       })
     }
-    /*const getProvinciaById=async()=>{
-      await provinciaService.getAll().then(response=>{
-        dispatch(setTableProvincia(response));
-        setLoading(false)
-      })
-    }*/
     const getLocalidad=async()=>{
       await localidadService.getAll().then(response=>{
         dispatch(setTableLocalidad(response));

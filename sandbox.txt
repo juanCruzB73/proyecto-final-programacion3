@@ -1,6 +1,12 @@
-if(subcategoryTable[0]===response[0]){
-                    setSelectedValue({
-                        categoriaSelect: selectedCategoryId,
-                        subcategoriaSelect: response[0].id,
-                    })
-                }
+.mb-3 .control{
+        align-self: center;
+        width: 60%;
+    }
+    .checkboxs{
+        align-self: center;
+        width: 60%;
+    }
+    .formInput .denominacionError{
+        align-self: center;
+        width: 60%;
+    }

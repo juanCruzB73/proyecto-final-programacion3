@@ -23,7 +23,6 @@ interface IForm{
 }
 
 interface ISelectForm{
-    categoriaSelect:number;
     subcategoriaSelect:number;
 }
 //imagenes
@@ -34,13 +33,11 @@ const AddEditProducto:FC = () => {
     const {elementActive}=useSelector((state:RootState)=>state.tablaSucursal);
     const {elementActiveProducto,administracionTable,administracionTable2}=useSelector((state:RootState)=>state.tableAdministracion)
 
-    const {getCategorias}=useServices(`http://localhost:8090/categorias/allCategoriasPadrePorSucursal/${elementActive?.id}`)
     const {getAlergenos}=useServices("http://localhost:8090/alergenos")
     const {getProductos}=useServices(`http://localhost:8090/articulos/porSucursal/${elementActive?.id}`)
     const productoService= addProducto ? new ProductoService("http://localhost:8090/articulos/create") : new ProductoService("http://localhost:8090/articulos/update");
     //alergenos checkBox
     const [alergenosTable,setAlergenosTable]=useState<any>([]);
-    const [categoryTable,setCategoryTable]=useState<any>([]);
     const [subcategoryTable,setSubcategoryTable]=useState<ICategorias[]>([]);
     const [selectedValues,setSelectedValues]=useState<number[]>([]);
 
@@ -50,14 +47,12 @@ const AddEditProducto:FC = () => {
         if(!elementActive)return
         const fetchData=async()=>{
             await getAlergenos()
-            await getCategorias()
         }
         fetchData();
     },[])
 
     useEffect(()=>{
         setAlergenosTable(administracionTable2)
-        setCategoryTable(administracionTable)
         
     },[administracionTable,administracionTable2,selectedValues])
 
@@ -77,8 +72,8 @@ const AddEditProducto:FC = () => {
     //imagenes
     const [imagenProducto, setImageProducto] = useState<IImagen | null>(null);
     
-    const [categoriaPadreEdit,setCategoriaPadreEdit]=useState(0);
-    useEffect(() => {
+    //const [categoriaPadreEdit,setCategoriaPadreEdit]=useState(0);
+    /*useEffect(() => {
         if(categoryTable && editProducto){
             const getCategoriaPadreFromChild = () => {
                 let result=20;
@@ -99,46 +94,42 @@ const AddEditProducto:FC = () => {
             setCategoriaPadreEdit(getCategoriaPadreFromChild());
         }
 
-    }, [categoryTable, elementActiveProducto]);
+    }, [categoryTable, elementActiveProducto]);*/
     //selects    
     const [initalSelectValues, setInitalSelectValues] = useState<ISelectForm>({
-        categoriaSelect: 0,
         subcategoriaSelect: 0,
     });
 
-    const {categoriaSelect,subcategoriaSelect,setSelectedValue,handleSelectChange}=useSelect<ISelectForm>(initalSelectValues);
+    const {subcategoriaSelect,setSelectedValue,handleSelectChange}=useSelect<ISelectForm>(initalSelectValues);
 
     useEffect(() => {
-        if (categoriaPadreEdit && categoryTable.length > 0 && editProducto && elementActiveProducto) {
+        if (editProducto && elementActiveProducto) {
             
             setInitalSelectValues({
-                categoriaSelect: categoriaPadreEdit,
                 subcategoriaSelect: elementActiveProducto?.categoria.id,
             });
             setSelectedValue(initalSelectValues);            
         }
 
-        if(categoryTable.length > 0 && addProducto){
+        if(addProducto){
             
             
             setInitalSelectValues({
-                categoriaSelect: categoryTable[0].id,
-                subcategoriaSelect: (categoryTable[0].subCategorias?.[0]?.id ?? 0),
+                subcategoriaSelect: (subcategoriaSelect ?? 0),
             });
             setSelectedValue(initalSelectValues);            
         }
            
-    }, [categoriaPadreEdit, categoryTable, elementActiveProducto]);//subir sefunda sub cat
+    }, [ elementActiveProducto]);//subir sefunda sub cat
 
     
 
     useEffect(() => {
         
-        if (!elementActive?.id || categoryTable.length === 0 || categoriaSelect === 0) return;
-        const selectedCategoryId = addProducto ? (categoriaSelect || categoryTable[0]?.id) : categoriaSelect;
+        if (!elementActive?.id) return;
         
         const subCatService = new CategoriasService(
-            `http://localhost:8090/categorias/allSubCategoriasPorCategoriaPadre/${selectedCategoryId}/${elementActive.id}`
+            `http://localhost:8090/categorias/allSubCategoriasPorSucursal/${elementActive.id}`
         );
         
         const fetchData = async () => {
@@ -147,7 +138,6 @@ const AddEditProducto:FC = () => {
                 setSubcategoryTable(response);
                 if(subcategoryTable.length > 0){                    
                     setSelectedValue({
-                        categoriaSelect: selectedCategoryId,
                         subcategoriaSelect: response[0].id,
                     });            
                 }
@@ -158,7 +148,7 @@ const AddEditProducto:FC = () => {
         };
         fetchData();
         
-    }, [categoriaSelect, elementActive]);
+    }, []);
 
     //validation
     const [denominacionCorrect,setDenominacionCorrect]=useState<boolean>(true);
@@ -184,7 +174,7 @@ const AddEditProducto:FC = () => {
         setCategorianCorrect(true);
         setCodigoCorrect(true)
         setMessageError("");
-    },[categoriaSelect,subcategoriaSelect,denominacion,precioVenta,descripcion,codigo])
+    },[subcategoriaSelect,denominacion,precioVenta,descripcion,codigo])
 
     useEffect(() => {
         if (editProducto && elementActiveProducto) {
@@ -222,7 +212,7 @@ const AddEditProducto:FC = () => {
                     idAlergenos:selectedValues,
                     imagenes:imagenProducto ? [imagenProducto] : [],
                 }
-                try{
+                try{                    
                     await productoService.post(data)
                     getProductos()
                     dispatch(onAddProducto())
@@ -265,6 +255,7 @@ const AddEditProducto:FC = () => {
             }
         }
     }
+   console.log(selectedValues,subcategoriaSelect,subcategoryTable);
    
     return (
         <div className="addEditProducto">
@@ -280,7 +271,7 @@ const AddEditProducto:FC = () => {
                     <Form.Control name="precioVenta" value={precioVenta} onChange={onInputChange} className={ precioVentaCorrect ? "control" : "denominacionError"} type="number" placeholder="Precio:" />
                     <Form.Control name="descripcion" value={descripcion} onChange={onInputChange}  className={ descripcionCorrect ? "control" : "denominacionError"} type="text" placeholder="Descripcion:" />
                     <Form.Control name="codigo" value={codigo} onChange={onInputChange} className={ codigoCorrect ? "control" : "denominacionError"} type="text" placeholder="Codigo:" />
-                    <div>
+                    <div className="checkboxs">
 
                         <h3 style={{color:"black"}}>Select Alergenos:</h3>
                         {alergenosTable.map((alergeno:IAlergenos) => (
@@ -296,16 +287,6 @@ const AddEditProducto:FC = () => {
                         ))}
 
                     </div>
-                    
-                    
-                    <Form.Label>Seleccione La categoria</Form.Label>
-                    <Form.Select id="categoriaSelect" className={ categoriaCorrect ? "control" : "denominacionError"} name='categoriaSelect' value={categoriaSelect} onChange={handleSelectChange}>
-
-                        {categoryTable.map((category:ICategorias)=>(
-                          <option key={category.id} value={category.id}>{category.denominacion}</option>
-                        ))}
-
-                    </Form.Select>
                     <Form.Label>Seleccione La SubCat</Form.Label>
                     <Form.Select disabled={subcategoryTable.length === 0} className={ categoriaCorrect ? "control" : "denominacionError"} id="subcategoriaSelect" name='subcategoriaSelect' value={subcategoriaSelect} onChange={handleSelectChange}>
 

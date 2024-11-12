@@ -49,6 +49,21 @@ export const CategoriasAlergenos = () => {
             alergenosFilter&&dispatch(onAddAlergeno())
           }} >Agregar</button>
           <div className='Items'>
+            {productoFilter ? (
+              <div className='categoriaPadreContainer'>
+                <span className="categoriaInfo" style={{width:"90%"}}>
+                <div className='mainContainerProduct'style={{width:"100%"}}>
+                  <div className='info' style={{padding:"1rem"}}>
+                    <span className='infoProduct'>Denominacion</span>
+                    <span className='infoProduct'>Precio</span>
+                    <span className='infoProduct'>Descripción</span>
+                    <span className='infoProduct'>Categoria</span>
+                    <span className='infoProduct'>Habilitado</span>
+                  </div>
+                </div>
+                </span>
+              </div>
+            ):("")}
             <ListCards/>
           </div>
         </div>

@@ -13,17 +13,17 @@ import { useValidations } from "../../hooks/useValidations";
 const AddEditAlergeno = () => {
     
 //URL para la api en docker
-const {addAlergeno,editAlergeno}=useSelector((state:RootState)=>state.administracion);
+/*const {addAlergeno,editAlergeno}=useSelector((state:RootState)=>state.administracion);
 const {elemetActiveAlergeno}=useSelector((state:RootState)=>state.tableAdministracion)
 const alergenoService = new AlergenosService("http://190.221.207.224:8090/alergenos")
 const [title,setTitle]=useState("Crear Alergeno")
-
+*/
     //URL para la API del profesor
-/*    const {addAlergeno,editAlergeno}=useSelector((state:RootState)=>state.administracion);
+    const {addAlergeno,editAlergeno}=useSelector((state:RootState)=>state.administracion);
     const {elemetActiveAlergeno}=useSelector((state:RootState)=>state.tableAdministracion)
     const alergenoService = new AlergenosService("http://localhost:8090/alergenos")
     const [title,setTitle]=useState("Crear Alergeno")
-*/
+
     //imagenes
     const [imagenAlergeno, setImageAlergeno] = useState<IImagen | null>(null);
 

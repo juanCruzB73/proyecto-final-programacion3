@@ -16,7 +16,6 @@ import { UploadImage } from '../../components/UploadImage';
 import { ProvinciaService } from '../../services/ProvinciaService';
 import { setTableProvincia } from '../../redux/slices/provinciaSlice';
 import { LocalidadService } from '../../services/LocalidadService';
-import { setTablePais } from '../../redux/slices/tablaPaisSlice';
 import { setTableLocalidad } from '../../redux/slices/tablaLocalidadSlice';
 
 
