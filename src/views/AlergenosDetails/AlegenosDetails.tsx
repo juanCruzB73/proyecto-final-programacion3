@@ -19,7 +19,7 @@ const AlergenosDetails = () => {
                 </div>
 
                 <Card.Body className="text">
-                    <Card.Title style={{color:"black"}}>{elemetActiveAlergeno?.denominacion}</Card.Title>
+                    <Card.Title style={{color:"white",textAlign:"center",fontSize:"6vh"}}>{elemetActiveAlergeno?.denominacion}</Card.Title>
                 </Card.Body>
             </Card>
             <button onClick={()=>dispatch(onSeeAlergeno())}>cerrar</button>

@@ -14,6 +14,7 @@ import { IImagen } from "../../types/IImagen";
 import { UploadImage } from "../../components/UploadImage";
 import { useValidations } from "../../hooks/useValidations";
 import { CategoriasService } from "../../services/CategoriasService";
+import { MultiSelectDropdown } from "../../components/categoriasAlergenos/MultipleSelectDropDown";
 
 interface IForm{
     denominacion:string;
@@ -42,59 +43,26 @@ const AddEditProducto:FC = () => {
     const [selectedValues,setSelectedValues]=useState<number[]>([]);
 
     //handle change checkbox change
+    // Fetch allergens data
+    useEffect(() => {
+        const fetchData = async () => {
+            const allergens = await getAlergenos();
+            setAlergenosTable(administracionTable2);
+        };
+        if (elementActive) fetchData();
+    }, [elementActive, administracionTable2]);
 
-    useEffect(()=>{
-        if(!elementActive)return
-        const fetchData=async()=>{
-            await getAlergenos()
-        }
-        fetchData();
-    },[])
-
-    useEffect(()=>{
-        setAlergenosTable(administracionTable2)
-        
-    },[administracionTable,administracionTable2,selectedValues])
-
-    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { value, checked } = event.target;
-        const id=parseInt(value);
-
-        setSelectedValues((prevSelected) =>
-            checked
-                ? [...prevSelected, id] // Add if checked
-                : prevSelected.filter((item) => item !== id) // Remove if unchecked
-        );
+    // Initialize dropdown state and handle input changes
+    const handleMultiSelectChange = (values: number[]) => {
+        setSelectedValues(values);
     };
+    
     
     //titulo de carta
     const [title,setTitle]=useState("Crear Producto")
     //imagenes
     const [imagenProducto, setImageProducto] = useState<IImagen | null>(null);
     
-    //const [categoriaPadreEdit,setCategoriaPadreEdit]=useState(0);
-    /*useEffect(() => {
-        if(categoryTable && editProducto){
-            const getCategoriaPadreFromChild = () => {
-                let result=20;
-                
-                categoryTable.forEach((category: ICategorias) => {
-                    const aux = category.subCategorias.filter(
-                        (subcategory: ICategorias) => subcategory.id === elementActiveProducto?.categoria.id
-                    );
-                    
-                    if (aux.length > 0) {
-                        result = category.id;
-                        return;
-                    }
-                });
-                return result;
-            };
-        
-            setCategoriaPadreEdit(getCategoriaPadreFromChild());
-        }
-
-    }, [categoryTable, elementActiveProducto]);*/
     //selects    
     const [initalSelectValues, setInitalSelectValues] = useState<ISelectForm>({
         subcategoriaSelect: 0,
@@ -265,59 +233,56 @@ const AddEditProducto:FC = () => {
         </div>
         <Form className="formContainer" onSubmit={handleFinalSubmit}>
             <div className="formInput">
-                <Form.Group className="mb-3">
+                    <Form.Group className="form-groups">
+                        <Form.Group className="form-group1">
+                            <input name="denominacion" value={denominacion} onChange={onInputChange} className={ denominacionCorrect ? "denominacion" : "denominacionError-prodcut"} type="text" placeholder="Denominacion:" />
+                            <input name="precioVenta" value={precioVenta} onChange={onInputChange} className={ precioVentaCorrect ? "denominacion" : "denominacionError-prodcut"} type="number" placeholder="Precio:" />
+                            <input name="codigo" value={codigo} onChange={onInputChange} className={ codigoCorrect ? "denominacion" : "denominacionError-prodcut"} type="text" placeholder="Codigo:" />
+                        </Form.Group>
+                        <Form.Group className="form-group-descripcion">
+                            <input name="descripcion" value={descripcion} onChange={onInputChange}  className={ descripcionCorrect ? "denominacion" : "denominacionError-prodcut"} type="text" placeholder="Descripcion:" />
+                        </Form.Group>
+                    </Form.Group>
+                    
+                    <Form.Group className="form-group2">
 
-                    <Form.Control name="denominacion" value={denominacion} onChange={onInputChange} className={ denominacionCorrect ? "control" : "denominacionError"} type="text" placeholder="Denominacion:" />
-                    <Form.Control name="precioVenta" value={precioVenta} onChange={onInputChange} className={ precioVentaCorrect ? "control" : "denominacionError"} type="number" placeholder="Precio:" />
-                    <Form.Control name="descripcion" value={descripcion} onChange={onInputChange}  className={ descripcionCorrect ? "control" : "denominacionError"} type="text" placeholder="Descripcion:" />
-                    <Form.Control name="codigo" value={codigo} onChange={onInputChange} className={ codigoCorrect ? "control" : "denominacionError"} type="text" placeholder="Codigo:" />
-                    <div className="checkboxs">
-
-                        <h3 style={{color:"black"}}>Select Alergenos:</h3>
-                        {alergenosTable.map((alergeno:IAlergenos) => (
-                            <label key={alergeno.id} style={{color:"black"}}>
-                                <input
-                                    type="checkbox"
-                                    value={alergeno.id.toString()}
-                                    checked={selectedValues.includes(alergeno.id)}
-                                    onChange={handleCheckboxChange}
-                                />
-                                {alergeno.denominacion}
-                            </label>
-                        ))}
-
+                    <div className="alergenosSelect">
+                        <h3 style={{color:"black"}}>Seleccione Alergenos</h3>
+                        <MultiSelectDropdown
+                            options={alergenosTable}
+                            selectedValues={selectedValues}
+                            onChange={handleMultiSelectChange}
+                        />
                     </div>
-                    <Form.Label>Seleccione La SubCat</Form.Label>
-                    <Form.Select disabled={subcategoryTable.length === 0} className={ categoriaCorrect ? "control" : "denominacionError"} id="subcategoriaSelect" name='subcategoriaSelect' value={subcategoriaSelect} onChange={handleSelectChange}>
-
-                        {Array.isArray(subcategoryTable) && subcategoryTable.map((category:ICategorias)=>(
-                          <option key={category.id} value={category.id}>{category.denominacion}</option>
-                        ))}
-
-                    </Form.Select>
-
-                    <h1>Ingrese su imagen</h1>
-
-                    <UploadImage
-                        imageObjeto={imagenProducto}
-                        setImageObjeto={setImageProducto}
-                        typeElement="articulos" // el tipe element es para que sepa en que parte del endpoint tiene que hacer la union "articulos" o "alergenos"
-                    />
-                
-                </Form.Group >
-
+                        <div className="categoriSelect">
+                            <h3 style={{color:"black"}}>Seleccione La Categoria</h3>
+                            <Form.Select disabled={subcategoryTable.length === 0} className={ categoriaCorrect ? "denominacion" : "denominacionError-prodcut"} id="subcategoriaSelect" name='subcategoriaSelect' value={subcategoriaSelect} onChange={handleSelectChange}>
+                                {Array.isArray(subcategoryTable) && subcategoryTable.map((category:ICategorias)=>(
+                                    <option key={category.id} value={category.id}>{category.denominacion}</option>
+                                ))}
+                            </Form.Select>
+                        </div>
+                    </Form.Group>
+                    <Form.Group className="form-group3">
+                        <h1>Ingrese su imagen</h1>
+                        <UploadImage
+                            imageObjeto={imagenProducto}
+                            setImageObjeto={setImageProducto}
+                            typeElement="articulos" // el tipe element es para que sepa en que parte del endpoint tiene que hacer la union "articulos" o "alergenos"
+                        />
+                    </Form.Group>
             </div>
-            <div className="buttons">
-                <Button variant="primary" type="submit">
-                    Guardar Producto
-                </Button>
-                <Button variant="primary" onClick={()=>{
-                    addProducto&&dispatch(onAddProducto());
-                    editProducto&&dispatch(onEditProducto());
-                }}>
-                    Cancelar
-                </Button>
-            </div>
+            <div className="buttons-product">
+                        <Button variant="primary" type="submit">
+                            Guardar Producto
+                        </Button>
+                        <Button variant="primary" onClick={()=>{
+                            addProducto&&dispatch(onAddProducto());
+                            editProducto&&dispatch(onEditProducto());
+                        }}>
+                            Cancelar
+                        </Button>
+                    </div>
         </Form>
 
     </div>
