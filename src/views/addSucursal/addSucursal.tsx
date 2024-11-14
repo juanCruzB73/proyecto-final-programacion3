@@ -67,13 +67,24 @@ interface ISelect{
 export const AddSucursal = () => {
 
   const dispatch=useDispatch<AppDispatch>()
-  const sucursalService=new SucursalService("http://localhost:8090/sucursales/create")
+  //URL para
+  const sucursalService=new SucursalService("http://190.221.207.224:8090/sucursales/create")
+
+  //URL para la API del profesor
+  // const sucursalService=new SucursalService("http://localhost:8090/sucursales/create")
 
   //peticiones http con hook
-  const {loading,setLoading,getPaises}=useServices("http://localhost:8090/paises")
-  const {getProvincia}=useServices(`http://localhost:8090/provincias`)
-  const {getLocalidad}=useServices(`http://localhost:8090/localidades`)
-  const {getSucursales}=useServices(`http://localhost:8090/sucursales`)
+  //URL para la API en Docker
+  const {loading,setLoading,getPaises}=useServices("http://190.221.207.224:8090/paises")
+  const {getProvincia}=useServices(`http://190.221.207.224:8090/provincias`)
+  const {getLocalidad}=useServices(`http://190.221.207.224:8090/localidades`)
+  const {getSucursales}=useServices(`http://190.221.207.224:8090/sucursales`)
+
+  //URL para la API del profesor
+  // const {loading,setLoading,getPaises}=useServices("http://localhost:8090/paises")
+  // const {getProvincia}=useServices(`http://localhost:8090/provincias`)
+  // const {getLocalidad}=useServices(`http://localhost:8090/localidades`)
+  // const {getSucursales}=useServices(`http://localhost:8090/sucursales`)
 
   //datos redux
   const {paisTable}=useSelector((state:RootState)=>state.tablaPaises)
@@ -144,7 +155,10 @@ export const AddSucursal = () => {
       if(!paisSelect)return
         let pais=findIdPais(paisSelect)
         if(!pais)return
-        const provinciaService=new ProvinciaService(`http://localhost:8090/provincias/findByPais/1`);        
+        //URL para la API en Docker
+        const provinciaService=new ProvinciaService(`http://190.221.207.224:8090/provincias/findByPais/1`);   
+        //URL para la API del profesor
+        // const provinciaService=new ProvinciaService(`http://localhost:8090/provincias/findByPais/1`);        
         await provinciaService.getAll().then(response=>{
           dispatch(setTableProvincia(response));
           setLoading(false)
@@ -157,8 +171,11 @@ export const AddSucursal = () => {
     const fetchData=async()=>{      
       if(!provinciaSelect)return
         let provincia=findProvinciaById(provinciaSelect)
-        if(!provincia)return        
-        const localidadService=new LocalidadService(`http://localhost:8090/localidades/findByProvincia/${provincia.id}`);
+        if(!provincia)return   
+        //URL para la API en docker
+        const localidadService=new LocalidadService(`http://190.221.207.224:8090/localidades/findByProvincia/${provincia.id}`);
+        //URL para la API del profesor
+        // const localidadService=new LocalidadService(`http://localhost:8090/localidades/findByProvincia/${provincia.id}`);
         await localidadService.getAll().then(response=>{
           dispatch(setTableLocalidad(response));
           setLoading(false)
@@ -276,114 +293,116 @@ export const AddSucursal = () => {
   }
 
   return (
-    <div className="addEditSucursalContainer"> 
-      <h1>Crear una sucursal</h1> 
-      <Form className="form-container" onSubmit={handleSubmit}>
-              <div className={isEmptyCondition||containsLetterCondition||isTimeCondition ? 'errorMessagge' : "noErrors"}>
-                <span>{conditionMessage}</span>
-              </div>
+    <div className='containerSucursalFather'>
+      <div className="addEditSucursalContainer"> 
+        <h1>Crear una sucursal</h1> 
+        <Form className="form-container" onSubmit={handleSubmit}>
+            <div className={isEmptyCondition||containsLetterCondition||isTimeCondition ? 'errorMessagge' : "noErrors"}>
+              <span>{conditionMessage}</span>
+            </div>
 
               <div className='information'>
 
-                <div className='bloqueInfomation'>
+                  <div className='bloqueInfomation'>
 
-                  <Form.Group className='form-element' as={Col} >
-                    <Form.Control id={wrongName?"isWrong":"isNotWrong"} type="text" name='nombre' value={nombre} onChange={onInputChange} placeholder="Ingrese sucursal" />
-                  </Form.Group>
+                    <Form.Group className='form-element' as={Col} >
+                      <Form.Control id={wrongName?"isWrong":"isNotWrong"} type="text" name='nombre' value={nombre} onChange={onInputChange} placeholder="Ingrese sucursal" />
+                    </Form.Group>
 
-                  <Form.Group className='form-element'as={Col}>
-                    <Form.Control id={wronghorarioApertura?"isWrong":"isNotWrong"} type="text" name='horarioApertura' value={horarioApertura} onChange={onInputChange} placeholder="Ingresar hora de apertura" />
-                  </Form.Group>
+                    <Form.Group className='form-element'as={Col}>
+                      <Form.Control id={wronghorarioApertura?"isWrong":"isNotWrong"} type="text" name='horarioApertura' value={horarioApertura} onChange={onInputChange} placeholder="Ingresar hora de apertura" />
+                    </Form.Group>
 
-                  <Form.Group className='form-element' as={Col}>
-                    <Form.Control id={wronghorarioCierre?"isWrong":"isNotWrong"} type="text" name='horarioCierre' value={horarioCierre} onChange={onInputChange} placeholder="Ingresar hora de cierre" />
-                  </Form.Group>
+                    <Form.Group className='form-element' as={Col}>
+                      <Form.Control id={wronghorarioCierre?"isWrong":"isNotWrong"} type="text" name='horarioCierre' value={horarioCierre} onChange={onInputChange} placeholder="Ingresar hora de cierre" />
+                    </Form.Group>
 
-                  <Form.Label>Seleccione Empresa</Form.Label>
-                  <Form.Select className="isNotWrongSelect" id="empresa-select" name='empresaSelect' value={empresaSelect} onChange={handleSelectChange}>
+                    <Form.Label>Seleccione Empresa</Form.Label>
+                    <Form.Select className="isNotWrongSelect" id="empresa-select" name='empresaSelect' value={empresaSelect} onChange={handleSelectChange}>
 
-                        {dataTable.map((pais)=>(
-                          <option key={pais.id} value={pais.nombre}>{pais.nombre}</option>
-                        ))}
+                          {dataTable.map((pais)=>(
+                            <option key={pais.id} value={pais.nombre}>{pais.nombre}</option>
+                          ))}
 
-                  </Form.Select>
+                    </Form.Select>
 
-                  <Form.Label>Es casa matriz?</Form.Label>
-                  <Form.Select id="empresa-select" name='casaMatrizSelect' value={casaMatrizSelect} onChange={handleSelectChange}>
-                          <option value={"si"}>Si</option>
-                          <option value={"no"}>No</option>
-                  </Form.Select>
-
-                <h1>Ingrese su imagen</h1>
-
-                <UploadImage image={image} setImage={setImage} />
+                    <Form.Label>Es casa matriz?</Form.Label>
+                    <Form.Select id="empresa-select" name='casaMatrizSelect' value={casaMatrizSelect} onChange={handleSelectChange}>
+                            <option value={"si"}>Si</option>
+                            <option value={"no"}>No</option>
+                    </Form.Select>
+                    <div className='image-container'>
+                      <h1>Ingrese su imagen</h1>
+                      <UploadImage image={image} setImage={setImage} />
+                    </div>
 
                 </div>
 
-                <div className='bloqueInfomation'>
+                  <div className='bloqueInfomation'>
 
-                  <Form.Group className='form-element' as={Col}>
-                    <Form.Label>Seleccione Pais</Form.Label>
-                    <Form.Select id="pais-select" name='paisSelect' value={paisSelect} onChange={handleSelectChange}>
+                    <Form.Group className='form-element' as={Col}>
+                      <Form.Label>Seleccione Pais</Form.Label>
+                      <Form.Select id="pais-select" name='paisSelect' value={paisSelect} onChange={handleSelectChange}>
 
-                        {paisTable.map((pais)=>(
-                          <option key={pais.id} value={pais.nombre}>{pais.nombre}</option>
-                        ))}
+                          {paisTable.map((pais)=>(
+                            <option key={pais.id} value={pais.nombre}>{pais.nombre}</option>
+                          ))}
 
-                    </Form.Select>
-                  </Form.Group>
-                  <Form.Group className='form-element' as={Col}>
-                    <Form.Label>Seleccione Provincia</Form.Label>
-                    <Form.Select disabled={provinciaTable.length === 0} id="provincia-select" name='provinciaSelect' value={provinciaSelect} onChange={handleSelectChange}>
+                      </Form.Select>
+                    </Form.Group>
+                    <Form.Group className='form-element' as={Col}>
+                      <Form.Label>Seleccione Provincia</Form.Label>
+                      <Form.Select disabled={provinciaTable.length === 0} id="provincia-select" name='provinciaSelect' value={provinciaSelect} onChange={handleSelectChange}>
 
-                        {Array.isArray(provinciaTable) && provinciaTable.map((provincia)=>(
-                          <option key={provincia.id} value={provincia.nombre}>{provincia.nombre}</option>
-                        ))}
+                          {Array.isArray(provinciaTable) && provinciaTable.map((provincia)=>(
+                            <option key={provincia.id} value={provincia.nombre}>{provincia.nombre}</option>
+                          ))}
 
-                    </Form.Select>
-                  </Form.Group>
-                  <Form.Group className='form-element' as={Col}>
-                  <Form.Label>Seleccione localidad</Form.Label>
-                    <Form.Select disabled={localidadTable.length === 0} className="isNotWrongSelect" id="localidad-select" name='localidadSelect' value={localidadSelect} onChange={handleSelectChange}>
+                      </Form.Select>
+                    </Form.Group>
+                    <Form.Group className='form-element' as={Col}>
+                    <Form.Label>Seleccione localidad</Form.Label>
+                      <Form.Select disabled={localidadTable.length === 0} className="isNotWrongSelect" id="localidad-select" name='localidadSelect' value={localidadSelect} onChange={handleSelectChange}>
 
-                        { Array.isArray(localidadTable) && localidadTable.map((localidad)=>(
-                          <option key={localidad.id} value={localidad.nombre}>{localidad.nombre}</option>
-                        ))}
+                          { Array.isArray(localidadTable) && localidadTable.map((localidad)=>(
+                            <option key={localidad.id} value={localidad.nombre}>{localidad.nombre}</option>
+                          ))}
 
-                    </Form.Select>
-                  </Form.Group>
-                  <Form.Group className='form-element' as={Col}>
-                    <Form.Control id={wrongcalle?"isWrong":"isNotWrong"} type="text" name='calle' value={calle} onChange={onInputChange} placeholder="Ingresar calle" />
-                  </Form.Group>
-                  <Form.Group className='form-element' as={Col}>
-                    <Form.Control id={wrongnroCalle?"isWrong":"isNotWrong"} type="text" name='nroCalle' value={nroCalle} onChange={onInputChange} placeholder="Ingresar numero de calle" />
-                  </Form.Group>
-                  <Form.Group className='form-element' as={Col}>
-                    <Form.Control id={wrongcp?"isWrong":"isNotWrong"} type="text" name='cp' value={cp} onChange={onInputChange} placeholder="Ingresar cp" />
-                  </Form.Group>
-                  <Form.Group className='form-element' as={Col}>
-                    <Form.Control id={wrongpiso?"isWrong":"isNotWrong"} type="text" name='piso' value={piso} onChange={onInputChange} placeholder="Ingresar del piso del piso" />
-                  </Form.Group>
-                  <Form.Group className='form-element' as={Col}>
-                    <Form.Control id={wrongnroDepto?"isWrong":"isNotWrong"} type="text" name='nroDpto' value={nroDpto} onChange={onInputChange} placeholder="Ingresar numero departamento" />
-                  </Form.Group>
-                  <Form.Group className='form-element' as={Col}>
-                    <Form.Control id={wronglatitud?"isWrong":"isNotWrong"} type="text"  name='latitud' value={latitud} onChange={onInputChange} placeholder="latitud" />
-                  </Form.Group>
-                  <Form.Group className='form-element' as={Col}>
-                    <Form.Control type="text" id={wronglongitud?"isWrong":"isNotWrong"} name='longitud' value={longitud} onChange={onInputChange} placeholder="longitud" />
-                  </Form.Group>
-                </div>
-            </div>
-            <div className="button">
-                <Button variant="primary" type='submit' style={{padding:"0.4rem",border:"none",borderRadius:"0.4rem",background:"#32cd32"  }}>{/* type="submit" */}
-                  Confirmar
-                </Button>
-                <Button onClick={()=>dispatch(onAddSucursal())}  variant="primary"  style={{padding:"0.4rem",border:"none",borderRadius:"0.4rem",background:"#ba3939"  }}>
-                  Cancelar
-                </Button>
+                      </Form.Select>
+                    </Form.Group>
+                    <Form.Group className='form-element' as={Col}>
+                      <Form.Control id={wrongcalle?"isWrong":"isNotWrong"} type="text" name='calle' value={calle} onChange={onInputChange} placeholder="Ingresar calle" />
+                    </Form.Group>
+                    <Form.Group className='form-element' as={Col}>
+                      <Form.Control id={wrongnroCalle?"isWrong":"isNotWrong"} type="text" name='nroCalle' value={nroCalle} onChange={onInputChange} placeholder="Ingresar numero de calle" />
+                    </Form.Group>
+                    <Form.Group className='form-element' as={Col}>
+                      <Form.Control id={wrongcp?"isWrong":"isNotWrong"} type="text" name='cp' value={cp} onChange={onInputChange} placeholder="Ingresar cp" />
+                    </Form.Group>
+                    <Form.Group className='form-element' as={Col}>
+                      <Form.Control id={wrongpiso?"isWrong":"isNotWrong"} type="text" name='piso' value={piso} onChange={onInputChange} placeholder="Ingresar del piso del piso" />
+                    </Form.Group>
+                    <Form.Group className='form-element' as={Col}>
+                      <Form.Control id={wrongnroDepto?"isWrong":"isNotWrong"} type="text" name='nroDpto' value={nroDpto} onChange={onInputChange} placeholder="Ingresar numero departamento" />
+                    </Form.Group>
+                    <Form.Group className='form-element' as={Col}>
+                      <Form.Control id={wronglatitud?"isWrong":"isNotWrong"} type="text"  name='latitud' value={latitud} onChange={onInputChange} placeholder="latitud" />
+                    </Form.Group>
+                    <Form.Group className='form-element' as={Col}>
+                      <Form.Control type="text" id={wronglongitud?"isWrong":"isNotWrong"} name='longitud' value={longitud} onChange={onInputChange} placeholder="longitud" />
+                    </Form.Group>
+                  </div>
               </div>
-        </Form>
+              <div className="button">
+                  <Button variant="primary" type='submit' style={{padding:"0.4rem",border:"none",borderRadius:"0.4rem",background:"#32cd32"  }}>{/* type="submit" */}
+                    Confirmar
+                  </Button>
+                  <Button onClick={()=>dispatch(onAddSucursal())}  variant="primary"  style={{padding:"0.4rem",border:"none",borderRadius:"0.4rem",background:"#ba3939"  }}>
+                    Cancelar
+                  </Button>
+                </div>
+          </Form>
+        </div>
       </div>
   )
 }
