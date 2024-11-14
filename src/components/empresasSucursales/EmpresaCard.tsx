@@ -23,14 +23,16 @@ export const EmpresaCard:FC<Props> = ({element}) => {
     <Card style={{ width: '18rem' }}>
         <Card.Body style={{display: "flex",flexDirection: "column",justifyContent:"center",alignItems:"center"}}>
           <Card.Title style={{cursor: "pointer"}} onClick={()=>dispatch(setElementActive({element:element}))}>{element.nombre}</Card.Title>
-          <Button onClick={()=>{
+          <div className='card-buttons-empresa'>
+          <Button className='button-cards' onClick={()=>{
             dispatch(onSeeDetails())
             dispatch(setElementActive({element:element}))
-          }} variant="primary" style={{ border:"none",borderRadius:"0.2rem",width:"90%" ,backgroundColor:" #21232A",color:"white",padding:"0.3rem",margin:"8px 0px"}}>Ver Más</Button>
-          <Button onClick={()=>{
+          }} variant="primary"><i style={{fontSize:"1.3rem"}} className="bi bi-eye"></i></Button>
+          <Button className='button-cards' onClick={()=>{
             dispatch(onEditCompany())
             dispatch(setElementActive({element:element}))
-            }} variant="primary" style={{ border:"none",borderRadius:"0.2rem",width:"90%" ,backgroundColor:" #21232A",color:"white",padding:"0.3rem"}}>Editar</Button>
+            }} variant="primary"><i style={{fontSize:"1.3rem"}}className="bi bi-pencil-square"></i></Button>
+          </div>
         </Card.Body>
       </Card>
     </div>

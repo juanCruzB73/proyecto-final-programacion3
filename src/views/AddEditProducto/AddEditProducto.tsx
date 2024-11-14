@@ -14,6 +14,7 @@ import { IImagen } from "../../types/IImagen";
 import { UploadImage } from "../../components/UploadImage";
 import { useValidations } from "../../hooks/useValidations";
 import { CategoriasService } from "../../services/CategoriasService";
+import { MultiSelectDropdown } from "../../components/categoriasAlergenos/MultipleSelectDropDown";
 
 interface IForm{
     denominacion:string;
@@ -23,7 +24,6 @@ interface IForm{
 }
 
 interface ISelectForm{
-    categoriaSelect:number;
     subcategoriaSelect:number;
 }
 //imagenes
@@ -34,6 +34,7 @@ const AddEditProducto:FC = () => {
     const {elementActive}=useSelector((state:RootState)=>state.tablaSucursal);
     const {elementActiveProducto,administracionTable,administracionTable2}=useSelector((state:RootState)=>state.tableAdministracion)
 
+<<<<<<< HEAD
     //URL para la API en Docker
     const {getCategorias}=useServices(`http://190.221.207.224:8090/categorias/allCategoriasPadrePorSucursal/${elementActive?.id}`)
     const {getAlergenos}=useServices("http://190.221.207.224:8090/alergenos")
@@ -49,107 +50,72 @@ const AddEditProducto:FC = () => {
     
     
     
+=======
+    const {getAlergenos}=useServices("http://localhost:8090/alergenos")
+    const {getProductos}=useServices(`http://localhost:8090/articulos/porSucursal/${elementActive?.id}`)
+    const productoService= addProducto ? new ProductoService("http://localhost:8090/articulos/create") : new ProductoService("http://localhost:8090/articulos/update");
+>>>>>>> 228e45a5204a0b9fc7f8341d0bf36490515b2f5b
     //alergenos checkBox
     const [alergenosTable,setAlergenosTable]=useState<any>([]);
-    const [categoryTable,setCategoryTable]=useState<any>([]);
     const [subcategoryTable,setSubcategoryTable]=useState<ICategorias[]>([]);
     const [selectedValues,setSelectedValues]=useState<number[]>([]);
 
     //handle change checkbox change
+    // Fetch allergens data
+    useEffect(() => {
+        const fetchData = async () => {
+            const allergens = await getAlergenos();
+            setAlergenosTable(administracionTable2);
+        };
+        if (elementActive) fetchData();
+    }, [elementActive, administracionTable2]);
 
-    useEffect(()=>{
-        if(!elementActive)return
-        const fetchData=async()=>{
-            await getAlergenos()
-            await getCategorias()
-        }
-        fetchData();
-    },[])
-
-    useEffect(()=>{
-        setAlergenosTable(administracionTable2)
-        setCategoryTable(administracionTable)
-        
-    },[administracionTable,administracionTable2,selectedValues])
-
-    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { value, checked } = event.target;
-        const id=parseInt(value);
-
-        setSelectedValues((prevSelected) =>
-            checked
-                ? [...prevSelected, id] // Add if checked
-                : prevSelected.filter((item) => item !== id) // Remove if unchecked
-        );
+    // Initialize dropdown state and handle input changes
+    const handleMultiSelectChange = (values: number[]) => {
+        setSelectedValues(values);
     };
+    
     
     //titulo de carta
     const [title,setTitle]=useState("Crear Producto")
     //imagenes
     const [imagenProducto, setImageProducto] = useState<IImagen | null>(null);
     
-    const [categoriaPadreEdit,setCategoriaPadreEdit]=useState(0);
-    useEffect(() => {
-        if(categoryTable && editProducto){
-            const getCategoriaPadreFromChild = () => {
-                let result=20;
-                
-                categoryTable.forEach((category: ICategorias) => {
-                    const aux = category.subCategorias.filter(
-                        (subcategory: ICategorias) => subcategory.id === elementActiveProducto?.categoria.id
-                    );
-                    
-                    if (aux.length > 0) {
-                        result = category.id;
-                        return;
-                    }
-                });
-                return result;
-            };
-        
-            setCategoriaPadreEdit(getCategoriaPadreFromChild());
-        }
-
-    }, [categoryTable, elementActiveProducto]);
     //selects    
     const [initalSelectValues, setInitalSelectValues] = useState<ISelectForm>({
-        categoriaSelect: 0,
         subcategoriaSelect: 0,
     });
 
-    const {categoriaSelect,subcategoriaSelect,setSelectedValue,handleSelectChange}=useSelect<ISelectForm>(initalSelectValues);
+    const {subcategoriaSelect,setSelectedValue,handleSelectChange}=useSelect<ISelectForm>(initalSelectValues);
 
     useEffect(() => {
-        if (categoriaPadreEdit && categoryTable.length > 0 && editProducto && elementActiveProducto) {
+        if (editProducto && elementActiveProducto) {
             
             setInitalSelectValues({
-                categoriaSelect: categoriaPadreEdit,
                 subcategoriaSelect: elementActiveProducto?.categoria.id,
             });
             setSelectedValue(initalSelectValues);            
         }
 
-        if(categoryTable.length > 0 && addProducto){
+        if(addProducto){
             
             
             setInitalSelectValues({
-                categoriaSelect: categoryTable[0].id,
-                subcategoriaSelect: (categoryTable[0].subCategorias?.[0]?.id ?? 0),
+                subcategoriaSelect: (subcategoriaSelect ?? 0),
             });
             setSelectedValue(initalSelectValues);            
         }
            
-    }, [categoriaPadreEdit, categoryTable, elementActiveProducto]);//subir sefunda sub cat
+    }, [ elementActiveProducto]);//subir sefunda sub cat
 
     
 
     useEffect(() => {
         
-        if (!elementActive?.id || categoryTable.length === 0 || categoriaSelect === 0) return;
-        const selectedCategoryId = addProducto ? (categoriaSelect || categoryTable[0]?.id) : categoriaSelect;
+        if (!elementActive?.id) return;
         
         const subCatService = new CategoriasService(
-            `http://localhost:8090/categorias/allSubCategoriasPorCategoriaPadre/${selectedCategoryId}/${elementActive.id}`
+            `http://localhost:8090/categorias/allSubCategoriasPorSucursal/${elementActive.id}`
         );
         
         const fetchData = async () => {
@@ -158,7 +124,6 @@ const AddEditProducto:FC = () => {
                 setSubcategoryTable(response);
                 if(subcategoryTable.length > 0){                    
                     setSelectedValue({
-                        categoriaSelect: selectedCategoryId,
                         subcategoriaSelect: response[0].id,
                     });            
                 }
@@ -169,7 +134,7 @@ const AddEditProducto:FC = () => {
         };
         fetchData();
         
-    }, [categoriaSelect, elementActive]);
+    }, []);
 
     //validation
     const [denominacionCorrect,setDenominacionCorrect]=useState<boolean>(true);
@@ -195,7 +160,7 @@ const AddEditProducto:FC = () => {
         setCategorianCorrect(true);
         setCodigoCorrect(true)
         setMessageError("");
-    },[categoriaSelect,subcategoriaSelect,denominacion,precioVenta,descripcion,codigo])
+    },[subcategoriaSelect,denominacion,precioVenta,descripcion,codigo])
 
     useEffect(() => {
         if (editProducto && elementActiveProducto) {
@@ -233,7 +198,7 @@ const AddEditProducto:FC = () => {
                     idAlergenos:selectedValues,
                     imagenes:imagenProducto ? [imagenProducto] : [],
                 }
-                try{
+                try{                    
                     await productoService.post(data)
                     getProductos()
                     dispatch(onAddProducto())
@@ -276,6 +241,7 @@ const AddEditProducto:FC = () => {
             }
         }
     }
+   console.log(selectedValues,subcategoriaSelect,subcategoryTable);
    
     return (
         <div className="addEditProducto">
@@ -285,69 +251,56 @@ const AddEditProducto:FC = () => {
         </div>
         <Form className="formContainer" onSubmit={handleFinalSubmit}>
             <div className="formInput">
-                <Form.Group className="mb-3">
+                    <Form.Group className="form-groups">
+                        <Form.Group className="form-group1">
+                            <input name="denominacion" value={denominacion} onChange={onInputChange} className={ denominacionCorrect ? "denominacion" : "denominacionError-prodcut"} type="text" placeholder="Denominacion:" />
+                            <input name="precioVenta" value={precioVenta} onChange={onInputChange} className={ precioVentaCorrect ? "denominacion" : "denominacionError-prodcut"} type="number" placeholder="Precio:" />
+                            <input name="codigo" value={codigo} onChange={onInputChange} className={ codigoCorrect ? "denominacion" : "denominacionError-prodcut"} type="text" placeholder="Codigo:" />
+                        </Form.Group>
+                        <Form.Group className="form-group-descripcion">
+                            <input name="descripcion" value={descripcion} onChange={onInputChange}  className={ descripcionCorrect ? "denominacion" : "denominacionError-prodcut"} type="text" placeholder="Descripcion:" />
+                        </Form.Group>
+                    </Form.Group>
+                    
+                    <Form.Group className="form-group2">
 
-                    <Form.Control name="denominacion" value={denominacion} onChange={onInputChange} className={ denominacionCorrect ? "control" : "denominacionError"} type="text" placeholder="Denominacion:" />
-                    <Form.Control name="precioVenta" value={precioVenta} onChange={onInputChange} className={ precioVentaCorrect ? "control" : "denominacionError"} type="number" placeholder="Precio:" />
-                    <Form.Control name="descripcion" value={descripcion} onChange={onInputChange}  className={ descripcionCorrect ? "control" : "denominacionError"} type="text" placeholder="Descripcion:" />
-                    <Form.Control name="codigo" value={codigo} onChange={onInputChange} className={ codigoCorrect ? "control" : "denominacionError"} type="text" placeholder="Codigo:" />
-                    <div>
-
-                        <h3 style={{color:"black"}}>Select Alergenos:</h3>
-                        {alergenosTable.map((alergeno:IAlergenos) => (
-                            <label key={alergeno.id} style={{color:"black"}}>
-                                <input
-                                    type="checkbox"
-                                    value={alergeno.id.toString()}
-                                    checked={selectedValues.includes(alergeno.id)}
-                                    onChange={handleCheckboxChange}
-                                />
-                                {alergeno.denominacion}
-                            </label>
-                        ))}
-
+                    <div className="alergenosSelect">
+                        <h3 style={{color:"black"}}>Seleccione Alergenos</h3>
+                        <MultiSelectDropdown
+                            options={alergenosTable}
+                            selectedValues={selectedValues}
+                            onChange={handleMultiSelectChange}
+                        />
                     </div>
-                    
-                    
-                    <Form.Label>Seleccione La categoria</Form.Label>
-                    <Form.Select id="categoriaSelect" className={ categoriaCorrect ? "control" : "denominacionError"} name='categoriaSelect' value={categoriaSelect} onChange={handleSelectChange}>
-
-                        {categoryTable.map((category:ICategorias)=>(
-                          <option key={category.id} value={category.id}>{category.denominacion}</option>
-                        ))}
-
-                    </Form.Select>
-                    <Form.Label>Seleccione La SubCat</Form.Label>
-                    <Form.Select disabled={subcategoryTable.length === 0} className={ categoriaCorrect ? "control" : "denominacionError"} id="subcategoriaSelect" name='subcategoriaSelect' value={subcategoriaSelect} onChange={handleSelectChange}>
-
-                        {Array.isArray(subcategoryTable) && subcategoryTable.map((category:ICategorias)=>(
-                          <option key={category.id} value={category.id}>{category.denominacion}</option>
-                        ))}
-
-                    </Form.Select>
-
-                    <h1>Ingrese su imagen</h1>
-
-                    <UploadImage
-                        imageObjeto={imagenProducto}
-                        setImageObjeto={setImageProducto}
-                        typeElement="articulos" // el tipe element es para que sepa en que parte del endpoint tiene que hacer la union "articulos" o "alergenos"
-                    />
-                
-                </Form.Group >
-
+                        <div className="categoriSelect">
+                            <h3 style={{color:"black"}}>Seleccione La Categoria</h3>
+                            <Form.Select disabled={subcategoryTable.length === 0} className={ categoriaCorrect ? "denominacion" : "denominacionError-prodcut"} id="subcategoriaSelect" name='subcategoriaSelect' value={subcategoriaSelect} onChange={handleSelectChange}>
+                                {Array.isArray(subcategoryTable) && subcategoryTable.map((category:ICategorias)=>(
+                                    <option key={category.id} value={category.id}>{category.denominacion}</option>
+                                ))}
+                            </Form.Select>
+                        </div>
+                    </Form.Group>
+                    <Form.Group className="form-group3">
+                        <h1>Ingrese su imagen</h1>
+                        <UploadImage
+                            imageObjeto={imagenProducto}
+                            setImageObjeto={setImageProducto}
+                            typeElement="articulos" // el tipe element es para que sepa en que parte del endpoint tiene que hacer la union "articulos" o "alergenos"
+                        />
+                    </Form.Group>
             </div>
-            <div className="buttons">
-                <Button variant="primary" type="submit">
-                    Guardar Producto
-                </Button>
-                <Button variant="primary" onClick={()=>{
-                    addProducto&&dispatch(onAddProducto());
-                    editProducto&&dispatch(onEditProducto());
-                }}>
-                    Cancelar
-                </Button>
-            </div>
+            <div className="buttons-product">
+                        <Button variant="primary" type="submit">
+                            Guardar Producto
+                        </Button>
+                        <Button variant="primary" onClick={()=>{
+                            addProducto&&dispatch(onAddProducto());
+                            editProducto&&dispatch(onEditProducto());
+                        }}>
+                            Cancelar
+                        </Button>
+                    </div>
         </Form>
 
     </div>

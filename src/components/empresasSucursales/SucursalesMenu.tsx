@@ -8,14 +8,14 @@ import { SucursalService } from "../../services/SucursalService";
 import { ISucursal } from "../../types/dtos/sucursal/ISucursal";
 
 //URL para la API en Docker 
-const api_url = "http://190.221.207.224:8090"
-const full_api=api_url+"/sucursales"
+//const api_url = "http://190.221.207.224:8090"
+//const full_api=api_url+"/sucursales"
 
 //URL para la API del profesor
-/*
+
 const api_url = "http://localhost:8090"
 const full_api=api_url+"/sucursales"
-*/
+
 export const SucursalesMenu = () => {
     
     const [loading,setLoading]=useState(false);

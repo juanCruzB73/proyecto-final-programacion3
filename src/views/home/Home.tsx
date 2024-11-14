@@ -7,7 +7,7 @@ import { EmpresaDetails } from '../empresaDetails/EmpresaDetails'
 import { AddEmpresa } from '../addEmpresa/AddEmpresa'
 import { EditEmpresa } from '../editEmpresa/EditEmpresa'
 import { SucursalDetails } from '../sucursalDetails/SucursalDetails'
-import { EditSucursal } from '../editSucursal/EditSucursal'
+import { EditSucursal } from '../editSucursal/editSucursal'
 import { AddSucursal } from '../addSucursal/addSucursal'
 import { useEffect, useState } from 'react'
 

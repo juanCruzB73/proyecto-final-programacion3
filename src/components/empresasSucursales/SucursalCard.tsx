@@ -25,26 +25,29 @@ export const SucursalCard:FC<Props> = ({element}) => {
     <div className='sucursal-card'>
             
             <Card style={{width: '90%', maxHeight:"100%"}}>
-                <Card style={{width: '90%', maxHeight:"100%"}}>
-                <Card.Img variant="top" src={element.logo} style={{width:"100%",maxHeight:"30vh"}}/>
-                <Card.Body style={{display:"flex",flexDirection: "column",justifyContent:"center",alignItems:"center",maxHeight:"35%"}} >
-                    <Card.Title style={{color:"black"}}>{element.nombre}</Card.Title>
-                    <Button  onClick={()=>{
-                        dispatch(onSeeDetailsSucursal())
-                        dispatch(setElementActive({element:element}))
-                        }} variant="primary" style={{ border:"none",borderRadius:"0.2rem",width:"90%" ,backgroundColor:" #21232A",color:"white",padding:"0.3rem",margin:"8px 0px"}} >Ver mas</Button>
-                    <Button  onClick={()=>{
-                        dispatch(oneditSucursalSucursal())
-                        dispatch(setElementActive({element:element}))
-                        }} variant="primary" style={{ border:"none",borderRadius:"0.2rem",width:"90%" ,backgroundColor:" #21232A",color:"white",padding:"0.3rem",margin:"8px 0px"}} >Editar</Button>
-                        <Button  onClick={()=>{
+                <Card.Body style={{display:"flex",justifyContent:"space-around",flexDirection:"column"}} >
+                    <div style={{height:"100%",display:"flex",flexDirection: "column"}} >
+                        <div className='.info-sucursal-cont-img'>
+                            <Card.Img variant="top" className='info-sucursal-cont-img' src={element.logo} style={{width:"100%",height:"100%",borderRadius:".4rem"}}/>
+                        </div>
+                        <Card.Title style={{color:"black",marginBottom:"20px"}}>{element.nombre}</Card.Title>
+                    </div>
+                    <div className='card-buttons'>
+                        <Button className='button-cards' onClick={()=>{
+                            dispatch(onSeeDetailsSucursal())
                             dispatch(setElementActive({element:element}))
-                            }} variant="primary" style={{ border:"none",borderRadius:"0.2rem",width:"90%" ,backgroundColor:" #21232A",padding:"0.3rem",margin:"8px 0px"}} >
-                        <Link to={'/categorias'} style={{color:"white"}}>Categorias</Link></Button>
-                    <Button  variant="primary" style={{ border:"none",borderRadius:"0.2rem",width:"90%" ,backgroundColor:" #21232A",color:"white",padding:"0.3rem",margin:"8px 0px"}} >Borrar</Button>
-                    
+                            }} variant="primary" ><i style={{fontSize:"1.3rem"}} className="bi bi-eye"></i></Button>
+                        <Button className='button-cards' onClick={()=>{
+                            dispatch(oneditSucursalSucursal())
+                            dispatch(setElementActive({element:element}))
+                            }} variant="primary" ><i style={{fontSize:"1.3rem"}}className="bi bi-pencil-square"></i></Button>
+                            <Button className='button-cards' onClick={()=>{
+                                dispatch(setElementActive({element:element}))
+                                }} variant="primary" >
+                            <Link to={'/categorias'} style={{color:"white"}}><i style={{fontSize:"1.3rem"}}className="bi bi-shop"></i></Link></Button>                    
+                    </div> 
                 </Card.Body>
-        </Card>
+        
         </Card>
     </div>
     );
