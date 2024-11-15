@@ -67,23 +67,23 @@ export const AddSucursal = () => {
 
   const dispatch=useDispatch<AppDispatch>()
   //URL para
-  const sucursalService=new SucursalService("http://190.221.207.224:8090/sucursales/create")
+  //const sucursalService=new SucursalService("http://190.221.207.224:8090/sucursales/create")
 
   //URL para la API del profesor
-  // const sucursalService=new SucursalService("http://localhost:8090/sucursales/create")
+   const sucursalService=new SucursalService("http://localhost:8090/sucursales/create")
 
   //peticiones http con hook
   //URL para la API en Docker
-  const {loading,setLoading,getPaises}=useServices("http://190.221.207.224:8090/paises")
+  /*const {loading,setLoading,getPaises}=useServices("http://190.221.207.224:8090/paises")
   const {getProvincia}=useServices(`http://190.221.207.224:8090/provincias`)
   const {getLocalidad}=useServices(`http://190.221.207.224:8090/localidades`)
-  const {getSucursales}=useServices(`http://190.221.207.224:8090/sucursales`)
+  const {getSucursales}=useServices(`http://190.221.207.224:8090/sucursales`)*/
 
   //URL para la API del profesor
-  // const {loading,setLoading,getPaises}=useServices("http://localhost:8090/paises")
-  // const {getProvincia}=useServices(`http://localhost:8090/provincias`)
-  // const {getLocalidad}=useServices(`http://localhost:8090/localidades`)
-  // const {getSucursales}=useServices(`http://localhost:8090/sucursales`)
+  const {loading,setLoading,getPaises}=useServices("http://localhost:8090/paises")
+  const {getProvincia}=useServices(`http://localhost:8090/provincias`)
+  const {getLocalidad}=useServices(`http://localhost:8090/localidades`)
+  const {getSucursales}=useServices(`http://localhost:8090/sucursales`)
 
   //datos redux
   const {paisTable}=useSelector((state:RootState)=>state.tablaPaises)
@@ -155,9 +155,9 @@ export const AddSucursal = () => {
         let pais=findIdPais(paisSelect)
         if(!pais)return
         //URL para la API en Docker
-        const provinciaService=new ProvinciaService(`http://190.221.207.224:8090/provincias/findByPais/1`);   
+        //const provinciaService=new ProvinciaService(`http://190.221.207.224:8090/provincias/findByPais/1`);   
         //URL para la API del profesor
-        // const provinciaService=new ProvinciaService(`http://localhost:8090/provincias/findByPais/1`);        
+        const provinciaService=new ProvinciaService(`http://localhost:8090/provincias/findByPais/1`);        
         await provinciaService.getAll().then(response=>{
           dispatch(setTableProvincia(response));
           setLoading(false)
@@ -172,9 +172,9 @@ export const AddSucursal = () => {
         let provincia=findProvinciaById(provinciaSelect)
         if(!provincia)return   
         //URL para la API en docker
-        const localidadService=new LocalidadService(`http://190.221.207.224:8090/localidades/findByProvincia/${provincia.id}`);
+        //const localidadService=new LocalidadService(`http://190.221.207.224:8090/localidades/findByProvincia/${provincia.id}`);
         //URL para la API del profesor
-        // const localidadService=new LocalidadService(`http://localhost:8090/localidades/findByProvincia/${provincia.id}`);
+        const localidadService=new LocalidadService(`http://localhost:8090/localidades/findByProvincia/${provincia.id}`);
         await localidadService.getAll().then(response=>{
           dispatch(setTableLocalidad(response));
           setLoading(false)

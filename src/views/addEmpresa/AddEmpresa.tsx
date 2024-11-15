@@ -118,23 +118,21 @@ export const AddEmpresa=()=> {
               <div className={isEmptyCondition||containsLetterCondition ? 'errorMessagge' : "noErrors"}>
                 <span>{conditionMessage}</span>
               </div>
-              <div className='inputs-containers'>
-                <Form.Group as={Col} >
-                    <Form.Control id={wrongName?"isWrong":"isNotWrong"} name='nombre' value={nombre} onChange={onInputChange} type="text" placeholder="Ingrese empresa" />
-                </Form.Group>
+              <Form.Group as={Col} >
+                  <Form.Control id={wrongName?"isWrong":"isNotWrong"} name='nombre' value={nombre} onChange={onInputChange} type="text" placeholder="Ingrese empresa" />
+              </Form.Group>
+              
+              <Form.Group as={Col}>
+                <Form.Control id={wrongRazonSocial?"isWrong":"isNotWrong"} name='razonSocial' value={razonSocial} onChange={onInputChange} type="text" placeholder="Ingrese razon social" />
+              </Form.Group>
 
-                <Form.Group as={Col}>
-                  <Form.Control id={wrongRazonSocial?"isWrong":"isNotWrong"} name='razonSocial' value={razonSocial} onChange={onInputChange} type="text" placeholder="Ingrese razon social" />
-                </Form.Group>
+              <Form.Group as={Col} className="mb-3" >
+                <Form.Control id={wrongCuit?"isWrong":"isNotWrong"} name='cuit' value={cuit} onChange={onInputChange} placeholder="Ingrese CUIT" />
+              </Form.Group>
 
-                <Form.Group as={Col} className="mb-3" >
-                  <Form.Control id={wrongCuit?"isWrong":"isNotWrong"} name='cuit' value={cuit} onChange={onInputChange} placeholder="Ingrese CUIT" />
-                </Form.Group>
-              </div>
-              <div className='image-container'>
-                <h2>Ingrese su imagen</h2>
-                <UploadImage image={image} setImage={setImage} />
-              </div>
+              <h1>Ingrese su imagen</h1>
+
+              <UploadImage image={image} setImage={setImage} />
 
               <div className="buttonEmpresa">
                   <Button variant="primary" type='submit'  style={{padding:"0.4rem",border:"none",borderRadius:"0.4rem",background:"#32cd32"  }}>

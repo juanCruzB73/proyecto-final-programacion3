@@ -172,7 +172,7 @@ export const Card: FC<Iprops> = ({ element }) => {
             <div className='info'>
               <span className='infoProduct'>{product?.denominacion}</span>
               <span className='infoProduct'>{product?.precioVenta}</span>
-              <span className='infoProduct'>{product?.descripcion}</span>
+              <span className='infoProduct'>{product?.descripcion && product.descripcion.slice(0,30)}</span>
               <span className='infoProduct'>{product?.categoria.denominacion}</span>
               <span className='infoProduct' style={{textAlign:"center"}}>{product?.habilitado ? <i className="bi bi-hand-thumbs-up" style={{color:"green"}}></i> : <i style={{color:"red"}}className="bi bi-hand-thumbs-down" ></i>}</span>
             </div>
