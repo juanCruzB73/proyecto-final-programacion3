@@ -41,11 +41,12 @@ interface IForm {
 
 export const EditSucursal = () => {
     const dispatch=useDispatch<AppDispatch>()
-    //URL para la API en docker
-    //const sucursalService=new SucursalService("http://190.221.207.224:8090/sucursales/update")
+    //URL para la API del profe
+    const sucursalService=new SucursalService("http://190.221.207.224:8090/sucursales/update")
 
-    //URL para la API del profesor
-    const sucursalService=new SucursalService("http://localhost:8090/sucursales/update")
+    //URL para la API en docker
+    //const sucursalService=new SucursalService("http://localhost:8090/sucursales/update")
+
     const {elementActive}=useSelector((state:RootState)=>state.tablaSucursal)
     let casaMatrizValue:string;
     let categoriasValue:any;
@@ -96,10 +97,17 @@ export const EditSucursal = () => {
     const {provinciaTable}=useSelector((state:RootState)=>state.tablaProvincia)
     const {localidadTable}=useSelector((state:RootState)=>state.tablaLocalidad)
 
-    const {loading,setLoading,getPaises}=useServices("http://localhost:8090/paises")
-    const {getProvincia}=useServices("http://localhost:8090/provincias")
-    const {getLocalidad}=useServices("http://localhost:8090/localidades")
-    const {getSucursales}=useServices("http://localhost:8090/sucursales")
+    //URL para la API en profe
+    const {loading,setLoading,getPaises}=useServices("http://190.221.207.224:8090/paises")
+    const {getProvincia}=useServices("http://190.221.207.224:8090/provincias")
+    const {getLocalidad}=useServices("http://190.221.207.224:8090/localidades")
+    const {getSucursales}=useServices("http://190.221.207.224:8090/sucursales")
+
+    //URL para la API en docker
+    // const {loading,setLoading,getPaises}=useServices("http://localhost:8090/paises")
+    // const {getProvincia}=useServices("http://localhost:8090/provincias")
+    // const {getLocalidad}=useServices("http://localhost:8090/localidades")
+    // const {getSucursales}=useServices("http://localhost:8090/sucursales")
 
     const {paisSelect,provinciaSelect,localidadSelect,empresaSelect,casaMatrizSelect,handleSelectChange}=useSelect<ISelect>(selectInitialValue);
     const [image, setImage] = useState<string | null>(elementActive.logo);

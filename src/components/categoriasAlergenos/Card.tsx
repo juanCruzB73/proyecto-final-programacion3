@@ -32,26 +32,26 @@ export const Card: FC<Iprops> = ({ element }) => {
   const [subCategorias, setSubCategorias] = useState<ICategorias[]>([]);
   const [displayPhone,setDisplayPhone]=useState(false);
 
-  // URL para la API en Docker
-  /*const categoriaService = new CategoriasService("http://190.221.207.224:8090/categorias");
+  // URL para la API del profe
+  const categoriaService = new CategoriasService("http://190.221.207.224:8090/categorias");
   const categoriasPadreService = new CategoriasService("http://190.221.207.224:8090/categorias");
   const articuloService = new ProductoService("http://190.221.207.224:8090/articulos");
   const alergenosService = new AlergenosService("http://190.221.207.224:8090/alergenos");
   const subCategoryService = elementActive?.id && category?.id
     ? new CategoriasService(`http://190.221.207.224:8090/categorias/allSubCategoriasPorCategoriaPadre/${category.id}/${elementActive.id}`)
-    : null;  */
+    : null; 
   
-  // URL para la API del profesor
+  // URL para la API docker
   
-  const categoriaService = new CategoriasService("http://localhost:8090/categorias");
-  const categoriasPadreService = new CategoriasService("http://localhost:8090/categorias");
-  const articuloService = new ProductoService("http://localhost:8090/articulos");
-  const {getProductos}=useServices(`http://localhost:8090/articulos/porSucursal/${elementActive?.id}`)
+  // const categoriaService = new CategoriasService("http://localhost:8090/categorias");
+  // const categoriasPadreService = new CategoriasService("http://localhost:8090/categorias");
+  // const articuloService = new ProductoService("http://localhost:8090/articulos");
+  // const {getProductos}=useServices(`http://localhost:8090/articulos/porSucursal/${elementActive?.id}`)
 
-  const alergenosService = new AlergenosService("http://localhost:8090/alergenos");
-  const subCategoryService = elementActive?.id && category?.id
-    ? new CategoriasService(`http://localhost:8090/categorias/allSubCategoriasPorCategoriaPadre/${category.id}/${elementActive.id}`)
-    : null;
+  // const alergenosService = new AlergenosService("http://localhost:8090/alergenos");
+  // const subCategoryService = elementActive?.id && category?.id
+  //   ? new CategoriasService(`http://localhost:8090/categorias/allSubCategoriasPorCategoriaPadre/${category.id}/${elementActive.id}`)
+  //   : null;
   
 
   useEffect(() => {

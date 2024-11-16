@@ -30,17 +30,17 @@ const initialValue:IForm={
 
 }
 
-//URL para la API  en docker
+//URL para la API  profe
 
-/*const api_url = "http://190.221.207.224:8090"
+const api_url = "http://190.221.207.224:8090"
 const full_api=api_url+"/empresas"
 const empresaService=new EmpresaService(full_api);
-*/
 
-//URL para la API del profesor
-const api_url = "http://localhost:8090"
-const full_api=api_url+"/empresas"
-const empresaService=new EmpresaService(full_api);
+
+//URL para la API en docker
+// const api_url = "http://localhost:8090"
+// const full_api=api_url+"/empresas"
+// const empresaService=new EmpresaService(full_api);
 
 
 export const AddEmpresa=()=> {

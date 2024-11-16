@@ -36,10 +36,11 @@ export const EmpresaDetails = () => {
           <Card.Text>
             Razon social: {elementActive?.razonSocial}
           </Card.Text>
-
-          <Card.Text className="img-empresa" style={{width:"80%",height:"35%"}}>
-            {<Card.Img variant="top" src={logo} style={{width:"100%",height:"100%"}} />} 
-          </Card.Text>
+          <div className='img-empresaDetails'>
+            <Card.Text className="img-empresa" >
+              {<Card.Img variant="top" src={logo} className='img-card' />} 
+            </Card.Text>
+          </div>
           <Button variant="primary" style={{background:"#21232A",color:"white",padding:"0.3rem",border:"node",borderRadius:"0.4rem"}} onClick={()=>dispatch(onSeeDetails())} >Cerrar</Button>
         </Card.Body>
       </Card>

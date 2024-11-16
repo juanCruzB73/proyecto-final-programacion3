@@ -21,14 +21,26 @@ export const SucursalCard:FC<Props> = ({element}) => {
     
     const dispatch=useDispatch<AppDispatch>()
 
-  return (
-    <div className='sucursal-card'>
+    return (
+    <div className='sucursal-card' style={{width:"20vw", height:"45vh"}}>
             
             <Card style={{width: '90%', maxHeight:"100%"}}>
                 <Card.Body style={{display:"flex",justifyContent:"space-around",flexDirection:"column"}} >
-                    <div style={{height:"100%",display:"flex",flexDirection: "column"}} >
-                        <div className='.info-sucursal-cont-img'>
-                            <Card.Img variant="top" className='info-sucursal-cont-img' src={element.logo} style={{width:"100%",height:"100%",borderRadius:".4rem"}}/>
+                    <div style={{height: "100%", display: "flex", flexDirection: "column", alignItems: "center" }} >
+                        <div className='.info-sucursal-cont-img' style={{
+            width: "16vw",
+            height: "20vh",
+            overflow: "hidden",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+        }}>
+                            <Card.Img variant="top" className='info-sucursal-cont-img' src={element.logo} style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                borderRadius: ".4rem",
+            }}/>
                         </div>
                         <Card.Title style={{color:"black",marginBottom:"20px"}}>{element.nombre}</Card.Title>
                     </div>

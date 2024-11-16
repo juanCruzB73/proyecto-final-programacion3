@@ -35,25 +35,19 @@ const AddEditProducto:FC = () => {
     const {elementActiveProducto,administracionTable,administracionTable2}=useSelector((state:RootState)=>state.tableAdministracion)
 
 
-    //URL para la API en Docker
-    //const {getCategorias}=useServices(`http://190.221.207.224:8090/categorias/allCategoriasPadrePorSucursal/${elementActive?.id}`)
-    //const {getAlergenos}=useServices("http://190.221.207.224:8090/alergenos")
-    //const {getProductos}=useServices(`http://190.221.207.224:8090/articulos/porSucursal/${elementActive?.id}`)
-    //const productoService= addProducto ? new ProductoService("http://190.221.207.224:8090/articulos/create") : new ProductoService("http://190.221.207.224:8090/articulos/update");
+    //URL para la API del profe
+    const {getCategorias}=useServices(`http://190.221.207.224:8090/categorias/allCategoriasPadrePorSucursal/${elementActive?.id}`)
+    const {getAlergenos}=useServices("http://190.221.207.224:8090/alergenos")
+    const {getProductos}=useServices(`http://190.221.207.224:8090/articulos/porSucursal/${elementActive?.id}`)
+    const productoService= addProducto ? new ProductoService("http://190.221.207.224:8090/articulos/create") : new ProductoService("http://190.221.207.224:8090/articulos/update");
 
 
-    //URL para la API del profesor
-    // const {getCategorias}=useServices(`http://localhost:8090/categorias/allCategoriasPadrePorSucursal/${elementActive?.id}`)
+    //URL para la API docker
+    
+    
     // const {getAlergenos}=useServices("http://localhost:8090/alergenos")
     // const {getProductos}=useServices(`http://localhost:8090/articulos/porSucursal/${elementActive?.id}`)
     // const productoService= addProducto ? new ProductoService("http://localhost:8090/articulos/create") : new ProductoService("http://localhost:8090/articulos/update");
-    
-    
-    
-
-    const {getAlergenos}=useServices("http://localhost:8090/alergenos")
-    const {getProductos}=useServices(`http://localhost:8090/articulos/porSucursal/${elementActive?.id}`)
-    const productoService= addProducto ? new ProductoService("http://localhost:8090/articulos/create") : new ProductoService("http://localhost:8090/articulos/update");
 
     //alergenos checkBox
     const [alergenosTable,setAlergenosTable]=useState<any>([]);

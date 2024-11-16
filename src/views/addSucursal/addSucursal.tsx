@@ -66,24 +66,24 @@ interface ISelect{
 export const AddSucursal = () => {
 
   const dispatch=useDispatch<AppDispatch>()
-  //URL para
-  //const sucursalService=new SucursalService("http://190.221.207.224:8090/sucursales/create")
+  //URL para la api profe
+  const sucursalService=new SucursalService("http://190.221.207.224:8090/sucursales/create")
 
-  //URL para la API del profesor
-   const sucursalService=new SucursalService("http://localhost:8090/sucursales/create")
+  //URL para la API en docker
+  //const sucursalService=new SucursalService("http://localhost:8090/sucursales/create")
 
   //peticiones http con hook
-  //URL para la API en Docker
-  /*const {loading,setLoading,getPaises}=useServices("http://190.221.207.224:8090/paises")
+  //URL para la API profe
+  const {loading,setLoading,getPaises}=useServices("http://190.221.207.224:8090/paises")
   const {getProvincia}=useServices(`http://190.221.207.224:8090/provincias`)
   const {getLocalidad}=useServices(`http://190.221.207.224:8090/localidades`)
-  const {getSucursales}=useServices(`http://190.221.207.224:8090/sucursales`)*/
+  const {getSucursales}=useServices(`http://190.221.207.224:8090/sucursales`)
 
-  //URL para la API del profesor
-  const {loading,setLoading,getPaises}=useServices("http://localhost:8090/paises")
-  const {getProvincia}=useServices(`http://localhost:8090/provincias`)
-  const {getLocalidad}=useServices(`http://localhost:8090/localidades`)
-  const {getSucursales}=useServices(`http://localhost:8090/sucursales`)
+  //URL para la API en docker
+  // const {loading,setLoading,getPaises}=useServices("http://localhost:8090/paises")
+  // const {getProvincia}=useServices(`http://localhost:8090/provincias`)
+  // const {getLocalidad}=useServices(`http://localhost:8090/localidades`)
+  // const {getSucursales}=useServices(`http://localhost:8090/sucursales`)
 
   //datos redux
   const {paisTable}=useSelector((state:RootState)=>state.tablaPaises)
