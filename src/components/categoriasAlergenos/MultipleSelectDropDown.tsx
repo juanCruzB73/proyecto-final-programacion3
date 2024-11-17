@@ -2,13 +2,15 @@ import React, { useState, useEffect, useRef, FC } from 'react';
 import { IAlergenos } from '../../types/dtos/alergenos/IAlergenos';
 
 interface IMultiSelectDropdownProps {
-    options: IAlergenos[];         // Array of options with id and label
-    selectedValues: number[];           // Array of selected option IDs
-    onChange: (selected: number[]) => void; // Callback for when selected values change
+    options: IAlergenos[]; 
+    selectedValues: number[]; 
+    onChange: (selected: number[]) => void;
+    isOpen:boolean;
+    setIsOpen: (selected: boolean) => void;
 }
 
-export const MultiSelectDropdown: React.FC<IMultiSelectDropdownProps> = ({ options, selectedValues, onChange }) => {
-    const [isOpen, setIsOpen] = useState(false);
+export const MultiSelectDropdown: React.FC<IMultiSelectDropdownProps> = ({ options, selectedValues, onChange,isOpen,setIsOpen }) => {
+    //const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
 
     // Toggle dropdown visibility

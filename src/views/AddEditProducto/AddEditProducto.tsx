@@ -32,11 +32,10 @@ const AddEditProducto:FC = () => {
     const {addProducto,editProducto}=useSelector((state:RootState)=>state.administracion);
 
     const {elementActive}=useSelector((state:RootState)=>state.tablaSucursal);
-    const {elementActiveProducto,administracionTable,administracionTable2}=useSelector((state:RootState)=>state.tableAdministracion)
+    const {elementActiveProducto,administracionTable2}=useSelector((state:RootState)=>state.tableAdministracion)
 
 
     //URL para la API del profe
-    const {getCategorias}=useServices(`http://190.221.207.224:8090/categorias/allCategoriasPadrePorSucursal/${elementActive?.id}`)
     const {getAlergenos}=useServices("http://190.221.207.224:8090/alergenos")
     const {getProductos}=useServices(`http://190.221.207.224:8090/articulos/porSucursal/${elementActive?.id}`)
     const productoService= addProducto ? new ProductoService("http://190.221.207.224:8090/articulos/create") : new ProductoService("http://190.221.207.224:8090/articulos/update");
@@ -56,13 +55,15 @@ const AddEditProducto:FC = () => {
 
     //handle change checkbox change
     // Fetch allergens data
+    const [isOpen, setIsOpen] = useState(false);
     useEffect(() => {
         const fetchData = async () => {
-            const allergens = await getAlergenos();
+            await getAlergenos();
             setAlergenosTable(administracionTable2);
         };
         if (elementActive) fetchData();
-    }, [elementActive, administracionTable2]);
+        console.log("bucle");
+    }, [isOpen]);
 
     // Initialize dropdown state and handle input changes
     const handleMultiSelectChange = (values: number[]) => {
@@ -83,25 +84,22 @@ const AddEditProducto:FC = () => {
     const {subcategoriaSelect,setSelectedValue,handleSelectChange}=useSelect<ISelectForm>(initalSelectValues);
 
     useEffect(() => {
+        console.log("lol",elementActiveProducto?.categoria.id);
+        
         if (editProducto && elementActiveProducto) {
             
             setInitalSelectValues({
                 subcategoriaSelect: elementActiveProducto?.categoria.id,
             });
+            console.log(initalSelectValues);
+            
             setSelectedValue(initalSelectValues);            
         }
+        console.log(subcategoriaSelect);
+    }, [ subcategoryTable ]);
 
-        if(addProducto){
-            
-            
-            setInitalSelectValues({
-                subcategoriaSelect: (subcategoriaSelect ?? 0),
-            });
-            setSelectedValue(initalSelectValues);            
-        }
-           
-    }, [ elementActiveProducto]);//subir sefunda sub cat
-
+    console.log(subcategoriaSelect);
+    
     
 
     useEffect(() => {
@@ -109,13 +107,14 @@ const AddEditProducto:FC = () => {
         if (!elementActive?.id) return;
         
         const subCatService = new CategoriasService(
-            `http://localhost:8090/categorias/allSubCategoriasPorSucursal/${elementActive.id}`
+            `http://190.221.207.224:8090/categorias/allSubCategoriasPorSucursal/${elementActive.id}`
         );
         
         const fetchData = async () => {
             try {
                 const response = await subCatService.getAll();
                 setSubcategoryTable(response);
+
                 if(subcategoryTable.length > 0){                    
                     setSelectedValue({
                         subcategoriaSelect: response[0].id,
@@ -213,7 +212,13 @@ const AddEditProducto:FC = () => {
             }else if(containLetters(precioVenta.toString())){
                 setPrecioVentaCorrect(false);
                 setMessageError("El campo de precio solo puede llevar numeros")
-            }else{
+            }else if(initialFormValues.codigo === codigo){
+                setCodigoCorrect(false)
+                setMessageError("Ya existe un porducto con ese codigo")
+            }
+            else{
+                console.log(subcategoriaSelect, initalSelectValues.subcategoriaSelect);
+                
                 const data = {
                     id:elementActiveProducto.id,
                     denominacion:denominacion,
@@ -221,10 +226,12 @@ const AddEditProducto:FC = () => {
                     descripcion:descripcion,
                     habilitado:elementActiveProducto.habilitado,
                     codigo:codigo,
-                    idCategoria:subcategoriaSelect,
+                    idCategoria:subcategoriaSelect ?? initalSelectValues.subcategoriaSelect,
                     idAlergenos:selectedValues,
                     imagenes: [...elementActiveProducto.imagenes, imagenProducto].filter((img): img is IImagen => img !== null)
                 }
+                console.log(data);
+                
                 try{
                     await productoService.put(elementActiveProducto.id,data)
                     getProductos()
@@ -235,7 +242,6 @@ const AddEditProducto:FC = () => {
             }
         }
     }
-   console.log(selectedValues,subcategoriaSelect,subcategoryTable);
    
     return (
         <div className="addEditProducto">
@@ -264,6 +270,8 @@ const AddEditProducto:FC = () => {
                             options={alergenosTable}
                             selectedValues={selectedValues}
                             onChange={handleMultiSelectChange}
+                            isOpen={isOpen}
+                            setIsOpen={setIsOpen}
                         />
                     </div>
                         <div className="categoriSelect">

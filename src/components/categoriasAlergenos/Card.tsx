@@ -40,9 +40,9 @@ export const Card: FC<Iprops> = ({ element }) => {
   const subCategoryService = elementActive?.id && category?.id
     ? new CategoriasService(`http://190.221.207.224:8090/categorias/allSubCategoriasPorCategoriaPadre/${category.id}/${elementActive.id}`)
     : null; 
+  const {getProductos}=useServices(`http://190.221.207.224:8090/articulos/porSucursal/${elementActive?.id}`)
   
   // URL para la API docker
-  
   // const categoriaService = new CategoriasService("http://localhost:8090/categorias");
   // const categoriasPadreService = new CategoriasService("http://localhost:8090/categorias");
   // const articuloService = new ProductoService("http://localhost:8090/articulos");

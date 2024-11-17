@@ -26,10 +26,7 @@ const {getCategorias}=useServices(`http://190.221.207.224:8090/categorias/allCat
 
   const {administracionTable,administracionTable2,administracionTable3}=useSelector((state:RootState)=>state.tableAdministracion)
 
-  const {categoriaFilter,productoFilter,alergenosFilter}=useSelector((state:RootState)=>state.administracion)
-  
-  const dispatch=useDispatch<AppDispatch>()
-  
+  const {categoriaFilter,productoFilter,alergenosFilter}=useSelector((state:RootState)=>state.administracion)  
   
 
   const [selectedFilter,setSelectedFilter]=useState<ICategorias[]|IProductos[]|IAlergenos[]>([]);
@@ -48,8 +45,6 @@ const {getCategorias}=useServices(`http://190.221.207.224:8090/categorias/allCat
     };
     fetchData();
   }, [categoriaFilter, productoFilter, alergenosFilter, elementActive]);
-
-  let value:ICategorias[]|IProductos[]=[];
 
   //hacer filtro por sucursal para categoria preguntar profe
 
