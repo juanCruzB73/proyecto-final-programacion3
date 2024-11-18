@@ -109,9 +109,10 @@ export const EditEmpresa=()=> {
   }
 
   return (
+    <div className='containerFatherEditEmpresa'>
       <div className="addEditEmpresaContainer">
-      <h1>Editar empresa</h1>  
-      <Form className="form-container" onSubmit={handleSubmit}> 
+        <h1>Editar empresa</h1>  
+          <Form className="form-container" onSubmit={handleSubmit}> 
               <div className={isEmptyCondition||containsLetterCondition ? 'errorMessagge' : "noErrors"}>
                 <span>{conditionMessage}</span>
               </div>
@@ -126,10 +127,10 @@ export const EditEmpresa=()=> {
               <Form.Group as={Col} className="mb-3" >
                 <Form.Control id={wrongCuit?"isWrong":"isNotWrong"} name='cuit' value={cuit} onChange={onInputChange} placeholder="Ingrese CUIT" />
               </Form.Group>
-
-              <h1>Ingrese su imagen</h1>
-
+            <div className='img-container'>
+              <h3>Ingrese su imagen</h3>
               <UploadImage image={image} setImage={setImage} />
+            </div>
 
               <div className="buttonEmpresa">
                 <Button variant="primary" type='submit' style={{padding:"0.4rem",border:"none",borderRadius:"0.4rem",background:"#32cd32"  }}>
@@ -141,6 +142,7 @@ export const EditEmpresa=()=> {
               </div>
         </Form>
       </div> 
+    </div>
   
   )
 }
