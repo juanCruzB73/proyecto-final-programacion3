@@ -15,36 +15,35 @@ export const EmpresaDetails = () => {
   let logo=elementActive?.logo ?? "";
     
   return (
-    <div className="empresa-detail">
-    
-      <Card className="details-container" >
-          
-          <Card.Body >
-            <Card.Title style={{paddingBottom: "3vh",
-            fontSize: "5vh",
-            display: "flex",
-            justifyContent: "center",
-            fontWeight: "bold"}}>Empresa</Card.Title>
-          <Card.Text>
-            Nombre de sucursal: {elementActive?.nombre}
-          </Card.Text>
-
-          <Card.Text>
-            cuit: {elementActive?.cuit}
-          </Card.Text>
-
-          <Card.Text>
-            Razon social: {elementActive?.razonSocial}
-          </Card.Text>
-          <div className='img-empresaDetails'>
-            <Card.Text className="img-empresa" >
-              Logo:
-              {<Card.Img variant="top" src={logo} className='img-card' />} 
+    <div className='containerFatherEmpresaDetails'>
+      <div className="empresa-detail">
+      
+        <Card className="details-container" >
+            <Card.Body >
+              <Card.Title style={{paddingBottom: "3vh",
+              fontSize: "5vh",
+              display: "flex",
+              justifyContent: "center",
+              fontWeight: "bold"}}>Empresa</Card.Title>
+            <Card.Text>
+              Nombre de sucursal: {elementActive?.nombre}
             </Card.Text>
-          </div>
-          <Button variant="primary" style={{background:"#21232A",color:"white",padding:"0.3rem",border:"node",borderRadius:"0.4rem", width:"100%"}} onClick={()=>dispatch(onSeeDetails())} >Cerrar</Button>
-        </Card.Body>
-      </Card>
+            <Card.Text>
+              cuit: {elementActive?.cuit}
+            </Card.Text>
+            <Card.Text>
+              Razon social: {elementActive?.razonSocial}
+            </Card.Text>
+            <div className='img-empresaDetails'>
+              <Card.Text className="img-empresa" >
+                Logo:
+                {<Card.Img variant="top" src={logo} className='img-card' />} 
+              </Card.Text>
+            </div>
+            <Button variant="primary" style={{background:"#21232A",color:"white",padding:"0.3rem",border:"node",borderRadius:"0.4rem", width:"100%"}} onClick={()=>dispatch(onSeeDetails())} >Cerrar</Button>
+          </Card.Body>
+        </Card>
+      </div>
     </div>
   
   );

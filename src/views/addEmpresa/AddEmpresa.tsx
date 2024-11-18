@@ -118,6 +118,7 @@ export const AddEmpresa=()=> {
               <div className={isEmptyCondition||containsLetterCondition ? 'errorMessagge' : "noErrors"}>
                 <span>{conditionMessage}</span>
               </div>
+              <div className='inputs-container'>
               <Form.Group as={Col} >
                   <Form.Control id={wrongName?"isWrong":"isNotWrong"} name='nombre' value={nombre} onChange={onInputChange} type="text" placeholder="Ingrese empresa" />
               </Form.Group>
@@ -129,10 +130,12 @@ export const AddEmpresa=()=> {
               <Form.Group as={Col} className="mb-3" >
                 <Form.Control id={wrongCuit?"isWrong":"isNotWrong"} name='cuit' value={cuit} onChange={onInputChange} placeholder="Ingrese CUIT" />
               </Form.Group>
-
-              <h1>Ingrese su imagen</h1>
-
+              </div>
+            <div className='img-container'>
+              <h3>Ingrese su imagen</h3>
               <UploadImage image={image} setImage={setImage} />
+            </div>
+
 
               <div className="buttonEmpresa">
                   <Button variant="primary" type='submit'  style={{padding:"0.4rem",border:"none",borderRadius:"0.4rem",background:"#32cd32"  }}>

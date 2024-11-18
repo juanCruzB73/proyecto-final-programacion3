@@ -19,10 +19,10 @@
     border-radius: 0.5rem;
     background-color: white;
     color: black;
-    width: 50vw;
+    width: 50%;
     max-width: 500px; /* Limita el ancho en pantallas grandes */
     height: auto; /* Ajusta la altura al contenido */
-    padding: 1.5rem;
+    padding: 0.5rem;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
     overflow: hidden;
     margin: 0;
@@ -34,7 +34,7 @@
 
 .form-container {
     width: 80%;
-    height: 80%;
+    height: 90%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -42,6 +42,15 @@
     margin: 0;
     padding: 0;
     
+}
+.inputs-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 0.5rem;
+    width: 100%;
 }
 
 #isNotWrong, #isWrong {
@@ -102,11 +111,30 @@ h1{
     margin: 0;
 }
 
+.img-container {
+    /* Estilo para el contenedor */
+    width: 100%;
+    max-height: 200px;
+    overflow: hidden;
+    /* padding: 3rem; */
+    /* gap: 1rem; */
+}
+
+.img-container img {
+    /* Estilo solo para las imágenes dentro del contenedor */
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    display: block;
+}
+
+
 /* Ajustes para pantallas pequeñas */
 @media (max-width: 768px) {
     .addEmpresaContainer {
         width: 90vw;
         padding: 1rem;
+        
     }
 
     .form-container input[type="text"],
@@ -125,3 +153,55 @@ h1{
         font-size: 1.2rem; /* Reducimos el tamaño de los títulos */
     }
 }
+
+
+/* responsive para pantallas grandes */
+@media (min-width: 1367px) {
+    .addEmpresaContainer {
+        max-width: 40%; /* Reduce el ancho relativo para pantallas grandes */
+        height: 55%;
+        padding: 2rem; /* Más espacio interior */
+        box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada */
+        gap: 0.5rem;
+    }
+
+    .form-container {
+        width: 80%; /* Aumenta el espacio disponible dentro del formulario */
+        height: 80%;
+        gap: 1rem; /* Espacio más amplio entre elementos */
+        padding: 1rem;
+        margin: 1rem;
+    }
+
+    h1 {
+        font-size: 1.8rem; /* Ajusta el tamaño del título */
+    }
+
+    .buttonEmpresa button {
+        padding: 0.6rem 1.5rem; /* Botones más amplios */
+        font-size: 1rem; /* Texto más grande */
+    }
+
+    .img-container {
+        /* Estilo para el contenedor */
+        width: 90%;
+        height: auto;
+        overflow: hidden;
+        padding: auto;
+        /* gap: 1rem; */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .img-container img {
+        /* Estilo solo para las imágenes dentro del contenedor */
+        max-width: 100%;
+        max-height: 100%;
+        height: auto;
+        display: block;
+    }
+    
+}
+

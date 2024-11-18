@@ -248,6 +248,8 @@ export const EditSucursal = () => {
   }
 
   return (
+  <div className='containerFatherEditSucursal'>
+
     <div className="addEditSucursalContainer"> 
       <h1>Editar una sucursal</h1> 
       <Form className="form-container" onSubmit={handleSubmit}>
@@ -357,5 +359,7 @@ export const EditSucursal = () => {
               </div>
         </Form>
       </div>
-  )
+  </div>
+  
+)
 }
