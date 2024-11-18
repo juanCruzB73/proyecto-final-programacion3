@@ -24,7 +24,7 @@ export const EmpresaDetails = () => {
             fontSize: "5vh",
             display: "flex",
             justifyContent: "center",
-            fontWeight: "bold"}}>Empresa Datos</Card.Title>
+            fontWeight: "bold"}}>Empresa</Card.Title>
           <Card.Text>
             Nombre de sucursal: {elementActive?.nombre}
           </Card.Text>
@@ -38,10 +38,11 @@ export const EmpresaDetails = () => {
           </Card.Text>
           <div className='img-empresaDetails'>
             <Card.Text className="img-empresa" >
+              Logo:
               {<Card.Img variant="top" src={logo} className='img-card' />} 
             </Card.Text>
           </div>
-          <Button variant="primary" style={{background:"#21232A",color:"white",padding:"0.3rem",border:"node",borderRadius:"0.4rem"}} onClick={()=>dispatch(onSeeDetails())} >Cerrar</Button>
+          <Button variant="primary" style={{background:"#21232A",color:"white",padding:"0.3rem",border:"node",borderRadius:"0.4rem", width:"100%"}} onClick={()=>dispatch(onSeeDetails())} >Cerrar</Button>
         </Card.Body>
       </Card>
     </div>

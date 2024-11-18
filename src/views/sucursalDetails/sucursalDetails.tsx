@@ -35,10 +35,10 @@ export const SucursalDetails = () => {
             <Card.Text className='textSucursal'>
               Hora de cierre: {elementActive?.horarioCierre}
             </Card.Text>
-  
+            
             <Card.Text className="img-sucursal">
               Logo: 
-              <Card.Img variant="top" src={elementActive?.logo} style={{width:"80%",height:"30%"}} /> 
+              <Card.Img variant="top" src={elementActive?.logo} style={{width:"100%",height:"85%"}} /> 
             </Card.Text>
             <Button className='buttonSucursal' variant="primary" style={{background:"#21232A",color:"white",padding:"0.3rem",border:"node",borderRadius:"0.4rem"}} onClick={()=>dispatch(onSeeDetailsSucursal())} >Cerrar</Button>
           </Card.Body>

@@ -22,7 +22,7 @@ const AlergenosDetails = () => {
                     <Card.Title style={{color:"white",textAlign:"center",fontSize:"6vh"}}>{elemetActiveAlergeno?.denominacion}</Card.Title>
                 </Card.Body>
             </Card>
-            <button onClick={()=>dispatch(onSeeAlergeno())}>cerrar</button>
+            <button className="buttonAlergenos" onClick={()=>dispatch(onSeeAlergeno())}>Cerrar</button>
         </div>
     )
 }

@@ -81,9 +81,11 @@ h1 {
 .buttons Button:first-child {
     background-color: #4c7fed;
     border: none;
+    border-radius: 0.4rem;
 }
 
 .buttons Button:last-child {
     background-color: #d9534f;
     border: none;
+    border-radius: 0.4rem;
 }
