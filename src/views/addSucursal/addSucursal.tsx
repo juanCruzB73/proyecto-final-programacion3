@@ -293,8 +293,10 @@ export const AddSucursal = () => {
 
   return (
     <div className='containerSucursalFather'>
-      <div className="addEditSucursalContainer"> 
-        <h1>Crear una sucursal</h1> 
+      <div className="addEditSucursalContainer">
+        <div className='titleContainer'>
+          <h1>Crear una sucursal</h1> 
+        </div>
         <Form className="form-container" onSubmit={handleSubmit}>
             <div className={isEmptyCondition||containsLetterCondition||isTimeCondition ? 'errorMessagge' : "noErrors"}>
               <span>{conditionMessage}</span>
@@ -331,7 +333,7 @@ export const AddSucursal = () => {
                             <option value={"no"}>No</option>
                     </Form.Select>
                     <div className='image-container'>
-                      <h1>Ingrese su imagen</h1>
+                      <h3>Ingrese su imagen</h3>
                       <UploadImage image={image} setImage={setImage} />
                     </div>
 
