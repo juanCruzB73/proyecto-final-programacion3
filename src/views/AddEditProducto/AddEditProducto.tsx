@@ -212,11 +212,7 @@ const AddEditProducto:FC = () => {
             }else if(containLetters(precioVenta.toString())){
                 setPrecioVentaCorrect(false);
                 setMessageError("El campo de precio solo puede llevar numeros")
-            }else if(initialFormValues.codigo === codigo){
-                setCodigoCorrect(false)
-                setMessageError("Ya existe un porducto con ese codigo")
-            }
-            else{
+            }else{
                 console.log(subcategoriaSelect, initalSelectValues.subcategoriaSelect);
                 
                 const data = {

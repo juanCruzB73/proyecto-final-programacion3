@@ -109,24 +109,27 @@ export const EditEmpresa=()=> {
   }
 
   return (
-    <div className='containerFatherEditEmpresa'>
-      <div className="addEditEmpresaContainer">
+    <div className='contenedorPadre'>
+      <div className="addEmpresaContainer">
         <h1>Editar empresa</h1>  
           <Form className="form-container" onSubmit={handleSubmit}> 
               <div className={isEmptyCondition||containsLetterCondition ? 'errorMessagge' : "noErrors"}>
                 <span>{conditionMessage}</span>
               </div>
-              <Form.Group as={Col} >
-                  <Form.Control id={wrongName?"isWrong":"isNotWrong"} type="text" name='nombre' onChange={onInputChange} value={nombre} placeholder="Ingrese empresa" />
-              </Form.Group>
+              <div className='inputs-container'>
+                <Form.Group as={Col} >
+                    <Form.Control id={wrongName?"isWrong":"isNotWrong"} type="text" name='nombre' onChange={onInputChange} value={nombre} placeholder="Ingrese empresa" />
+                </Form.Group>
+                
+                <Form.Group as={Col}>
+                  <Form.Control id={wrongRazonSocial?"isWrong":"isNotWrong"} type="text" name='razonSocial' value={razonSocial} onChange={onInputChange} placeholder="Ingrese razon social" />
+                </Form.Group>
+    
+                <Form.Group as={Col} className="mb-3" >
+                  <Form.Control id={wrongCuit?"isWrong":"isNotWrong"} name='cuit' value={cuit} onChange={onInputChange} placeholder="Ingrese CUIT" />
+                </Form.Group>
+              </div>
               
-              <Form.Group as={Col}>
-                <Form.Control id={wrongRazonSocial?"isWrong":"isNotWrong"} type="text" name='razonSocial' value={razonSocial} onChange={onInputChange} placeholder="Ingrese razon social" />
-              </Form.Group>
-
-              <Form.Group as={Col} className="mb-3" >
-                <Form.Control id={wrongCuit?"isWrong":"isNotWrong"} name='cuit' value={cuit} onChange={onInputChange} placeholder="Ingrese CUIT" />
-              </Form.Group>
             <div className='img-container'>
               <h3>Ingrese su imagen</h3>
               <UploadImage image={image} setImage={setImage} />
