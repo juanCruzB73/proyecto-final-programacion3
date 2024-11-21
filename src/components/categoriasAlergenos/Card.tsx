@@ -163,17 +163,17 @@ export const Card: FC<Iprops> = ({ element }) => {
             <div className='mainContainerProduct'>
               <span onClick={()=>setDisplayPhone(!displayPhone)} className='infoProductPhone' style={{cursor: 'pointer',border:"none"}}>{product?.denominacion}</span>
               <div className={displayPhone?'infoPhone':"notDisplayMainContainerProduct"}>
-                  <span className='infoProductPhone'>Precio: {product?.precioVenta}</span>
-                  <span className='infoProductPhone'>Descripción: {product?.descripcion}</span>
-                  <span className='infoProductPhone'>Categoria: {product?.categoria.denominacion}</span>
+                  <span className='infoProductPhone'>Precio: { product?.precioVenta && product?.precioVenta}</span>
+                  <span className='infoProductPhone'>Descripción: { product?.descripcion && product?.descripcion}</span>
+                  <span className='infoProductPhone'>Categoria: { product?.categoria.denominacion && product?.categoria.denominacion}</span>
                   <span className='infoProductPhone'>Habilitado: {product?.habilitado ? <i className="bi bi-hand-thumbs-up" style={{color:"green"}}></i> : <i className="bi bi-hand-thumbs-down" style={{color:"red"}}></i>}</span>
               </div>
             </div>
             <div className='info'>
-              <span className='infoProduct'>{product?.denominacion}</span>
-              <span className='infoProduct'>{product?.precioVenta}</span>
+              <span className='infoProduct'>{product?.denominacion && product?.denominacion}</span>
+              <span className='infoProduct'>{ product?.precioVenta && product?.precioVenta}</span>
               <span className='infoProduct'>{product?.descripcion && product.descripcion.slice(0,30)}</span>
-              <span className='infoProduct'>{product?.categoria.denominacion}</span>
+              <span className='infoProduct'>{ product?.categoria.denominacion && product?.categoria.denominacion}</span>
               <span className='infoProduct' style={{textAlign:"center"}}>{product?.habilitado ? <i className="bi bi-hand-thumbs-up" style={{color:"green"}}></i> : <i style={{color:"red"}}className="bi bi-hand-thumbs-down" ></i>}</span>
             </div>
             <div className='buttonsProduct' style={{fontSize:"1.5rem"}}>
